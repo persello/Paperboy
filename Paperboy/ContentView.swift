@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import FeedKit
 
 struct ContentView: View {
+    @State private var selectedFeed: FeedModel? = nil
+    @State private var selectedItem: (any FeedItemProtocol)? = nil
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationSplitView {
+                FeedListView(selection: $selectedFeed, feeds: [])
+                    .navigationTitle("Paperboy")
+        } content: {
+            FeedItemsListView()
+        } detail: {
+            FeedItemContentView()
         }
-        .padding()
     }
 }
 
