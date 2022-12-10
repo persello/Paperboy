@@ -7,15 +7,28 @@
 
 import SwiftUI
 
-struct FeedListView: View {    
+struct FeedListView: View {
+    @Environment(\.managedObjectContext) var context
+    @FetchRequest(
+        sortDescriptors: [SortDescriptor(\.title, order: .reverse)],
+        animation: .default
+    ) private var feeds: FetchedResults<FeedModel>
     @Binding var selection: FeedModel?
-    var feeds: [FeedModel]
     
     var body: some View {
         List(selection: $selection) {
             ForEach(feeds) { feed in
                 NavigationLink(value: feed) {
-                    Text(feed.title)
+                    Label {
+                        Text(feed.title ?? "Unnamed feed")
+                    } icon: {
+                        if let image = feed.iconImage {
+                            Image(image, scale: 1, label: Text("aaa"))
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                                .cornerRadius(4)
+                        }
+                    }
                 }
             }
         }
@@ -24,6 +37,9 @@ struct FeedListView: View {
 
 struct FeedListView_Previews: PreviewProvider {
     static var previews: some View {
-        FeedListView(selection: .constant(nil), feeds: [])
+        let context = PersistenceController.preview.container.viewContext
+
+        FeedListView(selection: .constant(nil))
+            .environment(\.managedObjectContext, context)
     }
 }

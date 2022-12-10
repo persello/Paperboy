@@ -10,14 +10,17 @@ import FeedKit
 
 struct ContentView: View {
     @State private var selectedFeed: FeedModel? = nil
-    @State private var selectedItem: (any FeedItemProtocol)? = nil
+    @State private var selectedItem: FeedItemModel? = nil
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
     var body: some View {
-        NavigationSplitView {
-                FeedListView(selection: $selectedFeed, feeds: [])
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            FeedListView(selection: $selectedFeed)
                     .navigationTitle("Paperboy")
         } content: {
-            FeedItemsListView()
+            if let selectedFeed {
+                FeedItemsListView(selection: $selectedItem, selectedFeed: selectedFeed)
+            }
         } detail: {
             FeedItemContentView()
         }
@@ -26,6 +29,9 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
+        let context = PersistenceController.preview.container.viewContext
+        
         ContentView()
+            .environment(\.managedObjectContext, context)
     }
 }

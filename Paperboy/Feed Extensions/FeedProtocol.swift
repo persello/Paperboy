@@ -12,6 +12,9 @@ public protocol FeedProtocol: Hashable, Identifiable {
     var description: String? { get }
     var url: URL? { get }
     var id: String { get }
+    var iconURL: URL? { get }
+    
+    func fetchItems() -> [any FeedItemProtocol]
 }
 
 public extension FeedProtocol where Self: Identifiable {

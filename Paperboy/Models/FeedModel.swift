@@ -6,28 +6,85 @@
 //
 
 import Foundation
+import FeedKit
+import CoreData
+import CoreGraphics
+import ImageIO
+import CoreImage
 
-
-struct FeedModel {
-    var title: String
-    var id: String
-    var feed: any FeedProtocol
-
-    init<F: FeedProtocol>(feed: F) {
-        self.title = feed.title ?? "Untitled feed."
-        self.id = feed.id
-        self.feed = feed
+extension FeedModel {
+    
+    func refresh() throws {
+        guard let link = self.link,
+              let context = self.managedObjectContext,
+              let url = URL(string: link) else {
+            
+            // TODO: Error.
+            
+            return
+        }
+        
+        let parser = FeedParser(URL: url)
+        parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
+            
+            guard let feed = try? result.get().rssFeed else {
+                return
+            }
+            
+            // Items
+            let itemSet: Set<FeedItemModel> = feed.fetchItems()
+                .filter({ item in
+                    !self.items!.contains(where: { existingItem in
+                        guard let existingItemModel = existingItem as? FeedItemModel else {
+                            return false
+                        }
+                        
+                        return existingItemModel.link == item.url?.absoluteString
+                    })
+                }).map({
+                FeedItemModel(from: $0, context: context)
+            }).reduce(into: Set()) { partialResult, item in
+                partialResult.insert(item)
+            }
+            
+            DispatchQueue.main.async {
+                self.addToItems(NSSet(set: itemSet))
+            }
+            
+            // Icon
+            if let iconURL = feed.iconURL,
+               let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
+                
+                let targetSize = 64
+                let thumbnailOptions = [kCGImageSourceCreateThumbnailFromImageAlways: true,
+                                          kCGImageSourceCreateThumbnailWithTransform: true,
+                                                kCGImageSourceShouldCacheImmediately: true,
+                                                 kCGImageSourceThumbnailMaxPixelSize: targetSize] as CFDictionary
+                
+                if let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
+                    let context = CIContext()
+                    let image = CIImage(cgImage: thumbnail)
+                    let data = context.jpegRepresentation(of: image, colorSpace: CGColorSpace(name: CGColorSpace.displayP3)!)
+                    
+                    DispatchQueue.main.async {
+                        self.icon = data
+                    }
+                }
+            }
+            
+            DispatchQueue.main.async {
+                try? context.save()
+            }
+        })
     }
-}
-
-extension FeedModel: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
-extension FeedModel: Identifiable {
-    static func == (lhs: FeedModel, rhs: FeedModel) -> Bool {
-        lhs.id == rhs.id
+    
+    var iconImage: CGImage? {
+        if let data = self.icon,
+           let source = CGImageSourceCreateWithData(data as CFData, [:] as CFDictionary) {
+            let image = CGImageSourceCreateImageAtIndex(source, 0, [:] as CFDictionary)
+            return image
+        } else {
+            return nil
+        }
     }
 }
