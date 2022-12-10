@@ -20,11 +20,11 @@ struct PersistenceController {
         // Populate with fake data.
         let nyd = FeedModel(context: controller.container.viewContext)
         nyd.title = "New York Times Daily"
-        nyd.link = "https://feeds.simplecast.com/54nAGcIl"
+        nyd.url = URL(string: "https://feeds.simplecast.com/54nAGcIl")!
         
         let ninetofivemac = FeedModel(context: controller.container.viewContext)
         ninetofivemac.title = "9to5Mac"
-        ninetofivemac.link = "https://9to5mac.com/feed"
+        ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
         return controller
     }()

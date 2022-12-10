@@ -14,12 +14,15 @@ import CoreImage
 
 extension FeedModel {
     
+    func refresh(onlyAfter interval: TimeInterval) {
+        // TODO: Implement.
+    }
+    
     func refresh() throws {
-        guard let link = self.link,
-              let context = self.managedObjectContext,
-              let url = URL(string: link) else {
+        guard let url = self.url,
+              let context = self.managedObjectContext else {
             
-            // TODO: Error.
+            // TODO: Errors.
             
             return
         }
@@ -39,7 +42,7 @@ extension FeedModel {
                             return false
                         }
                         
-                        return existingItemModel.link == item.url?.absoluteString
+                        return existingItemModel.link == item.url
                     })
                 }).map({
                 FeedItemModel(from: $0, context: context)

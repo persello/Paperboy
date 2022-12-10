@@ -12,6 +12,6 @@ extension FeedItemModel {
     convenience init<F: FeedItemProtocol>(from item: F, context: NSManagedObjectContext) {
         self.init(context: context)
         self.title = item.title
-        self.link = item.url?.absoluteString
+        self.link = item.url
     }
 }
