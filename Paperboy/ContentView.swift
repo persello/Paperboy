@@ -22,7 +22,7 @@ struct ContentView: View {
                 FeedItemListView(selection: $selectedItem, selectedFeed: selectedFeed)
             }
         } detail: {
-            FeedItemContentView()
+//            FeedItemContentView()
         }
     }
 }

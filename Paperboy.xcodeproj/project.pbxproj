@@ -28,6 +28,7 @@
 		8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837A2945294B00D93109 /* FaviconFinder */; };
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
 		8B8A83802945306100D93109 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837F2945306100D93109 /* SwiftSoup */; };
+		8B8A83822945464800D93109 /* NewFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A83812945464800D93109 /* NewFeedView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,7 @@
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
 		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
+		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
 				8B8A837729451E6800D93109 /* FeedListRow.swift */,
+				8B8A83812945464800D93109 /* NewFeedView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
 				8B721FF9293D07E4006B618E /* ContentView.swift in Sources */,
+				8B8A83822945464800D93109 /* NewFeedView.swift in Sources */,
 				8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */,
 				8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */,
 				8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */,

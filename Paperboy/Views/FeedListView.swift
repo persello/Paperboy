@@ -14,6 +14,7 @@ struct FeedListView: View {
         animation: .default
     ) private var feeds: FetchedResults<FeedModel>
     @Binding var selection: FeedModel?
+    @State private var newFeedSheetPresented: Bool = false
     
     var body: some View {
         List(selection: $selection) {
@@ -21,7 +22,19 @@ struct FeedListView: View {
                 NavigationLink(value: feed) {
                     FeedListRow(feed: feed)
                 }
+            }.onMove { iset, i in
+                // TODO: Handle feed reordering.
             }
+        }
+        .toolbar {
+            Button {
+                newFeedSheetPresented = true
+            } label: {
+                Label("Add", systemImage: "plus")
+            }
+        }
+        .sheet(isPresented: $newFeedSheetPresented) {
+            NewFeedView()
         }
     }
 }
