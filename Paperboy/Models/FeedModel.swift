@@ -14,11 +14,25 @@ import CoreImage
 
 extension FeedModel {
     
+    enum Status: Int16 {
+        case idle = 0
+        case refreshing = 1
+        case error = 2
+    }
+    
+    func setStatus(_ status: Status) {
+        self.status = status.rawValue
+    }
+    
     func refresh(onlyAfter interval: TimeInterval) {
         // TODO: Implement.
     }
     
     func refresh() throws {
+        DispatchQueue.main.async {
+            self.setStatus(.refreshing)
+        }
+        
         guard let url = self.url,
               let context = self.managedObjectContext else {
             
@@ -77,6 +91,9 @@ extension FeedModel {
             
             DispatchQueue.main.async {
                 try? context.save()
+                self.setStatus(.idle)
+                
+                // TODO: Error status.
             }
         })
     }
