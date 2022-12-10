@@ -19,16 +19,7 @@ struct FeedListView: View {
         List(selection: $selection) {
             ForEach(feeds) { feed in
                 NavigationLink(value: feed) {
-                    Label {
-                        Text(feed.title ?? "Unnamed feed")
-                    } icon: {
-                        if let image = feed.iconImage {
-                            Image(image, scale: 1, label: Text("aaa"))
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                                .cornerRadius(4)
-                        }
-                    }
+                    FeedListRow(feed: feed)
                 }
             }
         }

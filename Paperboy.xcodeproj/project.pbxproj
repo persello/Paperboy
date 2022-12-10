@@ -24,6 +24,7 @@
 		8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */; };
 		8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1229424C8B00CFBDA8 /* FeedModel.swift */; };
 		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
+		8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedListRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSS+FeedProtocol.swift"; sourceTree = "<group>"; };
 		8B766E1229424C8B00CFBDA8 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
+		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				8B72200F293D09F3006B618E /* FeedItemContentView.swift */,
 				8B72200B293D09D7006B618E /* FeedItemsListView.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
+				8B8A837729451E6800D93109 /* FeedListRow.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -210,6 +213,7 @@
 			files = (
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
+				8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
 				8B721FF9293D07E4006B618E /* ContentView.swift in Sources */,
 				8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */,
