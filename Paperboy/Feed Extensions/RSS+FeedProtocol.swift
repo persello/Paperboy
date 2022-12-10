@@ -12,15 +12,7 @@ extension RSSFeed: FeedProtocol {
     public func fetchItems() -> [any FeedItemProtocol] {
         self.items ?? []
     }
-    
-    public var url: URL? {
-        guard let link = self.link else {
-            return nil
-        }
-        
-        return URL(string: link)
-    }
-    
+
     public var iconURL: URL? {
         guard let url = self.image?.url else {
             return nil

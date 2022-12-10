@@ -10,6 +10,13 @@ import SwiftUI
 struct FeedItemContentView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+            .toolbar {
+                Button {
+                    
+                } label: {
+                    Label("Antani", systemImage: "square.and.arrow.up")
+                }
+            }
     }
 }
 

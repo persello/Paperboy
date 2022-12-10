@@ -45,6 +45,7 @@ struct FeedItemsListView: View {
             try? selectedFeed.refresh()
         }
         .navigationTitle(selectedFeed.title ?? "Unnamed feed")
+        .navigationSubtitle("3 unread")
     }
 }
 

@@ -7,24 +7,10 @@
 
 import Foundation
 
-public protocol FeedProtocol: Hashable, Identifiable {
+public protocol FeedProtocol {
     var title: String? { get }
     var description: String? { get }
-    var url: URL? { get }
-    var id: String { get }
     var iconURL: URL? { get }
     
     func fetchItems() -> [any FeedItemProtocol]
-}
-
-public extension FeedProtocol where Self: Identifiable {
-    var id: String {
-        return self.url?.absoluteString ?? UUID().uuidString
-    }
-}
-
-public extension FeedProtocol where Self: Hashable {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 }

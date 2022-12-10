@@ -11,6 +11,7 @@ import CoreData
 import CoreGraphics
 import ImageIO
 import CoreImage
+import FaviconFinder
 
 extension FeedModel {
     
@@ -72,6 +73,8 @@ extension FeedModel {
             if let iconURL = feed.iconURL,
                let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
                 
+                // Get the feed's icon from the specified URL.
+                
                 let targetSize = 64
                 let thumbnailOptions = [kCGImageSourceCreateThumbnailFromImageAlways: true,
                                           kCGImageSourceCreateThumbnailWithTransform: true,
@@ -87,6 +90,18 @@ extension FeedModel {
                         self.icon = data
                     }
                 }
+            } else if let link = feed.link,
+                      let url = URL(string: link) {
+                // Try to get the icon from the linked website's favicon.
+                Task {
+                    let finder = FaviconFinder(url: url)
+                    let icon = try? await finder.downloadFavicon()
+                    
+                    DispatchQueue.main.async {
+                        self.icon = icon?.data
+                    }
+                }
+                
             }
             
             DispatchQueue.main.async {
