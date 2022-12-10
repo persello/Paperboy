@@ -19,7 +19,7 @@ struct ContentView: View {
                     .navigationTitle("Paperboy")
         } content: {
             if let selectedFeed {
-                FeedItemsListView(selection: $selectedItem, selectedFeed: selectedFeed)
+                FeedItemListView(selection: $selectedItem, selectedFeed: selectedFeed)
             }
         } detail: {
             FeedItemContentView()

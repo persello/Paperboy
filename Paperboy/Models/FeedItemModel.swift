@@ -11,7 +11,9 @@ import CoreData
 extension FeedItemModel {
     convenience init<F: FeedItemProtocol>(from item: F, context: NSManagedObjectContext) {
         self.init(context: context)
-        self.title = item.title
+        self.articleDescription = item.description
         self.link = item.url
+        self.publicationDate = item.publicationDate
+        self.title = item.title
     }
 }

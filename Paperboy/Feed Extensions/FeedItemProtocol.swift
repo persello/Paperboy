@@ -10,5 +10,6 @@ import Foundation
 public protocol FeedItemProtocol {
     var title: String? { get }
     var description: String? { get }
+    var publicationDate: Date? { get }
     var url: URL? { get }
 }

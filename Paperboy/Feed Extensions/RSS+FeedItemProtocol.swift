@@ -9,6 +9,10 @@ import Foundation
 import FeedKit
 
 extension RSSFeedItem: FeedItemProtocol {
+    public var publicationDate: Date? {
+        self.pubDate
+    }
+    
     public var url: URL? {
         guard let link = self.link else {
             return nil
