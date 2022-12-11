@@ -9,30 +9,33 @@ import SwiftUI
 import FeedKit
 
 struct NewFeedView: View {
+    private var context = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
     @State var link: String = ""
     @State var title: String = ""
-    @State var feed: FeedProtocol? = nil
+    @State var feed: FeedModel? = nil
     @State var parsing: Bool = false
     
     var body: some View {
         VStack {
             Group {
-                if parsing {
-                    ProgressView()
-                } else if let iconURL = feed?.iconURL {
-                    AsyncImage(url: iconURL) { image in
-                        image.resizable()
-                    } placeholder: {
+                
+                // We can't make feed an @ObservableObject here, so we poll in order to see when it gets an icon.
+                TimelineView(.periodic(from: .now, by: 0.5)) { context in
+                    if parsing {
                         ProgressView()
+                    } else if let icon = feed?.iconImage {
+                        // TODO: Move defaults to model.
+                        Image(icon, scale: 1, label: Text(feed?.title ?? "Unnamed feed"))
+                            .resizable()
+                    } else {
+                        Image(systemName: "newspaper.fill")
+                            .font(.largeTitle)
                     }
-
-                } else {
-                    Image(systemName: "newspaper.fill")
-                        .font(.largeTitle)
                 }
             }
             .frame(width: 100, height: 100)
-            .background(in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(.quaternary)
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             
             
             Text("Add a new feed")
@@ -47,10 +50,16 @@ struct NewFeedView: View {
             .formStyle(.grouped)
             .onChange(of: link) { newValue in
                 guard let url = URL(string: link) else {
-                    feed = nil
+                    if let feed {
+                        context.delete(feed)
+                        self.feed = nil
+                    }
                     return
                 }
                 
+                // TODO: Accept website links and scan for rss rel.
+                
+                // TODO: Put this abomination inside FeedModel convenience initialiser.
                 let parser = FeedParser(URL: url)
                 
                 self.parsing = true
@@ -60,21 +69,42 @@ struct NewFeedView: View {
                         self.parsing = false
                     }
                     
-                    guard let feed = try? result.get() else {
+                    guard let newFeed = try? result.get() else {
                         DispatchQueue.main.async {
-                            self.feed = nil
+                            if let feed {
+                                context.delete(feed)
+                                try? context.save()
+                                self.feed = nil
+                            }
                         }
                         return
                     }
                     
-                    guard let rssFeed = feed.rssFeed else {
+                    guard let rssFeed = newFeed.rssFeed else {
                         DispatchQueue.main.async {
-                            self.feed = nil
+                            if let feed {
+                                context.delete(feed)
+                                try? context.save()
+                                self.feed = nil
+                            }
                         }
                         return
                     }
                     
-                    self.feed = rssFeed
+                    let model = FeedModel(context: context)
+                    model.url = url
+                    model.title = rssFeed.title
+                    try? model.refresh()
+                    
+                    if let feed {
+                        context.delete(feed)
+                    }
+                    
+                    self.feed = model
+                    
+                    DispatchQueue.main.async {
+                        try? context.save()
+                    }
                 })
             }
             
@@ -94,6 +124,7 @@ struct NewFeedView: View {
                 .disabled(self.feed == nil)
             }
         }
+        .frame(minWidth: 400, minHeight: 500)
         .padding()
     }
 }

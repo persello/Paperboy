@@ -11,6 +11,7 @@ struct FeedListRow: View {
     @ObservedObject var feed: FeedModel
     var body: some View {
         Label {
+            // TODO: Move defaults to model.
             Text(feed.title ?? "Unnamed feed")
         } icon: {
             if feed.status == FeedModel.Status.refreshing.rawValue {
@@ -18,7 +19,7 @@ struct FeedListRow: View {
                     .scaleEffect(0.5)
                     .frame(width: 16, height: 16)
             } else if let image = feed.iconImage {
-                Image(image, scale: 1, label: Text("aaa"))
+                Image(image, scale: 1, label: Text(feed.title ?? "Unnamed feed"))
                     .resizable()
                     .frame(width: 16, height: 16)
                     .cornerRadius(4)
