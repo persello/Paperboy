@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
-		8B3A76032942574C00E3AB7C /* PredicateKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B3A76022942574C00E3AB7C /* PredicateKit */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
@@ -62,7 +61,6 @@
 				8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */,
 				8B8A83802945306100D93109 /* SwiftSoup in Frameworks */,
 				8B722007293D080F006B618E /* FeedKit in Frameworks */,
-				8B3A76032942574C00E3AB7C /* PredicateKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,7 +159,6 @@
 			name = Paperboy;
 			packageProductDependencies = (
 				8B722006293D080F006B618E /* FeedKit */,
-				8B3A76022942574C00E3AB7C /* PredicateKit */,
 				8B8A837A2945294B00D93109 /* FaviconFinder */,
 				8B8A837F2945306100D93109 /* SwiftSoup */,
 			);
@@ -195,7 +192,6 @@
 			mainGroup = 8B721FEA293D07E4006B618E;
 			packageReferences = (
 				8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */,
-				8B3A76012942574C00E3AB7C /* XCRemoteSwiftPackageReference "PredicateKit" */,
 				8B8A83792945294B00D93109 /* XCRemoteSwiftPackageReference "FaviconFinder" */,
 				8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
@@ -456,14 +452,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8B3A76012942574C00E3AB7C /* XCRemoteSwiftPackageReference "PredicateKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ftchirou/PredicateKit";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 		8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nmdias/FeedKit";
@@ -491,11 +479,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8B3A76022942574C00E3AB7C /* PredicateKit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 8B3A76012942574C00E3AB7C /* XCRemoteSwiftPackageReference "PredicateKit" */;
-			productName = PredicateKit;
-		};
 		8B722006293D080F006B618E /* FeedKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */;

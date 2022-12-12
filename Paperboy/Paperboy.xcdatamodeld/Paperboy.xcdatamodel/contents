@@ -2,11 +2,16 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22C5044e" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FeedItemModel" representedClassName="FeedItemModel" syncable="YES" codeGenerationType="class">
         <attribute name="articleDescription" optional="YES" attributeType="String"/>
-        <attribute name="link" attributeType="URI"/>
         <attribute name="publicationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="read" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
+        <attribute name="url" attributeType="URI"/>
         <relationship name="feed" maxCount="1" deletionRule="Nullify" destinationEntity="FeedModel" inverseName="items" inverseEntity="FeedModel"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="url"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
     </entity>
     <entity name="FeedModel" representedClassName="FeedModel" syncable="YES" codeGenerationType="class">
         <attribute name="icon" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>

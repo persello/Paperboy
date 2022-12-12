@@ -57,7 +57,7 @@ extension FeedModel {
                             return false
                         }
                         
-                        return existingItemModel.link == item.url
+                        return existingItemModel.url == item.url
                     })
                 }).map({
                 FeedItemModel(from: $0, context: context)

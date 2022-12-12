@@ -6,47 +6,51 @@
 //
 
 import SwiftUI
-import PredicateKit
 
 struct FeedItemListView: View {
     @Environment(\.managedObjectContext) var context
     @Binding var selection: FeedItemModel?
     @ObservedObject var selectedFeed: FeedModel
+    @FetchRequest<FeedItemModel> var items: FetchedResults<FeedItemModel>
+    
+    var unreadCount: Int {
+        items.filter({!$0.read}).count
+    }
+    
+    init(selectedItem: Binding<FeedItemModel?>, in feed: FeedModel) {
+        self.selectedFeed = feed
+        self._selection = selectedItem
+        
+        let request = FeedItemModel.fetchRequest()
+        request.predicate = NSPredicate(format: "feed.url = %@", feed.url! as CVarArg)
+        request.sortDescriptors = [
+            NSSortDescriptor(keyPath: \FeedItemModel.publicationDate, ascending: false)
+        ]
+        
+//        request.fetchLimit = 100
+        
+        self._items = FetchRequest(fetchRequest: request, animation: .default)
+    }
     
     var body: some View {
         Group {
-            if let items = (selectedFeed.items?.allObjects as? [FeedItemModel])?
-                .sorted(by: { a, b in
-                    a.publicationDate > b.publicationDate
-                }).prefix(100) {
-                
-                List(selection: $selection) {
-                    ForEach(items) { item in
-                        NavigationLink(value: item) {
-                            FeedItemListRow(feedItem: item)
-                                .padding(4)
+            List(selection: $selection) {
+                ForEach(items) { item in
+                    NavigationLink(value: item) {
+                        FeedItemListRow(feedItem: item)
+                            .padding(4)
+                    }
+                    .swipeActions {
+                        Button {
+                            item.read.toggle()
+                        } label: {
+                            Label(item.read ? "Mark as unread" : "Mark as read", systemImage: item.read ? "tray.full" : "eyeglasses")
                         }
-                        .swipeActions {
-                            Button {
-                                
-                            } label: {
-                                Label("Antani", systemImage: "eyeglasses")
-                            }
-                            .tint(.orange)
-
-                            Button {
-                                
-                            } label: {
-                                Label("Antani", systemImage: "tray.full")
-                            }
-                            .tint(.red)
-                        }
+                        .tint(item.read ? .blue : .orange)
                     }
                 }
-                .listStyle(BorderedListStyle(alternatesRowBackgrounds: true))
-            } else {
-                Text("Unable to fetch items.")
             }
+            .listStyle(BorderedListStyle(alternatesRowBackgrounds: true))
         }
         .refreshable {
             try? selectedFeed.refresh()
@@ -66,7 +70,7 @@ struct FeedItemListView: View {
             try? selectedFeed.refresh()
         }
         .navigationTitle(selectedFeed.title ?? "Unnamed feed")
-        .navigationSubtitle("3 unread")
+        .navigationSubtitle(unreadCount > 0 ? "\(unreadCount) to read" : "You're up to date")
     }
 }
 
@@ -79,7 +83,7 @@ struct FeedItemsListView_Previews: PreviewProvider {
         ninetofivemac.title = "9to5Mac"
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
-        return FeedItemListView(selection: .constant(nil), selectedFeed: ninetofivemac)
+        return FeedItemListView(selectedItem: .constant(nil), in: ninetofivemac)
                 .environment(\.managedObjectContext, context)
     }
 }

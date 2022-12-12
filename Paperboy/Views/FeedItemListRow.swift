@@ -14,6 +14,7 @@ struct FeedItemListRow: View {
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
+        formatter.timeStyle = .short
         return formatter
     }
     
@@ -58,14 +59,19 @@ struct FeedItemListRow: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 VStack(alignment: .leading) {
-                    Text(feedItem.title ?? "Untitled article")
+                    Text(feedItem.read ? "" : "\(Image(systemName: "circle.fill")) ")
+                        .foregroundColor(.accentColor) +
+                    
+                    Text("\(feedItem.title ?? "Untitled article")")
                         .font(.headline)
+                    
                     if let date = feedItem.publicationDate {
                         Text("\(self.dateFormatter.string(for: date)!)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
                 }
+                .imageScale(.small)
                 
                 if let description = articleDescription {
                     Text(description)
@@ -73,7 +79,8 @@ struct FeedItemListRow: View {
             }
         }
         .frame(maxHeight: 100)
-        .padding(.vertical, 2)
+        .padding(.vertical, 4)
+        .padding(.horizontal, 8)
     }
 }
 
@@ -82,7 +89,7 @@ struct FeedItemListRow_Previews: PreviewProvider {
         let context = PersistenceController.preview.container.viewContext
         
         let item = FeedItemModel(context: context)
-        item.title = "Antani had dinner today."
+        item.title = "Antani had dinner today. This is a very, very long title that should wrap over multiple lines."
         item.publicationDate = .now
         item.articleDescription = """
         <div class="feat-image"><img src="https://9to5mac.com/wp-content/uploads/sites/6/2022/12/DSC04916-9to5-mac.jpg.jpeg?quality=82&#038;strip=all&#038;w=1280" /></div>
@@ -92,6 +99,5 @@ struct FeedItemListRow_Previews: PreviewProvider {
 """
         
         return FeedItemListRow(feedItem: item)
-            .padding()
     }
 }
