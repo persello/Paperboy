@@ -21,7 +21,18 @@ extension FeedModel {
         case error = 2
     }
     
-    func setStatus(_ status: Status) {
+    convenience init(from feed: FeedProtocol, url: URL, in context: NSManagedObjectContext) {
+        self.init(context: context)
+        
+        self.title = feed.title?.trimmingCharacters(in: .whitespacesAndNewlines)
+        self.url = url
+        
+        Task {
+            await self.refresh()
+        }
+    }
+    
+    private func setStatus(_ status: Status) {
         self.status = status.rawValue
     }
     
@@ -29,88 +40,107 @@ extension FeedModel {
         // TODO: Implement.
     }
     
-    func refresh() throws {
+    func refresh() async {
         DispatchQueue.main.async {
             self.setStatus(.refreshing)
         }
         
-        guard let url = self.url,
-              let context = self.managedObjectContext else {
+        guard let context = self.managedObjectContext else {
             
             // TODO: Errors.
-            
             return
         }
         
-        let parser = FeedParser(URL: url)
-        parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
-            
-            guard let feed = try? result.get().rssFeed else {
-                return
-            }
-            
-            // Items
-            let itemSet: Set<FeedItemModel> = feed.fetchItems()
-                .filter({ item in
-                    !self.items!.contains(where: { existingItem in
-                        guard let existingItemModel = existingItem as? FeedItemModel else {
-                            return false
-                        }
-                        
-                        return existingItemModel.url == item.url
-                    })
-                }).map({
+        guard let feed = await self.getInternalFeed() else {
+            return
+        }
+        
+        // Items
+        let itemSet: Set<FeedItemModel> = feed.fetchItems()
+            .filter({ item in
+                !self.items!.contains(where: { existingItem in
+                    guard let existingItemModel = existingItem as? FeedItemModel else {
+                        return false
+                    }
+                    
+                    return existingItemModel.url == item.url
+                })
+            }).map({
                 FeedItemModel(from: $0, context: context)
             }).reduce(into: Set()) { partialResult, item in
                 partialResult.insert(item)
             }
+        
+        DispatchQueue.main.async {
+            self.addToItems(NSSet(set: itemSet))
+        }
+        
+        // Icon
+        await self.refreshIcon()
+        
+        DispatchQueue.main.async {
+            try? context.save()
+            self.setStatus(.idle)
             
-            DispatchQueue.main.async {
-                self.addToItems(NSSet(set: itemSet))
-            }
-            
-            // Icon
-            if let iconURL = feed.iconURL,
-               let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
-                
-                // Get the feed's icon from the specified URL.
-                
-                let targetSize = 64
-                let thumbnailOptions = [kCGImageSourceCreateThumbnailFromImageAlways: true,
-                                          kCGImageSourceCreateThumbnailWithTransform: true,
-                                                kCGImageSourceShouldCacheImmediately: true,
-                                                 kCGImageSourceThumbnailMaxPixelSize: targetSize] as CFDictionary
-                
-                if let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
-                    let context = CIContext()
-                    let image = CIImage(cgImage: thumbnail)
-                    let data = context.jpegRepresentation(of: image, colorSpace: CGColorSpace(name: CGColorSpace.displayP3)!)
-                    
-                    DispatchQueue.main.async {
-                        self.icon = data
-                    }
+            // TODO: Error status.
+        }
+    }
+    
+    private func getInternalFeed() async -> (any FeedProtocol)? {
+        guard let url = self.url,
+              let (data, _) = try? await URLSession.shared.data(from: url) else {
+            return nil
+        }
+
+        return await withCheckedContinuation({ continuation in
+            let parser = FeedParser(data: data)
+            parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
+                if let feed = try? result.get().rssFeed {
+                    continuation.resume(returning: feed)
+                } else {
+                    continuation.resume(returning: nil)
                 }
-            } else if let link = feed.link,
-                      let url = URL(string: link) {
-                // Try to get the icon from the linked website's favicon.
-                Task {
-                    let finder = FaviconFinder(url: url)
-                    let icon = try? await finder.downloadFavicon()
-                    
-                    DispatchQueue.main.async {
-                        self.icon = icon?.data
-                    }
-                }
-                
-            }
-            
-            DispatchQueue.main.async {
-                try? context.save()
-                self.setStatus(.idle)
-                
-                // TODO: Error status.
-            }
+            })
         })
+    }
+    
+    private func refreshIcon() async {
+        guard let feed = await self.getInternalFeed() else {
+            return
+        }
+        
+        if let iconURL = feed.iconURL,
+           let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
+            
+            // Get the feed's icon from the specified URL.
+            
+            let targetSize = 64
+            let thumbnailOptions = [kCGImageSourceCreateThumbnailFromImageAlways: true,
+                                      kCGImageSourceCreateThumbnailWithTransform: true,
+                                            kCGImageSourceShouldCacheImmediately: true,
+                                             kCGImageSourceThumbnailMaxPixelSize: targetSize] as CFDictionary
+            
+            if let thumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
+                let context = CIContext()
+                let image = CIImage(cgImage: thumbnail)
+                let data = context.jpegRepresentation(of: image, colorSpace: CGColorSpace(name: CGColorSpace.displayP3)!)
+                
+                DispatchQueue.main.async {
+                    self.icon = data
+                }
+            }
+        } else if let url = feed.websiteURL {
+            // Try to get the icon from the linked website's favicon.
+            Task {
+                let finder = FaviconFinder(url: url)
+                let icon = try? await finder.downloadFavicon()
+                
+                DispatchQueue.main.async {
+                    self.icon = icon?.data
+                }
+            }
+            
+        }
     }
     
     var iconImage: CGImage? {
@@ -119,6 +149,9 @@ extension FeedModel {
             let image = CGImageSourceCreateImageAtIndex(source, 0, [:] as CFDictionary)
             return image
         } else {
+            Task {
+                await self.refreshIcon()
+            }
             return nil
         }
     }

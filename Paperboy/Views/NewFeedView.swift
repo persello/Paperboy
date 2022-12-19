@@ -9,11 +9,25 @@ import SwiftUI
 import FeedKit
 
 struct NewFeedView: View {
-    private var context = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
-    @State var link: String = ""
-    @State var title: String = ""
-    @State var feed: FeedModel? = nil
-    @State var parsing: Bool = false
+    
+    @Binding var modalShown: Bool
+    @Binding var link: String
+    
+    // Not great, but easier...
+    @State private var localSearchContext = NSManagedObjectContext.init(concurrencyType: .privateQueueConcurrencyType)
+    @State private var title: String = ""
+    @State private var selectedFeed: FeedModel? = nil
+    @State private var parsing: Bool = false
+    @State private var foundFeeds: [FeedDiscovery.DiscoveredFeed] = []
+    
+    func updateFeedList() async {
+        if let url = URL(string: link) {
+            foundFeeds = await FeedDiscovery.start(for: url, in: localSearchContext)
+        } else {
+            foundFeeds = []
+            self.selectedFeed = nil
+        }
+    }
     
     var body: some View {
         VStack {
@@ -23,9 +37,9 @@ struct NewFeedView: View {
                 TimelineView(.periodic(from: .now, by: 0.5)) { context in
                     if parsing {
                         ProgressView()
-                    } else if let icon = feed?.iconImage {
+                    } else if let icon = selectedFeed?.iconImage {
                         // TODO: Move defaults to model.
-                        Image(icon, scale: 1, label: Text(feed?.title ?? "Unnamed feed"))
+                        Image(icon, scale: 1, label: Text(selectedFeed?.title ?? "Unnamed feed"))
                             .resizable()
                     } else {
                         Image(systemName: "newspaper.fill")
@@ -43,76 +57,41 @@ struct NewFeedView: View {
             
             Form {
                 TextField("Link", text: $link, prompt: Text("https://example.com/feed.rss"))
-                if feed != nil {
-                    TextField("Title", text: $title, prompt: Text(feed?.title ?? "Untitled feed"))
+                if selectedFeed != nil {
+                    TextField("Title", text: $title, prompt: Text(selectedFeed?.title ?? "Untitled feed"))
+                }
+                
+                if !foundFeeds.isEmpty && selectedFeed == nil {
+                    Section("Found feeds") {
+                        ForEach(foundFeeds) { result in
+                            Button {
+                                selectedFeed = result.feed
+                            } label: {
+                                FeedListRow(feed: result.feed)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
                 }
             }
             .formStyle(.grouped)
             .onChange(of: link) { newValue in
-                guard let url = URL(string: link) else {
-                    if let feed {
-                        context.delete(feed)
-                        self.feed = nil
-                    }
-                    return
+                self.selectedFeed = nil
+                Task {
+                    await self.updateFeedList()
                 }
-                
-                // TODO: Accept website links and scan for rss rel.
-                
-                // TODO: Put this abomination inside FeedModel convenience initialiser.
-                let parser = FeedParser(URL: url)
-                
-                self.parsing = true
-                parser.parseAsync(result: { result in
-                    
-                    defer {
-                        self.parsing = false
-                    }
-                    
-                    guard let newFeed = try? result.get() else {
-                        DispatchQueue.main.async {
-                            if let feed {
-                                context.delete(feed)
-                                try? context.save()
-                                self.feed = nil
-                            }
-                        }
-                        return
-                    }
-                    
-                    guard let rssFeed = newFeed.rssFeed else {
-                        DispatchQueue.main.async {
-                            if let feed {
-                                context.delete(feed)
-                                try? context.save()
-                                self.feed = nil
-                            }
-                        }
-                        return
-                    }
-                    
-                    let model = FeedModel(context: context)
-                    model.url = url
-                    model.title = rssFeed.title
-                    try? model.refresh()
-                    
-                    if let feed {
-                        context.delete(feed)
-                    }
-                    
-                    self.feed = model
-                    
-                    DispatchQueue.main.async {
-                        try? context.save()
-                    }
-                })
+            }
+            .onAppear {
+                Task {
+                    await self.updateFeedList()
+                }
             }
             
             HStack {
                 Spacer()
                 
                 Button("Cancel", role: .cancel, action: {
-                    
+                    modalShown = false
                 })
                 .controlSize(.large)
                 
@@ -121,7 +100,7 @@ struct NewFeedView: View {
                 })
                 .controlSize(.large)
                 .tint(.accentColor)
-                .disabled(self.feed == nil)
+                .disabled(self.selectedFeed == nil)
             }
         }
         .frame(minWidth: 400, minHeight: 500)
@@ -131,6 +110,6 @@ struct NewFeedView: View {
 
 struct NewFeedView_Previews: PreviewProvider {
     static var previews: some View {
-        NewFeedView()
+        NewFeedView(modalShown: .constant(true), link: .constant("https://9to5mac.com"))
     }
 }

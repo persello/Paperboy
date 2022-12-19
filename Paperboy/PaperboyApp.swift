@@ -11,7 +11,7 @@ import CoreData
 @main
 struct PaperboyApp: App {
     let persistenceController = PersistenceController.preview
-
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

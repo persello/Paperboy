@@ -23,6 +23,7 @@
 		8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */; };
 		8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1229424C8B00CFBDA8 /* FeedModel.swift */; };
 		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
+		8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */; };
 		8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedListRow.swift */; };
 		8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837A2945294B00D93109 /* FaviconFinder */; };
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
@@ -33,6 +34,7 @@
 /* Begin PBXFileReference section */
 		8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		8B3A76042942620300E3AB7C /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
+		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
 		8B721FF8293D07E4006B618E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 		8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSS+FeedProtocol.swift"; sourceTree = "<group>"; };
 		8B766E1229424C8B00CFBDA8 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
+		8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDiscovery.swift; sourceTree = "<group>"; };
 		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
 		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
@@ -86,6 +89,7 @@
 		8B721FF5293D07E4006B618E /* Paperboy */ = {
 			isa = PBXGroup;
 			children = (
+				8B57ED222951117300870B40 /* Info.plist */,
 				8B722011293D0F48006B618E /* Feed Extensions */,
 				8B766E1129424C7D00CFBDA8 /* Models */,
 				8B722008293D09AF006B618E /* Views */,
@@ -96,6 +100,7 @@
 				8B721FFC293D07E5006B618E /* Paperboy.entitlements */,
 				8B721FFD293D07E5006B618E /* Preview Content */,
 				8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */,
+				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 			);
 			path = Paperboy;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 				8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */,
 				8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */,
 				8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */,
+				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B722013293D0F58006B618E /* FeedItemProtocol.swift in Sources */,
@@ -365,6 +371,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Paperboy/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -403,6 +410,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Paperboy/Info.plist;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;

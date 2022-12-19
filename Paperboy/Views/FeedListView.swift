@@ -9,12 +9,16 @@ import SwiftUI
 
 struct FeedListView: View {
     @Environment(\.managedObjectContext) var context
+    
     @FetchRequest(
         sortDescriptors: [SortDescriptor(\.title, order: .reverse)],
         animation: .default
     ) private var feeds: FetchedResults<FeedModel>
+    
     @Binding var selection: FeedModel?
+    
     @State private var newFeedSheetPresented: Bool = false
+    @State private var newFeedLink: String = ""
     
     var body: some View {
         List(selection: $selection) {
@@ -34,7 +38,18 @@ struct FeedListView: View {
             }
         }
         .sheet(isPresented: $newFeedSheetPresented) {
-            NewFeedView()
+            NewFeedView(modalShown: $newFeedSheetPresented, link: $newFeedLink)
+        }
+        .onOpenURL { url in
+            newFeedLink = url.absoluteString
+            newFeedSheetPresented = true
+        }
+        .onChange(of: newFeedSheetPresented) { newValue in
+            
+            // Reset new feed link between sessions.
+            if newFeedSheetPresented == false {
+                newFeedLink = ""
+            }
         }
     }
 }

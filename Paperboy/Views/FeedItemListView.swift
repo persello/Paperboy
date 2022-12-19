@@ -53,13 +53,15 @@ struct FeedItemListView: View {
             .listStyle(BorderedListStyle(alternatesRowBackgrounds: true))
         }
         .refreshable {
-            try? selectedFeed.refresh()
+            Task {
+                await selectedFeed.refresh()
+            }
         }
         .toolbar {
             #if os(macOS)
             Button {
                 Task.detached {
-                    try? await selectedFeed.refresh()
+                    await selectedFeed.refresh()
                 }
             } label: {
                 Label("Refresh", systemImage: "arrow.clockwise")
@@ -67,7 +69,7 @@ struct FeedItemListView: View {
             #endif
         }
         .task(id: selectedFeed) {
-            try? selectedFeed.refresh()
+            await selectedFeed.refresh()
         }
         .navigationTitle(selectedFeed.title ?? "Unnamed feed")
         .navigationSubtitle(unreadCount > 0 ? "\(unreadCount) to read" : "You're up to date")

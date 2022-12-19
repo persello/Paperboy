@@ -20,4 +20,12 @@ extension RSSFeed: FeedProtocol {
         
         return URL(string: url)
     }
+    
+    public var websiteURL: URL? {
+        guard let url = self.link else {
+            return nil
+        }
+        
+        return URL(string: url)
+    }
 }

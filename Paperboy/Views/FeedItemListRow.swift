@@ -18,6 +18,7 @@ struct FeedItemListRow: View {
         return formatter
     }
     
+    // TODO: Move to FeedItemModel.
     var articleDescription: String? {
         guard let description = feedItem.articleDescription else {
             return nil
