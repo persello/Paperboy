@@ -21,6 +21,17 @@ extension FeedModel {
         case error = 2
     }
     
+    convenience init(_ copy: FeedModel, in context: NSManagedObjectContext) {
+        self.init(context: context)
+        
+        self.title = copy.title
+        self.url = copy.url
+        
+        Task {
+            await self.refresh()
+        }
+    }
+    
     convenience init(from feed: FeedProtocol, url: URL, in context: NSManagedObjectContext) {
         self.init(context: context)
         

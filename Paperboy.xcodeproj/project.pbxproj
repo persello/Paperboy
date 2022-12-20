@@ -94,13 +94,13 @@
 				8B766E1129424C7D00CFBDA8 /* Models */,
 				8B722008293D09AF006B618E /* Views */,
 				8B721FF8293D07E4006B618E /* ContentView.swift */,
+				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 				8B721FF6293D07E4006B618E /* PaperboyApp.swift */,
 				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 				8B721FFA293D07E5006B618E /* Assets.xcassets */,
 				8B721FFC293D07E5006B618E /* Paperboy.entitlements */,
 				8B721FFD293D07E5006B618E /* Preview Content */,
 				8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */,
-				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 			);
 			path = Paperboy;
 			sourceTree = "<group>";

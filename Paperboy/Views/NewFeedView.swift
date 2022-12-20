@@ -9,6 +9,7 @@ import SwiftUI
 import FeedKit
 
 struct NewFeedView: View {
+    @Environment(\.managedObjectContext) private var context
     
     @Binding var modalShown: Bool
     @Binding var link: String
@@ -96,7 +97,15 @@ struct NewFeedView: View {
                 .controlSize(.large)
                 
                 Button("Add", action: {
+                    // Push the feed to the "real" context.
+                    guard let selectedFeed else {
+                        // TODO: Error.
+                        return
+                    }
                     
+                    let newFeed = FeedModel(selectedFeed, in: context)
+                    
+                    modalShown = false
                 })
                 .controlSize(.large)
                 .tint(.accentColor)
