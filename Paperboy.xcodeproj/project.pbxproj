@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
+		8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B560DC22953590500564909 /* SwiftUIWKWebView */; };
+		8B560DC52953591400564909 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC42953591400564909 /* ReaderView.swift */; };
+		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
 		8B721FFB293D07E5006B618E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B721FFA293D07E5006B618E /* Assets.xcassets */; };
@@ -24,6 +27,7 @@
 		8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1229424C8B00CFBDA8 /* FeedModel.swift */; };
 		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
 		8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */; };
+		8B88B65529564DBC004123F7 /* URLBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65429564DBC004123F7 /* URLBar.swift */; };
 		8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedListRow.swift */; };
 		8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837A2945294B00D93109 /* FaviconFinder */; };
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
@@ -34,6 +38,8 @@
 /* Begin PBXFileReference section */
 		8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		8B3A76042942620300E3AB7C /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
+		8B560DC42953591400564909 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
+		8B560DC629535B0D00564909 /* MacWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWebView.swift; sourceTree = "<group>"; };
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
@@ -51,6 +57,7 @@
 		8B766E1229424C8B00CFBDA8 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
 		8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDiscovery.swift; sourceTree = "<group>"; };
+		8B88B65429564DBC004123F7 /* URLBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBar.swift; sourceTree = "<group>"; };
 		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
 		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
@@ -63,6 +70,7 @@
 			files = (
 				8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */,
 				8B8A83802945306100D93109 /* SwiftSoup in Frameworks */,
+				8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */,
 				8B722007293D080F006B618E /* FeedKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,7 +129,10 @@
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
 				8B8A837729451E6800D93109 /* FeedListRow.swift */,
+				8B560DC629535B0D00564909 /* MacWebView.swift */,
 				8B8A83812945464800D93109 /* NewFeedView.swift */,
+				8B560DC42953591400564909 /* ReaderView.swift */,
+				8B88B65429564DBC004123F7 /* URLBar.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -166,6 +177,7 @@
 				8B722006293D080F006B618E /* FeedKit */,
 				8B8A837A2945294B00D93109 /* FaviconFinder */,
 				8B8A837F2945306100D93109 /* SwiftSoup */,
+				8B560DC22953590500564909 /* SwiftUIWKWebView */,
 			);
 			productName = Paperboy;
 			productReference = 8B721FF3293D07E4006B618E /* Paperboy.app */;
@@ -199,6 +211,7 @@
 				8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */,
 				8B8A83792945294B00D93109 /* XCRemoteSwiftPackageReference "FaviconFinder" */,
 				8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */,
 			);
 			productRefGroup = 8B721FF4293D07E4006B618E /* Products */;
 			projectDirPath = "";
@@ -227,6 +240,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
+				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
@@ -239,10 +253,12 @@
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
+				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
 				8B722013293D0F58006B618E /* FeedItemProtocol.swift in Sources */,
 				8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */,
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
 				8B722010293D09F3006B618E /* FeedItemContentView.swift in Sources */,
+				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +480,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JakubMazur/SwiftUIWKWebView";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nmdias/FeedKit";
@@ -491,6 +515,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		8B560DC22953590500564909 /* SwiftUIWKWebView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */;
+			productName = SwiftUIWKWebView;
+		};
 		8B722006293D080F006B618E /* FeedKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */;

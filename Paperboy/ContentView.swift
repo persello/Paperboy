@@ -22,7 +22,10 @@ struct ContentView: View {
                 FeedItemListView(selectedItem: $selectedItem, in: selectedFeed)
             }
         } detail: {
-//            FeedItemContentView()
+            ReaderView(feedItem: $selectedItem)
+                .onChange(of: selectedItem) { newValue in
+                    newValue?.read = true
+                }
         }
     }
 }

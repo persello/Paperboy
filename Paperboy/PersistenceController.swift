@@ -19,8 +19,8 @@ struct PersistenceController {
         
         // Populate with fake data.
         let nyd = FeedModel(context: controller.container.viewContext)
-        nyd.title = "New York Times Daily"
-        nyd.url = URL(string: "https://feeds.simplecast.com/54nAGcIl")!
+        nyd.title = "Repubblica"
+        nyd.url = URL(string: "https://www.repubblica.it/rss/homepage/rss2.0.xml")!
         
         let ninetofivemac = FeedModel(context: controller.container.viewContext)
         ninetofivemac.title = "9to5Mac"
