@@ -103,9 +103,12 @@ struct NewFeedView: View {
                         return
                     }
                     
-                    let newFeed = FeedModel(selectedFeed, in: context)
+                    let _ = FeedModel(selectedFeed, in: context)
                     
                     modalShown = false
+                    
+                    // TODO: Error management.
+                    try? context.save()
                 })
                 .controlSize(.large)
                 .tint(.accentColor)

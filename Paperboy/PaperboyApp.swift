@@ -10,12 +10,15 @@ import CoreData
 
 @main
 struct PaperboyApp: App {
-    let persistenceController = PersistenceController.preview
+    let persistenceController = PersistenceController.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { notification in
+                    persistenceController.save()
+                }
         }
     }
 }

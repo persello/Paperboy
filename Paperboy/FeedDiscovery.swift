@@ -9,6 +9,7 @@ import Foundation
 import FeedKit
 import SwiftSoup
 import CoreData
+import RegexBuilder
 
 class FeedDiscovery {
     
@@ -55,11 +56,10 @@ class FeedDiscovery {
             let html = try String(contentsOf: url)
             let document = try SwiftSoup.parse(html)
             let feedURLs = try document.getElementsByTag("link").filter { element in
-                let rel = try? element.attr("rel")
                 let type = try? element.attr("type")
                 
                 // TODO: Atom, JSON.
-                return rel == "alternate" && type == "application/rss+xml"
+                return type == "application/rss+xml" || type == "application/atom+xml"
             }.compactMap({ element in
                 try? element.attr("href")
             }).compactMap({ link in
@@ -84,15 +84,13 @@ class FeedDiscovery {
         
         // Try to add https in front of URL if necessary.
         if !(url.scheme?.starts(with: "http") ?? false) {
+            var components = URLComponents(string: String(url.pathComponents[1...].joined(separator: "/")))
+            components?.scheme = "https"
+            components?.host = url.pathComponents[0]
             
-            // Ignore potential multiple schemes.
-            if let pathOnly = url.absoluteString.split(separator: ":").last?.trimmingCharacters(in: CharacterSet(charactersIn: "/")) {
-                var components = URLComponents(string: String(pathOnly))
-                components?.scheme = "https"
-                
-                if let url = components?.url {
-                    result += await start(for: url, in: context)
-                }
+            if let url = components?.url {
+                print(url)
+                result += await start(for: url, in: context)
             }
         }
         
@@ -114,8 +112,8 @@ class FeedDiscovery {
     
     static private func unwrapFeed(feed: Feed) -> any FeedProtocol {
         switch feed {
-        case .atom(_):
-            return RSSFeed()
+        case .atom(let atom):
+            return atom
         case .json(_):
             return RSSFeed()
         case .rss(let rss):

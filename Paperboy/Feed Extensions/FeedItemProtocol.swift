@@ -12,4 +12,6 @@ public protocol FeedItemProtocol {
     var description: String? { get }
     var publicationDate: Date? { get }
     var url: URL? { get }
+    
+    // TODO: Content with intelligent detection.
 }

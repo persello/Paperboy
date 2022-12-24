@@ -90,6 +90,8 @@ extension FeedModel {
         await self.refreshIcon()
         
         DispatchQueue.main.async {
+            
+            // TODO: Error management.
             try? context.save()
             self.setStatus(.idle)
             
@@ -108,7 +110,10 @@ extension FeedModel {
             parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
                 if let feed = try? result.get().rssFeed {
                     continuation.resume(returning: feed)
+                } else if let feed = try? result.get().atomFeed {
+                    continuation.resume(returning: feed)
                 } else {
+                    // TODO: Error management.
                     continuation.resume(returning: nil)
                 }
             })

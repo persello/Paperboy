@@ -43,6 +43,9 @@ struct FeedItemListView: View {
                     .swipeActions {
                         Button {
                             item.read.toggle()
+                            
+                            // TODO: Error management.
+                            try? context.save()
                         } label: {
                             Label(item.read ? "Mark as unread" : "Mark as read", systemImage: item.read ? "tray.full" : "eyeglasses")
                         }

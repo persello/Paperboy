@@ -28,6 +28,8 @@
 		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
 		8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */; };
 		8B88B65529564DBC004123F7 /* URLBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65429564DBC004123F7 /* URLBar.swift */; };
+		8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */; };
+		8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */; };
 		8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedListRow.swift */; };
 		8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837A2945294B00D93109 /* FaviconFinder */; };
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
@@ -58,6 +60,8 @@
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
 		8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDiscovery.swift; sourceTree = "<group>"; };
 		8B88B65429564DBC004123F7 /* URLBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBar.swift; sourceTree = "<group>"; };
+		8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedProtocol.swift"; sourceTree = "<group>"; };
+		8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedItemProtocol.swift"; sourceTree = "<group>"; };
 		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
 		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
@@ -142,8 +146,10 @@
 			children = (
 				8B722012293D0F58006B618E /* FeedItemProtocol.swift */,
 				8B722014293D0F6F006B618E /* RSS+FeedItemProtocol.swift */,
+				8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */,
 				8B722016293D0FB4006B618E /* FeedProtocol.swift */,
 				8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */,
+				8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */,
 			);
 			path = "Feed Extensions";
 			sourceTree = "<group>";
@@ -254,9 +260,11 @@
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
+				8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */,
 				8B722013293D0F58006B618E /* FeedItemProtocol.swift in Sources */,
 				8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */,
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
+				8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */,
 				8B722010293D09F3006B618E /* FeedItemContentView.swift in Sources */,
 				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
 			);

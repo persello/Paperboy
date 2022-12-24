@@ -9,6 +9,7 @@ import SwiftUI
 import FeedKit
 
 struct ContentView: View {
+    @Environment(\.managedObjectContext) var context
     @State private var selectedFeed: FeedModel? = nil
     @State private var selectedItem: FeedItemModel? = nil
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
@@ -25,6 +26,9 @@ struct ContentView: View {
             ReaderView(feedItem: $selectedItem)
                 .onChange(of: selectedItem) { newValue in
                     newValue?.read = true
+                    
+                    // TODO: Error management.
+                    try? context.save()
                 }
         }
     }
