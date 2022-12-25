@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftSoup
+import SFSafeSymbols
 
 struct FeedItemListRow: View {
     @ObservedObject var feedItem: FeedItemModel
@@ -60,7 +61,7 @@ struct FeedItemListRow: View {
             
             VStack(alignment: .leading, spacing: 4) {
                 VStack(alignment: .leading) {
-                    Text(feedItem.read ? "" : "\(Image(systemName: "circle.fill")) ")
+                    Text(feedItem.read ? "" : "\(Image(systemSymbol: .circleFill)) ")
                         .foregroundColor(.accentColor) +
                     
                     Text("\(feedItem.title ?? "Untitled article")")

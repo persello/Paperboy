@@ -24,7 +24,7 @@ struct FeedListRow: View {
                     .frame(width: 16, height: 16)
                     .cornerRadius(4)
             } else {
-                Image(systemName: "newspaper")
+                Image(systemSymbol: .newspaper)
             }
         }
     }

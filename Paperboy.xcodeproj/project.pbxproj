@@ -19,7 +19,6 @@
 		8B722007293D080F006B618E /* FeedKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8B722006293D080F006B618E /* FeedKit */; };
 		8B72200A293D09C8006B618E /* FeedListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722009293D09C8006B618E /* FeedListView.swift */; };
 		8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B72200B293D09D7006B618E /* FeedItemListView.swift */; };
-		8B722010293D09F3006B618E /* FeedItemContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B72200F293D09F3006B618E /* FeedItemContentView.swift */; };
 		8B722013293D0F58006B618E /* FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722012293D0F58006B618E /* FeedItemProtocol.swift */; };
 		8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722014293D0F6F006B618E /* RSS+FeedItemProtocol.swift */; };
 		8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722016293D0FB4006B618E /* FeedProtocol.swift */; };
@@ -35,6 +34,8 @@
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
 		8B8A83802945306100D93109 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837F2945306100D93109 /* SwiftSoup */; };
 		8B8A83822945464800D93109 /* NewFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A83812945464800D93109 /* NewFeedView.swift */; };
+		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
+		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,7 +52,6 @@
 		8B721FFE293D07E5006B618E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8B722009293D09C8006B618E /* FeedListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListView.swift; sourceTree = "<group>"; };
 		8B72200B293D09D7006B618E /* FeedItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListView.swift; sourceTree = "<group>"; };
-		8B72200F293D09F3006B618E /* FeedItemContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemContentView.swift; sourceTree = "<group>"; };
 		8B722012293D0F58006B618E /* FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemProtocol.swift; sourceTree = "<group>"; };
 		8B722014293D0F6F006B618E /* RSS+FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSS+FeedItemProtocol.swift"; sourceTree = "<group>"; };
 		8B722016293D0FB4006B618E /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
@@ -65,6 +65,7 @@
 		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
 		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
+		8BA8A4442957564E00C570CA /* NewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */,
 				8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */,
 				8B8A83802945306100D93109 /* SwiftSoup in Frameworks */,
 				8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */,
@@ -128,13 +130,13 @@
 		8B722008293D09AF006B618E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				8B72200F293D09F3006B618E /* FeedItemContentView.swift */,
 				8B72200B293D09D7006B618E /* FeedItemListView.swift */,
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
 				8B8A837729451E6800D93109 /* FeedListRow.swift */,
 				8B560DC629535B0D00564909 /* MacWebView.swift */,
 				8B8A83812945464800D93109 /* NewFeedView.swift */,
+				8BA8A4442957564E00C570CA /* NewFolderView.swift */,
 				8B560DC42953591400564909 /* ReaderView.swift */,
 				8B88B65429564DBC004123F7 /* URLBar.swift */,
 			);
@@ -184,6 +186,7 @@
 				8B8A837A2945294B00D93109 /* FaviconFinder */,
 				8B8A837F2945306100D93109 /* SwiftSoup */,
 				8B560DC22953590500564909 /* SwiftUIWKWebView */,
+				8BA8A4422957532400C570CA /* SFSafeSymbols */,
 			);
 			productName = Paperboy;
 			productReference = 8B721FF3293D07E4006B618E /* Paperboy.app */;
@@ -218,6 +221,7 @@
 				8B8A83792945294B00D93109 /* XCRemoteSwiftPackageReference "FaviconFinder" */,
 				8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */,
+				8BA8A4412957532400C570CA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
 			);
 			productRefGroup = 8B721FF4293D07E4006B618E /* Products */;
 			projectDirPath = "";
@@ -254,6 +258,7 @@
 				8B8A83822945464800D93109 /* NewFeedView.swift in Sources */,
 				8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */,
 				8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */,
+				8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */,
 				8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */,
 				8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */,
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
@@ -265,7 +270,6 @@
 				8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */,
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
 				8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */,
-				8B722010293D09F3006B618E /* FeedItemContentView.swift in Sources */,
 				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -520,6 +524,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		8BA8A4412957532400C570CA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SFSafeSymbols/SFSafeSymbols";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -542,6 +554,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
 			productName = SwiftSoup;
+		};
+		8BA8A4422957532400C570CA /* SFSafeSymbols */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8BA8A4412957532400C570CA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */;
+			productName = SFSafeSymbols;
 		};
 /* End XCSwiftPackageProductDependency section */
 

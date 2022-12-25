@@ -9,37 +9,43 @@ import SwiftUI
 import SwiftUIWKWebView
 
 struct ReaderView: View {
-    @Binding var feedItem: FeedItemModel?
-    
+    @Environment(\.managedObjectContext) private var context
     @State private var url: URL
     @State private var loadingProgress: Double = 0
+    @ObservedObject private var feedItem: FeedItemModel
     
-    init(feedItem: Binding<FeedItemModel?>) {
-        self._feedItem = feedItem
-        self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "https://")!)
+    init(feedItem: FeedItemModel) {
+        self._url = State(initialValue: feedItem.url ?? URL(string: "https://")!)
+        self.feedItem = feedItem
     }
     
     var body: some View {
 #if os(macOS)
-        if self.feedItem != nil {
-            MacWebView(url: $url, loadingProgress: $loadingProgress)
-                .toolbar {
-                    Spacer()
-                    URLBar(url: url, progress: $loadingProgress)
-                    Spacer()
+        MacWebView(url: $url, loadingProgress: $loadingProgress)
+            .toolbar {
+                Spacer()
+                URLBar(url: url, progress: $loadingProgress)
+                Spacer()
+            }
+            .onChange(of: loadingProgress) { newValue in
+                if newValue == 1.0 {
+                    self.feedItem.read = true
+                    
+                    // TODO: Error management.
+                    try? context.save()
                 }
-                .onChange(of: feedItem) { newValue in
-                    if let url = feedItem?.url {
-                        self.url = url
-                    }
+            }
+            .onChange(of: feedItem) { newValue in
+                if let url = newValue.url {
+                    self.url = url
                 }
-        }
+            }
 #endif
     }
 }
 
 struct ReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        ReaderView(feedItem: .constant(FeedItemModel()))
+        ReaderView(feedItem: FeedItemModel())
     }
 }

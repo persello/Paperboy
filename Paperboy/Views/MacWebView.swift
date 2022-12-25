@@ -15,7 +15,7 @@ struct MacWebView: NSViewRepresentable {
     @Binding var url: URL
     @Binding var loadingProgress: Double
         
-    private var webView: WKWebView = WKWebView()
+    private var webView: WKWebView!
     
     private var request: URLRequest {
         var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData)
@@ -24,6 +24,7 @@ struct MacWebView: NSViewRepresentable {
     }
     
     init(url: Binding<URL>, loadingProgress: Binding<Double>) {
+        self.webView = WKWebView()
         self._url = url
         self._loadingProgress = loadingProgress
     }
@@ -35,6 +36,10 @@ struct MacWebView: NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: NSViewType, context: Context) {
+        if nsView.url == self.url {
+            return
+        }
+        
         nsView.load(request)
     }
     
@@ -44,13 +49,13 @@ struct MacWebView: NSViewRepresentable {
     
     class Coordinator: NSObject, WKNavigationDelegate {
         private var parent: MacWebView
-        private var observer: NSKeyValueObservation?
+        private var progressObserver: NSKeyValueObservation?
         
         init(_ parent: MacWebView) {
             self.parent = parent
             super.init()
             
-            observer = self.parent.webView.observe(\.estimatedProgress, options: [.new]) { [weak self] webView, _ in
+            progressObserver = self.parent.webView.observe(\.estimatedProgress, options: [.new]) { [weak self] webView, _ in
                 DispatchQueue.main.async {
                     self?.parent.loadingProgress = webView.estimatedProgress
                 }
@@ -58,7 +63,7 @@ struct MacWebView: NSViewRepresentable {
         }
         
         deinit {
-            observer = nil
+            progressObserver = nil
         }
         
         func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction) async -> WKNavigationActionPolicy {

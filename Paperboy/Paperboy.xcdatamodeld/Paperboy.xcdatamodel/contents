@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22C5044e" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22D5027d" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FeedFolderModel" representedClassName="FeedFolderModel" syncable="YES" codeGenerationType="class">
+        <attribute name="icon" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="feeds" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FeedModel" inverseName="folder" inverseEntity="FeedModel"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="FeedItemModel" representedClassName="FeedItemModel" syncable="YES" codeGenerationType="class">
         <attribute name="articleDescription" optional="YES" attributeType="String"/>
         <attribute name="publicationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -19,6 +29,7 @@
         <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="url" attributeType="URI"/>
-        <relationship name="items" toMany="YES" deletionRule="Nullify" destinationEntity="FeedItemModel" inverseName="feed" inverseEntity="FeedItemModel"/>
+        <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FeedFolderModel" inverseName="feeds" inverseEntity="FeedFolderModel"/>
+        <relationship name="items" toMany="YES" deletionRule="Cascade" destinationEntity="FeedItemModel" inverseName="feed" inverseEntity="FeedItemModel"/>
     </entity>
 </model>

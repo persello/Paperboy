@@ -9,27 +9,17 @@ import SwiftUI
 import FeedKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) var context
-    @State private var selectedFeed: FeedModel? = nil
-    @State private var selectedItem: FeedItemModel? = nil
+    @Environment(\.managedObjectContext) private var context
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            FeedListView(selection: $selectedFeed)
-                    .navigationTitle("Paperboy")
+            FeedListView()
+                .navigationTitle("Paperboy")
         } content: {
-            if let selectedFeed {
-                FeedItemListView(selectedItem: $selectedItem, in: selectedFeed)
-            }
+            EmptyView()
         } detail: {
-            ReaderView(feedItem: $selectedItem)
-                .onChange(of: selectedItem) { newValue in
-                    newValue?.read = true
-                    
-                    // TODO: Error management.
-                    try? context.save()
-                }
+            EmptyView()
         }
     }
 }

@@ -25,7 +25,7 @@ struct URLBar: View {
             Text("\(title)")
                 .truncationMode(.tail)
                 .lineLimit(1)
-                .frame(width: 300)
+                .frame(idealWidth: 300)
                 .padding(.top, 4)
                 .padding(.bottom, -6)
             ProgressView(value: progress, total: 1.0)

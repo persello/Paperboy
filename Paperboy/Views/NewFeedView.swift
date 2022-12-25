@@ -43,7 +43,7 @@ struct NewFeedView: View {
                         Image(icon, scale: 1, label: Text(selectedFeed?.title ?? "Unnamed feed"))
                             .resizable()
                     } else {
-                        Image(systemName: "newspaper.fill")
+                        Image(systemSymbol: .newspaperFill)
                             .font(.largeTitle)
                     }
                 }
@@ -94,6 +94,7 @@ struct NewFeedView: View {
                 Button("Cancel", role: .cancel, action: {
                     modalShown = false
                 })
+                .keyboardShortcut(.cancelAction)
                 .controlSize(.large)
                 
                 Button("Add", action: {
@@ -103,13 +104,15 @@ struct NewFeedView: View {
                         return
                     }
                     
-                    let _ = FeedModel(selectedFeed, in: context)
+                    // TODO: Check for duplicates.
                     
+                    let _ = FeedModel(selectedFeed, in: context)
                     modalShown = false
                     
                     // TODO: Error management.
                     try? context.save()
                 })
+                .keyboardShortcut(.defaultAction)
                 .controlSize(.large)
                 .tint(.accentColor)
                 .disabled(self.selectedFeed == nil)

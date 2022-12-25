@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct FeedItemListView: View {
-    @Environment(\.managedObjectContext) var context
-    @Binding var selection: FeedItemModel?
-    @ObservedObject var selectedFeed: FeedModel
+    @Environment(\.managedObjectContext) private var context
+    @ObservedObject var feed: FeedModel
     @FetchRequest<FeedItemModel> var items: FetchedResults<FeedItemModel>
+    
+    @State private var selection: FeedItemModel? = nil
     
     var unreadCount: Int {
         items.filter({!$0.read}).count
     }
     
-    init(selectedItem: Binding<FeedItemModel?>, in feed: FeedModel) {
-        self.selectedFeed = feed
-        self._selection = selectedItem
+    init(for feed: FeedModel) {
+        self.feed = feed
         
         let request = FeedItemModel.fetchRequest()
         request.predicate = NSPredicate(format: "feed.url = %@", feed.url! as CVarArg)
@@ -36,7 +36,9 @@ struct FeedItemListView: View {
         Group {
             List(selection: $selection) {
                 ForEach(items) { item in
-                    NavigationLink(value: item) {
+                    NavigationLink {
+                        ReaderView(feedItem: item)
+                    } label: {
                         FeedItemListRow(feedItem: item)
                             .padding(4)
                     }
@@ -47,7 +49,7 @@ struct FeedItemListView: View {
                             // TODO: Error management.
                             try? context.save()
                         } label: {
-                            Label(item.read ? "Mark as unread" : "Mark as read", systemImage: item.read ? "tray.full" : "eyeglasses")
+                            Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
                         }
                         .tint(item.read ? .blue : .orange)
                     }
@@ -57,24 +59,24 @@ struct FeedItemListView: View {
         }
         .refreshable {
             Task {
-                await selectedFeed.refresh()
+                await feed.refresh()
             }
         }
         .toolbar {
             #if os(macOS)
             Button {
                 Task.detached {
-                    await selectedFeed.refresh()
+                    await feed.refresh()
                 }
             } label: {
-                Label("Refresh", systemImage: "arrow.clockwise")
+                Label("Refresh", systemSymbol: .arrowClockwise)
             }
             #endif
         }
-        .task(id: selectedFeed) {
-            await selectedFeed.refresh()
+        .task(id: feed) {
+            await feed.refresh()
         }
-        .navigationTitle(selectedFeed.title ?? "Unnamed feed")
+        .navigationTitle(feed.title ?? "Unnamed feed")
         .navigationSubtitle(unreadCount > 0 ? "\(unreadCount) to read" : "You're up to date")
     }
 }
@@ -88,7 +90,7 @@ struct FeedItemsListView_Previews: PreviewProvider {
         ninetofivemac.title = "9to5Mac"
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
-        return FeedItemListView(selectedItem: .constant(nil), in: ninetofivemac)
+        return FeedItemListView(for: ninetofivemac)
                 .environment(\.managedObjectContext, context)
     }
 }
