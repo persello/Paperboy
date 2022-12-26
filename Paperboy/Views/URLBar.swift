@@ -18,7 +18,7 @@ struct URLBar: View {
     
     private var title: String {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        return components?.host ?? ""
+        return components?.host ?? "Paperboy"
     }
     
     var body: some View {

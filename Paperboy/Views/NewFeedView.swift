@@ -77,6 +77,9 @@ struct NewFeedView: View {
                 }
             }
             .formStyle(.grouped)
+            .onChange(of: title, perform: { newValue in
+                self.selectedFeed?.title = newValue
+            })
             .onChange(of: link) { newValue in
                 self.selectedFeed = nil
                 Task {

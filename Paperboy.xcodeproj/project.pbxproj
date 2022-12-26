@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8B1559C22959F5E6008B5F1A /* ContentBlacklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */; };
 		8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
+		8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */; };
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
 		8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B560DC22953590500564909 /* SwiftUIWKWebView */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ContentBlacklist.json; sourceTree = "<group>"; };
 		8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListViewModel.swift; sourceTree = "<group>"; };
+		8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFolderModel.swift; sourceTree = "<group>"; };
 		8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		8B3A76042942620300E3AB7C /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
 		8B560DC42953591400564909 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
@@ -173,6 +175,7 @@
 		8B766E1129424C7D00CFBDA8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */,
 				8B766E1229424C8B00CFBDA8 /* FeedModel.swift */,
 				8B3A76042942620300E3AB7C /* FeedItemModel.swift */,
 			);
@@ -265,6 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
+				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */,

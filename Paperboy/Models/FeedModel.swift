@@ -208,4 +208,48 @@ extension FeedModel {
         
         return items?.filtered(using: predicate).count ?? 0
     }
+    
+    var groupedItems: [(Date?, [FeedItemModel])] {
+        guard let items = items as? Set<FeedItemModel> else { return [] }
+        var result: [(Date?, [FeedItemModel])] = []
+        
+        for item in items {
+            var calendarDate: Date? = nil
+            if let date = item.publicationDate {
+                let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
+                calendarDate = Calendar.current.date(from: dateComponents)
+            }
+            
+            // Search for an existing group.
+            if let groupIndex = result.firstIndex(where: { $0.0 == calendarDate }) {
+                result[groupIndex].1.append(item)
+            } else {
+                result.append((calendarDate, [item]))
+            }
+        }
+        
+        // Sort groups and items. Newest first, groups without date last.
+        result.sort(by: { lhs, rhs in
+            if let lhsDate = lhs.0,
+               let rhsDate = rhs.0 {
+                return lhsDate > rhsDate
+            } else {
+                return lhs.0 != nil
+            }
+        })
+
+        result = result.map({ (date, items) in
+            return (date, items.sorted(by: { lhs, rhs in
+                if let lhsDate = lhs.publicationDate,
+                   let rhsDate = rhs.publicationDate {
+                    return lhsDate > rhsDate
+                } else {
+                    return lhs.publicationDate != nil
+                }
+            }))
+        })
+
+
+        return result
+    }
 }

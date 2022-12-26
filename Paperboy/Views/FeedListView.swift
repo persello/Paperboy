@@ -12,12 +12,12 @@ struct FeedListView: View {
     @Environment(\.managedObjectContext) private var context
     
     @FetchRequest(
-        sortDescriptors: [SortDescriptor(\.title, order: .reverse)],
+        sortDescriptors: [],
         animation: .default
     ) private var feeds: FetchedResults<FeedModel>
     
     @FetchRequest(
-        sortDescriptors: [SortDescriptor(\.name, order: .reverse)],
+        sortDescriptors: [],
         animation: .default
     ) private var folders: FetchedResults<FeedFolderModel>
     
@@ -29,11 +29,15 @@ struct FeedListView: View {
     @State private var folderToBeDeleted: FeedFolderModel? = nil
     
     private var structure: [FeedListViewModel] {
-        var root = folders.map({ folder in
+        var root = folders.sorted(by: { a, b in
+            a.normalisedName < b.normalisedName
+        }).map({ folder in
             FeedListViewModel(folder: folder)
         })
         
-        let rootFeeds = feeds.filter { feed in
+        let rootFeeds = feeds.sorted(by: { a, b in
+            a.normalisedTitle < b.normalisedTitle
+        }).filter { feed in
             feed.folder == nil
         }
         
@@ -75,7 +79,7 @@ struct FeedListView: View {
                                     folder.addToFeeds(feed)
                                     try? context.save()
                                 } label: {
-                                    Label(folder.name ?? "Untitled folder", systemSymbol: SFSymbol(rawValue: folder.icon ?? "folder"))
+                                    Label(folder.normalisedName, systemSymbol: folder.symbol)
                                 }
                             }
                         }
@@ -98,7 +102,7 @@ struct FeedListView: View {
                         )
                     })
                 case .folder(let folder):
-                    Label(folder.name ?? "Untitled folder", systemSymbol: SFSymbol(rawValue: folder.icon ?? "folder"))
+                    Label(folder.normalisedName, systemSymbol: folder.symbol)
                         .contextMenu {
                             Button {
                                 folderToBeDeleted = folder
@@ -108,7 +112,7 @@ struct FeedListView: View {
                         }
                         .alert(item: $folderToBeDeleted, content: { folder in
                             Alert(
-                                title: Text("Are you sure you want to delete \"\(folder.name ?? "Untitled folder")\"?"),
+                                title: Text("Are you sure you want to delete \"\(folder.normalisedName)\"?"),
                                 message: Text("All the contained feeds will also be removed."),
                                 primaryButton: .default(
                                     Text("Delete"),

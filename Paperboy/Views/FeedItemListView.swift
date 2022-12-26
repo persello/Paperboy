@@ -10,11 +10,24 @@ import SwiftUI
 struct FeedItemListView: View {
     @Environment(\.managedObjectContext) private var context
     
-    @FetchRequest<FeedItemModel> var items: FetchedResults<FeedItemModel>
-
     @ObservedObject var feed: FeedModel
     
     @State private var selection: FeedItemModel? = nil
+    
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        return formatter
+    }
+    
+    func getDateString(for date: Date?) -> String {
+        guard let date else {
+            return "Unknown date"
+        }
+        
+        return dateFormatter.string(for: date) ?? "Unknown date"
+    }
     
     init(for feed: FeedModel) {
         self.feed = feed
@@ -24,30 +37,32 @@ struct FeedItemListView: View {
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \FeedItemModel.publicationDate, ascending: false)
         ]
-                
-        self._items = FetchRequest(fetchRequest: request, animation: .default)
     }
     
     var body: some View {
         Group {
             List(selection: $selection) {
-                ForEach(items) { item in
-                    NavigationLink {
-                        ReaderView(feedItem: item)
-                    } label: {
-                        FeedItemListRow(feedItem: item)
-                            .padding(4)
-                    }
-                    .swipeActions {
-                        Button {
-                            item.read.toggle()
-                            
-                            // TODO: Error management.
-                            try? context.save()
-                        } label: {
-                            Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
+                ForEach(feed.groupedItems, id: \.0) { group in
+                    Section(getDateString(for: group.0)) {
+                        ForEach(group.1) { item in
+                            NavigationLink {
+                                ReaderView(feedItem: item)
+                            } label: {
+                                FeedItemListRow(feedItem: item)
+                                    .padding(4)
+                            }
+                            .swipeActions {
+                                Button {
+                                    item.read.toggle()
+                                    
+                                    // TODO: Error management.
+                                    try? context.save()
+                                } label: {
+                                    Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
+                                }
+                                .tint(item.read ? .blue : .orange)
+                            }
                         }
-                        .tint(item.read ? .blue : .orange)
                     }
                 }
             }
