@@ -31,6 +31,28 @@ struct MacWebView: NSViewRepresentable {
     
     func makeNSView(context: Context) -> WKWebView {
         webView.navigationDelegate = context.coordinator
+        webView.allowsMagnification = true
+        webView.allowsBackForwardNavigationGestures = true
+        webView.allowsLinkPreview = true
+
+        WKContentRuleListStore.default().compileContentRuleList(
+            forIdentifier: "ContentBlockingRules",
+            encodedContentRuleList: try! String(
+                contentsOf: Bundle.main.url(
+                    forResource: "ContentBlacklist",
+                    withExtension: "json"
+                )!
+            )
+        ) { contentRuleList, error in
+            if error != nil {
+                // TODO: Handle error
+            } else if let contentRuleList = contentRuleList {
+                webView.configuration.userContentController.add(contentRuleList)
+            } else {
+                // TODO: Handle error
+            }
+        }
+        
         webView.load(request)
         return webView
     }
