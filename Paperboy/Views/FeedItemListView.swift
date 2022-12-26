@@ -9,8 +9,10 @@ import SwiftUI
 
 struct FeedItemListView: View {
     @Environment(\.managedObjectContext) private var context
-    @ObservedObject var feed: FeedModel
+    
     @FetchRequest<FeedItemModel> var items: FetchedResults<FeedItemModel>
+
+    @ObservedObject var feed: FeedModel
     
     @State private var selection: FeedItemModel? = nil
     
@@ -26,9 +28,7 @@ struct FeedItemListView: View {
         request.sortDescriptors = [
             NSSortDescriptor(keyPath: \FeedItemModel.publicationDate, ascending: false)
         ]
-        
-//        request.fetchLimit = 100
-        
+                
         self._items = FetchRequest(fetchRequest: request, animation: .default)
     }
     
@@ -76,7 +76,7 @@ struct FeedItemListView: View {
         .task(id: feed) {
             await feed.refresh()
         }
-        .navigationTitle(feed.title ?? "Unnamed feed")
+        .navigationTitle(feed.normalisedTitle)
         .navigationSubtitle(unreadCount > 0 ? "\(unreadCount) to read" : "You're up to date")
     }
 }

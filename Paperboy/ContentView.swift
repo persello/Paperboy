@@ -10,6 +10,7 @@ import FeedKit
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var context
+    
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     
     var body: some View {

@@ -8,52 +8,6 @@
 import SwiftUI
 import SFSafeSymbols
 
-struct FeedListViewModel: Hashable, Equatable, Identifiable {
-    enum Content: Equatable, Hashable {
-        case folder(FeedFolderModel)
-        case feed(FeedModel)
-    }
-    
-    let children: [FeedListViewModel]?
-    let content: Content
-    let id: NSManagedObjectID
-    
-    init(folder: FeedFolderModel) {
-        guard let feedSet = folder.feeds else {
-            self.children = nil
-            self.content = .folder(folder)
-            self.id = folder.objectID
-            
-            return
-        }
-        
-        let feeds: [FeedModel] = Array(feedSet.allObjects.compactMap({ item in
-            item as? FeedModel
-        }))
-        
-        self.children = feeds.map({ feed in
-            FeedListViewModel(feed: feed)
-        })
-        
-        self.content = .folder(folder)
-        self.id = folder.objectID
-    }
-    
-    init(feed: FeedModel) {
-        self.content = .feed(feed)
-        self.children = nil
-        self.id = feed.objectID
-    }
-    
-    static func == (lhs: FeedListViewModel, rhs: FeedListViewModel) -> Bool {
-        lhs.content == rhs.content
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        content.hash(into: &hasher)
-    }
-}
-
 struct FeedListView: View {
     @Environment(\.managedObjectContext) private var context
     
@@ -121,7 +75,7 @@ struct FeedListView: View {
                     }
                     .alert(item: $feedToBeDeleted, content: { feed in
                         Alert(
-                            title: Text("Are you sure you want to delete \"\(feed.title ?? "Untitled feed")\"?"),
+                            title: Text("Are you sure you want to delete \"\(feed.normalisedTitle)\"?"),
                             message: Text("Once you delete this feed, you'll need to add it again if you want it back."),
                             primaryButton: .default(
                                 Text("Delete"),

@@ -64,7 +64,7 @@ struct FeedItemListRow: View {
                     Text(feedItem.read ? "" : "\(Image(systemSymbol: .circleFill)) ")
                         .foregroundColor(.accentColor) +
                     
-                    Text("\(feedItem.title ?? "Untitled article")")
+                    Text(feedItem.normalisedTitle)
                         .font(.headline)
                     
                     if let date = feedItem.publicationDate {

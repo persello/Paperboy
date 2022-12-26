@@ -10,8 +10,10 @@ import SwiftUIWKWebView
 
 struct ReaderView: View {
     @Environment(\.managedObjectContext) private var context
+    
     @State private var url: URL
     @State private var loadingProgress: Double = 0
+    
     @ObservedObject private var feedItem: FeedItemModel
     
     init(feedItem: FeedItemModel) {

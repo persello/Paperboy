@@ -9,17 +9,17 @@ import SwiftUI
 
 struct FeedListRow: View {
     @ObservedObject var feed: FeedModel
+    
     var body: some View {
         Label {
-            // TODO: Move defaults to model.
-            Text(feed.title ?? "Unnamed feed")
+            Text(feed.normalisedTitle)
         } icon: {
             if feed.status == FeedModel.Status.refreshing.rawValue {
                 ProgressView()
                     .scaleEffect(0.5)
                     .frame(width: 16, height: 16)
             } else if let image = feed.iconImage {
-                Image(image, scale: 1, label: Text(feed.title ?? "Unnamed feed"))
+                Image(image, scale: 1, label: Text(feed.normalisedTitle))
                     .resizable()
                     .frame(width: 16, height: 16)
                     .cornerRadius(4)

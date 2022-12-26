@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8B1559C22959F5E6008B5F1A /* ContentBlacklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */; };
+		8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
 		8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B560DC22953590500564909 /* SwiftUIWKWebView */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ContentBlacklist.json; sourceTree = "<group>"; };
+		8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListViewModel.swift; sourceTree = "<group>"; };
 		8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		8B3A76042942620300E3AB7C /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
 		8B560DC42953591400564909 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
@@ -86,6 +88,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8B1559C3295A0DD0008B5F1A /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */,
+			);
+			path = "View Models";
+			sourceTree = "<group>";
+		};
 		8B721FEA293D07E4006B618E = {
 			isa = PBXGroup;
 			children = (
@@ -108,16 +118,17 @@
 				8B57ED222951117300870B40 /* Info.plist */,
 				8B722011293D0F48006B618E /* Feed Extensions */,
 				8B766E1129424C7D00CFBDA8 /* Models */,
+				8B1559C3295A0DD0008B5F1A /* View Models */,
 				8B722008293D09AF006B618E /* Views */,
 				8B721FF8293D07E4006B618E /* ContentView.swift */,
 				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 				8B721FF6293D07E4006B618E /* PaperboyApp.swift */,
 				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
+				8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */,
 				8B721FFA293D07E5006B618E /* Assets.xcassets */,
 				8B721FFC293D07E5006B618E /* Paperboy.entitlements */,
-				8B721FFD293D07E5006B618E /* Preview Content */,
 				8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */,
-				8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */,
+				8B721FFD293D07E5006B618E /* Preview Content */,
 			);
 			path = Paperboy;
 			sourceTree = "<group>";
@@ -275,6 +286,7 @@
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
 				8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */,
 				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
+				8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

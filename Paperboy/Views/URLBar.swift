@@ -9,6 +9,7 @@ import SwiftUI
 
 struct URLBar: View {
     var url: URL
+    
     @Binding var progress: Double
     
     private var visible: Bool {

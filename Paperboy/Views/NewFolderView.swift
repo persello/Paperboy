@@ -11,11 +11,11 @@ import SFSafeSymbols
 struct NewFolderView: View {
     @Environment(\.managedObjectContext) private var context
     
-    @State private var icon: SFSymbol = .folder
-    @State private var name: String = ""
-    
     @Binding var modalShown: Bool
     
+    @State private var icon: SFSymbol = .folder
+    @State private var name: String = ""
+        
     private let symbols: [SFSymbol] = [
         // Communication
         .mic, .bubbleLeft, .quoteBubble, .phone, .envelope, .envelopeOpen, .waveform, .recordingtape,

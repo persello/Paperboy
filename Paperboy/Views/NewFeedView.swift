@@ -38,9 +38,10 @@ struct NewFeedView: View {
                 TimelineView(.periodic(from: .now, by: 0.5)) { context in
                     if parsing {
                         ProgressView()
-                    } else if let icon = selectedFeed?.iconImage {
+                    } else if let feed = selectedFeed,
+                              let icon = feed.iconImage {
                         // TODO: Move defaults to model.
-                        Image(icon, scale: 1, label: Text(selectedFeed?.title ?? "Unnamed feed"))
+                        Image(icon, scale: 1, label: Text(feed.normalisedTitle))
                             .resizable()
                     } else {
                         Image(systemSymbol: .newspaperFill)
@@ -58,8 +59,8 @@ struct NewFeedView: View {
             
             Form {
                 TextField("Link", text: $link, prompt: Text("https://example.com/feed.rss"))
-                if selectedFeed != nil {
-                    TextField("Title", text: $title, prompt: Text(selectedFeed?.title ?? "Untitled feed"))
+                if let selectedFeed {
+                    TextField("Title", text: $title, prompt: Text(selectedFeed.normalisedTitle))
                 }
                 
                 if !foundFeeds.isEmpty && selectedFeed == nil {
