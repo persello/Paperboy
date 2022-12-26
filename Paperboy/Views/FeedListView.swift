@@ -61,6 +61,14 @@ struct FeedListView: View {
                             Text("Delete...")
                         }
                         
+                        if feed.itemsToRead > 0 {
+                            Button {
+                                feed.markAllAsRead()
+                            } label : {
+                                Text("Mark all as read")
+                            }
+                        }
+                        
                         Menu("Move to folder") {
                             ForEach(folders) { folder in
                                 Button {
@@ -155,7 +163,7 @@ struct FeedListView: View {
 struct FeedListView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.preview.container.viewContext
-
+        
         FeedListView()
             .environment(\.managedObjectContext, context)
     }

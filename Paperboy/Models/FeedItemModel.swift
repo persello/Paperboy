@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import SwiftSoup
 
 extension FeedItemModel {
     
@@ -22,5 +23,17 @@ extension FeedItemModel {
     // MARK: Computed properties.
     var normalisedTitle: String {
         return title ?? "Unnamed article"
+    }
+    
+    var normalisedContentDescription: String? {
+        guard let description = self.articleDescription else {
+            return nil
+        }
+        
+        let document = try? SwiftSoup.parse(description)
+        let paragraph = try? document?.select("p").first()
+        let articleDescription = paragraph?.ownText()
+        
+        return articleDescription
     }
 }

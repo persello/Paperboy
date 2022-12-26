@@ -19,19 +19,6 @@ struct FeedItemListRow: View {
         return formatter
     }
     
-    // TODO: Move to FeedItemModel.
-    var articleDescription: String? {
-        guard let description = feedItem.articleDescription else {
-            return nil
-        }
-        
-        let document = try? SwiftSoup.parse(description)
-        let paragraph = try? document?.select("p").first()
-        let articleDescription = paragraph?.ownText()
-        
-        return articleDescription
-    }
-    
     var imageURL: URL? {
         guard let description = feedItem.articleDescription else {
             return nil
@@ -75,7 +62,7 @@ struct FeedItemListRow: View {
                 }
                 .imageScale(.small)
                 
-                if let description = articleDescription {
+                if let description = feedItem.normalisedContentDescription {
                     Text(description)
                 }
             }

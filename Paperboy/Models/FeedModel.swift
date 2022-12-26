@@ -111,9 +111,16 @@ extension FeedModel {
     }
     
     // MARK: Public functions.
-//    func refresh(onlyAfter interval: TimeInterval) {
-//        // TODO: Implement.
-//    }
+    func refresh(onlyAfter interval: TimeInterval) async {
+        guard let lastRefresh else {
+            await refresh()
+            return
+        }
+        
+        if lastRefresh + interval < Date.now {
+            await refresh()
+        }
+    }
     
     func refresh() async {
         DispatchQueue.main.async {
@@ -155,6 +162,8 @@ extension FeedModel {
         
         DispatchQueue.main.async {
             
+            self.lastRefresh = Date.now
+            
             // TODO: Error management.
             try? context.save()
             self.setStatus(.idle)
@@ -172,6 +181,8 @@ extension FeedModel {
         for item in items {
             item.read = true
         }
+        
+        try? self.managedObjectContext?.save()
     }
     
     // MARK: Computed variables.
@@ -190,5 +201,11 @@ extension FeedModel {
     
     var normalisedTitle: String {
         return self.title ?? "Unnamed feed"
+    }
+    
+    var itemsToRead: Int {
+        let predicate = NSPredicate(format: "read == NO")
+        
+        return items?.filtered(using: predicate).count ?? 0
     }
 }

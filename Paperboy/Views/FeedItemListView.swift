@@ -16,10 +16,6 @@ struct FeedItemListView: View {
     
     @State private var selection: FeedItemModel? = nil
     
-    var unreadCount: Int {
-        items.filter({!$0.read}).count
-    }
-    
     init(for feed: FeedModel) {
         self.feed = feed
         
@@ -74,10 +70,10 @@ struct FeedItemListView: View {
             #endif
         }
         .task(id: feed) {
-            await feed.refresh()
+            await feed.refresh(onlyAfter: 30)
         }
         .navigationTitle(feed.normalisedTitle)
-        .navigationSubtitle(unreadCount > 0 ? "\(unreadCount) to read" : "You're up to date")
+        .navigationSubtitle(feed.itemsToRead > 0 ? "\(feed.itemsToRead) to read" : "You're up to date")
     }
 }
 
