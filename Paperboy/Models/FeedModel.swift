@@ -49,6 +49,85 @@ extension FeedModel {
         }
     }
     
+    struct GroupedFeedItems: Identifiable {
+        enum TimeFrame {
+            case day, month, year, all
+        }
+
+        var title: String?
+        let referenceDate: Date
+        let timeFrame: TimeFrame
+        var items: [FeedItemModel]
+        let id = UUID()
+
+        static func build(timeFrame: TimeFrame, items: [FeedItemModel]) -> [GroupedFeedItems] {
+            var groupedItems: [GroupedFeedItems] = []
+
+            for item in items {
+                let calendar = Calendar.current
+                let components: Set<Calendar.Component> = [.year, .month, .day, .hour, .minute, .second]
+
+                let itemDate = calendar.dateComponents(components, from: item.publicationDate!)
+                let referenceDate: Date
+
+                switch timeFrame {
+                case .day:
+                    referenceDate = calendar.date(from: DateComponents(year: itemDate.year, month: itemDate.month, day: itemDate.day))!
+                case .month:
+                    referenceDate = calendar.date(from: DateComponents(year: itemDate.year, month: itemDate.month))!
+                case .year:
+                    referenceDate = calendar.date(from: DateComponents(year: itemDate.year))!
+                case .all:
+                    referenceDate = item.publicationDate!
+                }
+
+                if let index = groupedItems.firstIndex(where: { $0.referenceDate == referenceDate }) {
+                    groupedItems[index].items.append(item)
+                } else {
+                    groupedItems.append(GroupedFeedItems(title: nil, referenceDate: referenceDate, timeFrame: timeFrame, items: [item]))
+                }
+            }
+
+            // Set titles.
+            for index in 0..<groupedItems.count {
+                let item = groupedItems[index]
+                let dateFormatter: DateFormatter = DateFormatter()
+
+                // Choose date format dynamically.
+                switch timeFrame {
+                case .day:
+                    dateFormatter.locale = NSLocale.current
+                    dateFormatter.doesRelativeDateFormatting = true
+                    dateFormatter.dateStyle = .long
+
+                    groupedItems[index].title = dateFormatter.string(from: item.referenceDate)
+                case .month:
+                    dateFormatter.locale = NSLocale.current
+                    dateFormatter.dateFormat = "MMMM yyyy"
+
+                    groupedItems[index].title = dateFormatter.string(from: item.referenceDate)
+                case .year:
+                    dateFormatter.locale = NSLocale.current
+                    dateFormatter.dateFormat = "yyyy"
+
+                    groupedItems[index].title = dateFormatter.string(from: item.referenceDate)
+                case .all:
+                    groupedItems[index].title = NSLocalizedString("All articles", comment: "FeedModel grouped items title")
+                }
+            }
+
+            // Sort groups.
+            groupedItems.sort(by: { $0.referenceDate > $1.referenceDate })
+
+            // Sort items inside groups.
+            for index in 0..<groupedItems.count {
+                groupedItems[index].items.sort(by: { $0.publicationDate! > $1.publicationDate! })
+            }
+
+            return groupedItems
+        }
+    }
+    
     // MARK: Initialisers.
     convenience init(_ copy: FeedModel, in context: NSManagedObjectContext) {
         self.init(context: context)
@@ -92,8 +171,8 @@ extension FeedModel {
 
         return try await withCheckedThrowingContinuation({ continuation in
             let parser = FeedParser(data: data)
-            parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
-                switch result {
+            parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { groups in
+                switch groups {
                 case .success(let success):
                     switch success {
                     case .atom(let atom):
@@ -252,48 +331,42 @@ extension FeedModel {
         
         return items?.count ?? 0
     }
-    
-    var groupedItems: [(Date?, [FeedItemModel])] {
-        guard let items = items as? Set<FeedItemModel> else { return [] }
-        var result: [(Date?, [FeedItemModel])] = []
-        
-        for item in items {
-            var calendarDate: Date? = nil
-            if let date = item.publicationDate {
-                let dateComponents = Calendar.current.dateComponents([.day, .month, .year], from: date)
-                calendarDate = Calendar.current.date(from: dateComponents)
-            }
-            
-            // Search for an existing group.
-            if let groupIndex = result.firstIndex(where: { $0.0 == calendarDate }) {
-                result[groupIndex].1.append(item)
-            } else {
-                result.append((calendarDate, [item]))
-            }
+
+    var groupedItems: [GroupedFeedItems] {
+        // Calculate the average time between items.
+        // If you publish feed items without a date, spiaze.
+        guard let items = (self.items as? Set<FeedItemModel>)?
+            .filter({ item in
+                item.publicationDate != nil
+            }),
+              let firstItem = items.sorted(by: { $0.publicationDate! < $1.publicationDate! }).first,
+              let lastItem = items.sorted(by: { $0.publicationDate! > $1.publicationDate! }).first else {
+            return []
         }
+
+        let timeBetweenItems = lastItem.publicationDate!.timeIntervalSince(firstItem.publicationDate!) / Double(items.count)
+
+        // Choose time frame for grouping.
+        let timeFrame: GroupedFeedItems.TimeFrame
+
+        // More than three items per...
+        if timeBetweenItems < 60 * 60 * 24 / 3 {
+            // ...day.
+            timeFrame = .day
+        } else if timeBetweenItems < 60 * 60 * 24 * 30 / 3 {
+            // ...month.
+            timeFrame = .month
+        } else if timeBetweenItems < 60 * 60 * 24 * 365 / 3 {
+            // ...year.
+            timeFrame = .year
+        } else {
+            // ...all time.
+            timeFrame = .all
+        }
+
+        // Group items.
+        let groupedItems = GroupedFeedItems.build(timeFrame: timeFrame, items: Array(items))
         
-        // Sort groups and items. Newest first, groups without date last.
-        result.sort(by: { lhs, rhs in
-            if let lhsDate = lhs.0,
-               let rhsDate = rhs.0 {
-                return lhsDate > rhsDate
-            } else {
-                return lhs.0 != nil
-            }
-        })
-
-        result = result.map({ (date, items) in
-            return (date, items.sorted(by: { lhs, rhs in
-                if let lhsDate = lhs.publicationDate,
-                   let rhsDate = rhs.publicationDate {
-                    return lhsDate > rhsDate
-                } else {
-                    return lhs.publicationDate != nil
-                }
-            }))
-        })
-
-
-        return result
+        return groupedItems
     }
 }

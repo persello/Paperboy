@@ -33,17 +33,15 @@ struct FeedItemListView: View {
     var body: some View {
         Group {
             List(selection: $selection) {
-                ForEach(feed.groupedItems, id: \.0) { group in
-                    Section(getDateString(for: group.0)) {
-                        ForEach(group.1) { item in
+                ForEach(feed.groupedItems) { (group: FeedModel.GroupedFeedItems) in
+                    Section(group.title ?? "Unknown date") {
+                        ForEach(group.items) { (item: FeedItemModel) in
                             NavigationLink {
                                 ReaderView(feedItem: item)
                             } label: {
                                 FeedItemListRow(feedItem: item)
-
 #if os(macOS)
                                     .padding(4)
-#else
 #endif
                             }
                             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
@@ -56,7 +54,7 @@ struct FeedItemListView: View {
                             .swipeActions {
                                 Button {
                                     item.read.toggle()
-                                    
+
                                     // TODO: Error management.
                                     try? context.save()
                                 } label: {
