@@ -36,10 +36,15 @@ struct PersistenceController {
     /// Create a new Core Data Persistence Controller.
     /// - Parameter inMemory: Location of the stored data. If true, data will be volatile.
     init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Paperboy")
         
         if inMemory {
+            container = NSPersistentContainer(name: "Paperboy")
             container.persistentStoreDescriptions.first?.url = URL(fileURLWithPath: "/dev/null")
+        } else {
+            let cloudKitContainer = NSPersistentCloudKitContainer(name: "Paperboy")
+            try? cloudKitContainer.initializeCloudKitSchema()
+            container = cloudKitContainer
+            container.viewContext.automaticallyMergesChangesFromParent = true
         }
         
         container.loadPersistentStores { description, error in
