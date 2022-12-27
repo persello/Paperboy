@@ -58,7 +58,7 @@ class FeedDiscovery {
             let feedURLs = try document.getElementsByTag("link").filter { element in
                 let type = try? element.attr("type")
                 
-                // TODO: Atom, JSON.
+                // TODO: JSON.
                 return type == "application/rss+xml" || type == "application/atom+xml"
             }.compactMap({ element in
                 try? element.attr("href")

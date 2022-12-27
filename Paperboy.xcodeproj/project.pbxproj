@@ -15,6 +15,7 @@
 		8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B560DC22953590500564909 /* SwiftUIWKWebView */; };
 		8B560DC52953591400564909 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC42953591400564909 /* ReaderView.swift */; };
 		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
+		8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
 		8B721FFB293D07E5006B618E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B721FFA293D07E5006B618E /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 		8B560DC42953591400564909 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
 		8B560DC629535B0D00564909 /* MacWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWebView.swift; sourceTree = "<group>"; };
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingModifier.swift; sourceTree = "<group>"; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
 		8B721FF8293D07E4006B618E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 		8B722008293D09AF006B618E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */,
 				8B72200B293D09D7006B618E /* FeedItemListView.swift */,
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
@@ -282,6 +285,7 @@
 				8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */,
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
+				8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
 				8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */,

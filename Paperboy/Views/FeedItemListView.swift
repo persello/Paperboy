@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedItemListView: View {
     @Environment(\.managedObjectContext) private var context
+    @EnvironmentObject var errorHandler: ErrorHandler
     
     @ObservedObject var feed: FeedModel
     
@@ -60,20 +61,28 @@ struct FeedItemListView: View {
         }
         .refreshable {
             Task {
-                await feed.refresh()
+                await errorHandler.tryPerformAsync {
+                    try await feed.refresh()
+                } errorCallback: { _ in
+                    feed.setStatus(.error)
+                }
             }
         }
         .toolbar {
-            #if os(macOS)
+#if os(macOS)
             Button {
                 Task.detached {
-                    await feed.refresh()
+                    await errorHandler.tryPerformAsync {
+                        try await feed.refresh()
+                    } errorCallback: { _ in
+                        await feed.setStatus(.error)
+                    }
                 }
             } label: {
                 Label("Refresh", systemSymbol: .arrowClockwise)
             }
-            #endif
-            
+#endif
+
             Menu {
                 Button {
                     feed.markAllAsRead()
@@ -86,7 +95,16 @@ struct FeedItemListView: View {
             }
         }
         .task(id: feed) {
-            await feed.refresh(onlyAfter: 30)
+            await errorHandler.tryPerformAsync {
+                do {
+                    try await feed.refresh(onlyAfter: 30)
+                } catch URLError.networkConnectionLost {
+                    // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
+                    self.feed.setStatus(.error)
+                }
+            } errorCallback: { _ in
+                self.feed.setStatus(.error)
+            }
         }
         .navigationTitle(feed.normalisedTitle)
         .navigationSubtitle(feed.itemsToRead > 0 ? "\(feed.itemsToRead) to read" : "You're up to date")

@@ -54,15 +54,11 @@ struct PersistenceController {
         }
     }
     
-    func save() {
+    func save() throws {
         let context = container.viewContext
 
         if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // TODO: Show some error here.
-            }
+            try context.save()
         }
     }
 }

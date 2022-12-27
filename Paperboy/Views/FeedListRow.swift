@@ -14,7 +14,10 @@ struct FeedListRow: View {
         Label {
             Text(feed.normalisedTitle)
         } icon: {
-            if feed.status == FeedModel.Status.refreshing.rawValue {
+            if feed.status == FeedModel.Status.error.rawValue {
+                Image(systemSymbol: .boltHorizontalCircle)
+                    .foregroundColor(.secondary)
+            } else if feed.status == FeedModel.Status.refreshing.rawValue {
                 ProgressView()
                     .scaleEffect(0.5)
                     .frame(width: 16, height: 16)

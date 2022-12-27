@@ -22,6 +22,7 @@ struct ContentView: View {
         } detail: {
             EmptyView()
         }
+        .withErrorHandling()
     }
 }
 

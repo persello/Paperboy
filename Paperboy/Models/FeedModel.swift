@@ -22,6 +22,33 @@ extension FeedModel {
         case error = 2
     }
     
+    enum Error: LocalizedError {
+        case modelDoesNotContainURL
+        case modelDoesNotContainMOC
+        case unsupportedFeedFormat(String)
+        
+        var errorDescription: String? {
+            switch self {
+            case .modelDoesNotContainURL:
+                return NSLocalizedString("The feed does not contain a URL.", comment: "FeedModel error")
+            case .modelDoesNotContainMOC:
+                return NSLocalizedString("The feed does not have a Core Data managed object context.", comment: "FeedModel error")
+            case .unsupportedFeedFormat(let format):
+                return NSLocalizedString("The feed format \"\(format)\" is not supported.", comment: "FeedModel error")
+            }
+        }
+
+        var recoverySuggestion: String? {
+            switch self {
+            case .modelDoesNotContainURL,
+                 .modelDoesNotContainMOC:
+                return NSLocalizedString("You'll need to delete this feed and create it again.", comment: "FeedModel error")
+            case .unsupportedFeedFormat(_):
+                return NSLocalizedString("Search for a feed that uses a different format.", comment: "FeedModel error")
+            }
+        }
+    }
+    
     // MARK: Initialisers.
     convenience init(_ copy: FeedModel, in context: NSManagedObjectContext) {
         self.init(context: context)
@@ -30,7 +57,7 @@ extension FeedModel {
         self.url = copy.url
         
         Task {
-            await self.refresh()
+            try await self.refresh()
         }
     }
     
@@ -41,40 +68,50 @@ extension FeedModel {
         self.url = url
         
         Task {
-            await self.refresh()
+            try await self.refresh()
         }
     }
     
     // MARK: Private functions.
-    private func setStatus(_ status: Status) {
-        self.status = status.rawValue
+    func setStatus(_ status: Status) {
+        
+        // TODO: Error handling.
+        
+        DispatchQueue.main.async {
+            self.status = status.rawValue
+            try? self.managedObjectContext?.save()
+        }
     }
     
-    private func getInternalFeed() async -> (any FeedProtocol)? {
-        guard let url = self.url,
-              let (data, _) = try? await URLSession.shared.data(from: url) else {
-            return nil
+    private func getInternalFeed() async throws -> (any FeedProtocol) {
+        guard let url = self.url else {
+            throw Error.modelDoesNotContainURL
         }
+        
+        let (data, _) = try await URLSession.shared.data(from: url)
 
-        return await withCheckedContinuation({ continuation in
+        return try await withCheckedThrowingContinuation({ continuation in
             let parser = FeedParser(data: data)
             parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { result in
-                if let feed = try? result.get().rssFeed {
-                    continuation.resume(returning: feed)
-                } else if let feed = try? result.get().atomFeed {
-                    continuation.resume(returning: feed)
-                } else {
-                    // TODO: Error management.
-                    continuation.resume(returning: nil)
+                switch result {
+                case .success(let success):
+                    switch success {
+                    case .atom(let atom):
+                        continuation.resume(returning: atom)
+                    case .rss(let rss):
+                        continuation.resume(returning: rss)
+                    case .json(_):
+                        continuation.resume(throwing: Error.unsupportedFeedFormat("JSON"))
+                    }
+                case .failure(let failure):
+                    continuation.resume(throwing: failure)
                 }
             })
         })
     }
     
-    private func refreshIcon() async {
-        guard let feed = await self.getInternalFeed() else {
-            return
-        }
+    private func refreshIcon() async throws {
+        let feed = try await self.getInternalFeed()
         
         if let iconURL = feed.iconURL,
            let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
@@ -111,31 +148,33 @@ extension FeedModel {
     }
     
     // MARK: Public functions.
-    func refresh(onlyAfter interval: TimeInterval) async {
+    func refresh(onlyAfter interval: TimeInterval) async throws {
         guard let lastRefresh else {
-            await refresh()
+            try await refresh()
             return
         }
         
         if lastRefresh + interval < Date.now {
-            await refresh()
+            try await refresh()
         }
     }
     
-    func refresh() async {
+    func refresh() async throws {
         DispatchQueue.main.async {
             self.setStatus(.refreshing)
         }
         
-        guard let context = self.managedObjectContext else {
-            
-            // TODO: Errors.
-            return
+        defer {
+            DispatchQueue.main.async {
+                self.setStatus(.idle)
+            }
         }
         
-        guard let feed = await self.getInternalFeed() else {
-            return
+        guard let context = self.managedObjectContext else {
+            throw Error.modelDoesNotContainMOC
         }
+        
+        let feed = try await self.getInternalFeed()
         
         // Items
         let itemSet: Set<FeedItemModel> = feed.fetchItems()
@@ -158,7 +197,7 @@ extension FeedModel {
         }
         
         // Icon
-        await self.refreshIcon()
+        try await self.refreshIcon()
         
         DispatchQueue.main.async {
             
@@ -166,9 +205,6 @@ extension FeedModel {
             
             // TODO: Error management.
             try? context.save()
-            self.setStatus(.idle)
-            
-            // TODO: Error status.
         }
     }
     
@@ -193,7 +229,7 @@ extension FeedModel {
             return image
         } else {
             Task {
-                await self.refreshIcon()
+                try? await self.refreshIcon()
             }
             return nil
         }

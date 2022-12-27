@@ -40,7 +40,6 @@ struct NewFeedView: View {
                         ProgressView()
                     } else if let feed = selectedFeed,
                               let icon = feed.iconImage {
-                        // TODO: Move defaults to model.
                         Image(icon, scale: 1, label: Text(feed.normalisedTitle))
                             .resizable()
                     } else {

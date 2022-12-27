@@ -17,7 +17,9 @@ struct PaperboyApp: App {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { notification in
-                    persistenceController.save()
+                    
+                    // Nothing we can do here...
+                    try? persistenceController.save()
                 }
         }
     }

@@ -14,6 +14,7 @@ struct MacWebView: NSViewRepresentable {
 
     @Binding var url: URL
     @Binding var loadingProgress: Double
+    @Binding var error: Error?
         
     private var webView: WKWebView!
     
@@ -23,10 +24,11 @@ struct MacWebView: NSViewRepresentable {
         return request
     }
     
-    init(url: Binding<URL>, loadingProgress: Binding<Double>) {
+    init(url: Binding<URL>, loadingProgress: Binding<Double>, error: Binding<Error?> = .constant(nil)) {
         self.webView = WKWebView()
         self._url = url
         self._loadingProgress = loadingProgress
+        self._error = error
     }
     
     func makeNSView(context: Context) -> WKWebView {
@@ -34,6 +36,7 @@ struct MacWebView: NSViewRepresentable {
         webView.allowsMagnification = true
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = true
+        webView.configuration.mediaTypesRequiringUserActionForPlayback = .all
 
         WKContentRuleListStore.default().compileContentRuleList(
             forIdentifier: "ContentBlockingRules",
@@ -63,6 +66,9 @@ struct MacWebView: NSViewRepresentable {
         }
         
         nsView.load(request)
+        DispatchQueue.main.async {
+            self.error = nil
+        }
     }
     
     func makeCoordinator() -> Coordinator {
@@ -95,6 +101,18 @@ struct MacWebView: NSViewRepresentable {
             }
             
             return .allow
+        }
+        
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            let nsError = error as NSError
+            
+            if nsError.code == NSURLErrorCancelled {
+                return
+            } else {
+                DispatchQueue.main.async {
+                    self.parent.error = error
+                }
+            }
         }
     }
 }

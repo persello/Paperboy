@@ -13,6 +13,7 @@ struct ReaderView: View {
     
     @State private var url: URL
     @State private var loadingProgress: Double = 0
+    @State private var error: Error?
     
     @ObservedObject private var feedItem: FeedItemModel
     
@@ -23,26 +24,40 @@ struct ReaderView: View {
     
     var body: some View {
 #if os(macOS)
-        MacWebView(url: $url, loadingProgress: $loadingProgress)
-            .toolbar {
-                Spacer()
-                URLBar(url: url, progress: $loadingProgress)
-                Spacer()
-            }
-            .onChange(of: loadingProgress) { newValue in
-                if newValue == 1.0 {
-                    self.feedItem.read = true
-                    
-                    // TODO: Error management.
-                    try? context.save()
+        Group {
+            if let error {
+                VStack {
+                    Text(error.localizedDescription)
+                        .font(.title)
+                    Button {
+                        self.error = nil
+                    } label: {
+                        Text("Reload")
+                    }
                 }
+            } else {
+                MacWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                    .onChange(of: loadingProgress) { newValue in
+                        if newValue == 1.0 {
+                            self.feedItem.read = true
+                            
+                            // TODO: Error management.
+                            try? context.save()
+                        }
+                    }
             }
-            .onChange(of: feedItem) { newValue in
-                if let url = newValue.url {
-                    self.url = url
-                }
+        }
+        .toolbar {
+            Spacer()
+            URLBar(url: url, progress: $loadingProgress)
+            Spacer()
+        }
+        .onChange(of: feedItem) { newValue in
+            if let url = newValue.url {
+                self.url = url
             }
-            .frame(minWidth: 600, minHeight: 400)
+        }
+        .frame(minWidth: 600, minHeight: 400)
 #endif
     }
 }
