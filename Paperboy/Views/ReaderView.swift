@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import SwiftUIWKWebView
+import BetterSafariView
 
 struct ReaderView: View {
     @Environment(\.managedObjectContext) private var context
@@ -18,12 +18,11 @@ struct ReaderView: View {
     @ObservedObject private var feedItem: FeedItemModel
     
     init(feedItem: FeedItemModel) {
-        self._url = State(initialValue: feedItem.url ?? URL(string: "https://")!)
+        self._url = State(initialValue: feedItem.url ?? URL(string: "https://apple.com")!)
         self.feedItem = feedItem
     }
     
     var body: some View {
-#if os(macOS)
         Group {
             if let error {
                 VStack {
@@ -36,15 +35,21 @@ struct ReaderView: View {
                     }
                 }
             } else {
-                MacWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
-                    .onChange(of: loadingProgress) { newValue in
-                        if newValue == 1.0 {
-                            self.feedItem.read = true
-                            
-                            // TODO: Error management.
-                            try? context.save()
-                        }
+                Group {
+#if os(macOS)
+                    MacWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+#elseif os(iOS)
+                    iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+#endif
+                }
+                .onChange(of: loadingProgress) { newValue in
+                    if newValue == 1.0 {
+                        self.feedItem.read = true
+                        
+                        // TODO: Error management.
+                        try? context.save()
                     }
+                }
             }
         }
         .toolbar {
@@ -57,13 +62,20 @@ struct ReaderView: View {
                 self.url = url
             }
         }
+        #if os(macOS)
         .frame(minWidth: 600, minHeight: 400)
-#endif
+        #endif
     }
 }
 
 struct ReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        ReaderView(feedItem: FeedItemModel())
+        let context = PersistenceController.preview.container.viewContext
+        
+        let item = FeedItemModel(context: context)
+        
+        return NavigationStack {
+            ReaderView(feedItem: item)
+        }
     }
 }

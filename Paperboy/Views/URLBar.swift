@@ -22,7 +22,7 @@ struct URLBar: View {
     }
     
     var body: some View {
-        ZStack(alignment: .trailingFirstTextBaseline) {
+        ZStack(alignment: .trailing) {
             VStack {
                 Text("\(title)")
                     .truncationMode(.tail)
@@ -32,8 +32,10 @@ struct URLBar: View {
                     .padding(.bottom, -6)
                 ProgressView(value: progress, total: 1.0)
                     .progressViewStyle(.linear)
+                #if os(macOS)
                     .padding(.vertical, -8)
                     .padding(.horizontal, -4)
+                #endif
                     .opacity(visible ? 1 : 0)
                     .animation(.linear, value: visible)
                     .frame(height: 4)
@@ -55,6 +57,7 @@ struct URLBar: View {
 
 struct URLBar_Previews: PreviewProvider {
     static var previews: some View {
-        URLBar(url: URL(string: "https://apple.com")!, progress: .constant(1))
+        URLBar(url: URL(string: "https://apple.com")!, progress: .constant(0.5))
+            .previewLayout(.sizeThatFits)
     }
 }

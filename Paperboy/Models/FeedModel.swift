@@ -240,10 +240,15 @@ extension FeedModel {
     }
     
     var itemsToRead: Int {
+        guard let context = self.managedObjectContext else {
+            return 0
+        }
+        
         let request = FeedItemModel.fetchRequest()
+        request.entity = NSEntityDescription.entity(forEntityName: "FeedItemModel", in: context)
         request.predicate = NSPredicate(format: "feed == %@ AND read == NO", self)
         
-        let items = try? self.managedObjectContext?.fetch(request)
+        let items = try? context.fetch(request)
         
         return items?.count ?? 0
     }

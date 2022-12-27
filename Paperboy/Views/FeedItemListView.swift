@@ -40,7 +40,18 @@ struct FeedItemListView: View {
                                 ReaderView(feedItem: item)
                             } label: {
                                 FeedItemListRow(feedItem: item)
+
+#if os(macOS)
                                     .padding(4)
+#else
+#endif
+                            }
+                            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
+                            .contextMenu {
+                                // TODO: Context menu.
+                                Text("AAA")
+                            } preview: {
+                                ReaderView(feedItem: item)
                             }
                             .swipeActions {
                                 Button {
@@ -121,7 +132,7 @@ struct FeedItemListView: View {
 }
 
 struct FeedItemsListView_Previews: PreviewProvider {
-
+    
     static var previews: some View {
         let context = PersistenceController.preview.container.viewContext
         
@@ -129,7 +140,10 @@ struct FeedItemsListView_Previews: PreviewProvider {
         ninetofivemac.title = "9to5Mac"
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
-        return FeedItemListView(feed: ninetofivemac)
+        return NavigationStack {
+            FeedItemListView(feed: ninetofivemac)
+                .environmentObject(ErrorHandler())
                 .environment(\.managedObjectContext, context)
+        }
     }
 }

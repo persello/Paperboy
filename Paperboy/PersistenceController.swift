@@ -26,6 +26,12 @@ struct PersistenceController {
         ninetofivemac.title = "9to5Mac"
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
+        let folder = FeedFolderModel(context: controller.container.viewContext)
+        folder.icon = "folder"
+        folder.name = "Folder"
+        
+        folder.addToFeeds(nyd)
+        
         return controller
     }()
     

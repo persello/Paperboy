@@ -22,7 +22,11 @@ struct PaperboyApp: App {
                     // Nothing we can do here...
                     try? persistenceController.save()
                 }
-            // TODO: Same for iOS.
+#elseif os(iOS)
+                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { notification in
+                    
+                    try? persistenceController.save()
+                }
 #endif
         }
     }

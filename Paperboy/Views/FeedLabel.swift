@@ -1,5 +1,5 @@
 //
-//  FeedListRow.swift
+//  FeedLabel.swift
 //  Paperboy
 //
 //  Created by Riccardo Persello on 10/12/22.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FeedListRow: View {
+struct FeedLabel: View {
     @ObservedObject var feed: FeedModel
     
     var body: some View {
@@ -40,6 +40,6 @@ struct FeedListRow_Previews: PreviewProvider {
         let feed = FeedModel(context: context)
         feed.title = "Antani's feed"
         
-        return FeedListRow(feed: feed)
+        return FeedLabel(feed: feed)
     }
 }

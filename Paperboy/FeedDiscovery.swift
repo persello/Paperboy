@@ -84,9 +84,8 @@ class FeedDiscovery {
         
         // Try to add https in front of URL if necessary.
         if !(url.scheme?.starts(with: "http") ?? false) {
-            var components = URLComponents(string: String(url.pathComponents[1...].joined(separator: "/")))
+            var components = URLComponents(string: String(url.absoluteString.split(separator: "//").last!))
             components?.scheme = "https"
-            components?.host = url.pathComponents[0]
             
             if let url = components?.url {
                 print(url)

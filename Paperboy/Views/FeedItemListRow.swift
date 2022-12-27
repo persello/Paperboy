@@ -8,9 +8,15 @@
 import SwiftUI
 import SwiftSoup
 import SFSafeSymbols
+import CachedAsyncImage
 
 struct FeedItemListRow: View {
+    @ScaledMetric var imageSize: CGFloat = 100
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    
     @ObservedObject var feedItem: FeedItemModel
+    
+    static let imageCache = URLCache(memoryCapacity: 128 * 1024 * 1024, diskCapacity: 1 * 1024 * 1024 * 1024)
     
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
@@ -33,27 +39,43 @@ struct FeedItemListRow: View {
         return URL(string: src)
     }
     
+    var image: URL? {
+        if let imageURL,
+           dynamicTypeSize < .accessibility1 {
+            return imageURL
+        }
+        
+        return nil
+    }
+    
     var body: some View {
-        HStack(spacing: 16) {
-            if let imageURL {
-                AsyncImage(url: imageURL) { image in
+        HStack(alignment: .center, spacing: 16) {
+            if let image {
+                CachedAsyncImage(url: image, urlCache: Self.imageCache) { image in
                     image.resizable()
                 } placeholder: {
                     ProgressView()
                 }
                 .scaledToFill()
-                .frame(width: 100, height: 100)
+                .frame(width: imageSize, height: imageSize)
+                #if os(macOS)
                 .clipShape(RoundedRectangle(cornerRadius: 2))
+                #else
+                .clipShape(Rectangle())
+                #endif
             }
             
             VStack(alignment: .leading, spacing: 4) {
                 VStack(alignment: .leading) {
-                    Text(feedItem.read ? "" : "\(Image(systemSymbol: .circleFill)) ")
-                        .foregroundColor(.accentColor) +
-                    
-                    Text(feedItem.normalisedTitle)
-                        .font(.headline)
-                    
+                    Group {
+                        Text(feedItem.read ? "" : "\(Image(systemSymbol: .circleFill)) ")
+                            .foregroundColor(.accentColor) +
+                        
+                        Text(feedItem.normalisedTitle)
+                            .font(.headline)
+                    }
+                    .lineLimit(3)
+                        
                     if let date = feedItem.publicationDate {
                         Text("\(self.dateFormatter.string(for: date)!)")
                             .font(.subheadline)
@@ -62,14 +84,19 @@ struct FeedItemListRow: View {
                 }
                 .imageScale(.small)
                 
-                if let description = feedItem.normalisedContentDescription {
+                if let description = feedItem.normalisedContentDescription,
+                   dynamicTypeSize < .accessibility1{
                     Text(description)
                 }
             }
+            .padding(.leading, image == nil ? 16 : 0)
+            .padding(.vertical, image == nil ? 8 : 0)
         }
-        .frame(maxHeight: 100)
+        .frame(maxHeight: imageSize)
+#if os(macOS)
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
+#endif
     }
 }
 
@@ -88,5 +115,6 @@ struct FeedItemListRow_Previews: PreviewProvider {
 """
         
         return FeedItemListRow(feedItem: item)
+            .previewLayout(.sizeThatFits)
     }
 }

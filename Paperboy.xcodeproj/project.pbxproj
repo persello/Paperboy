@@ -12,10 +12,12 @@
 		8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */; };
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
-		8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B560DC22953590500564909 /* SwiftUIWKWebView */; };
 		8B560DC52953591400564909 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC42953591400564909 /* ReaderView.swift */; };
 		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
 		8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */; };
+		8B5A48C3295B735200846E71 /* BetterSafariView in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5A48C2295B735200846E71 /* BetterSafariView */; };
+		8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48C4295B843900846E71 /* iOSWebView.swift */; };
+		8B5A48C8295B886900846E71 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8B5A48C7295B886900846E71 /* CachedAsyncImage */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
 		8B721FFB293D07E5006B618E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B721FFA293D07E5006B618E /* Assets.xcassets */; };
@@ -33,11 +35,13 @@
 		8B88B65529564DBC004123F7 /* URLBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65429564DBC004123F7 /* URLBar.swift */; };
 		8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */; };
 		8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */; };
-		8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedListRow.swift */; };
+		8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837729451E6800D93109 /* FeedLabel.swift */; };
 		8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837A2945294B00D93109 /* FaviconFinder */; };
 		8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A837C29452A8100D93109 /* FeedItemListRow.swift */; };
 		8B8A83802945306100D93109 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 8B8A837F2945306100D93109 /* SwiftSoup */; };
 		8B8A83822945464800D93109 /* NewFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8A83812945464800D93109 /* NewFeedView.swift */; };
+		8B8C71AE295B9C6E00EA710E /* FeedListRowFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */; };
+		8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */; };
 		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
 		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
 /* End PBXBuildFile section */
@@ -53,6 +57,7 @@
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingModifier.swift; sourceTree = "<group>"; };
 		8B5A48BF295B658200846E71 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
+		8B5A48C4295B843900846E71 /* iOSWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWebView.swift; sourceTree = "<group>"; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
 		8B721FF8293D07E4006B618E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,9 +76,11 @@
 		8B88B65429564DBC004123F7 /* URLBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBar.swift; sourceTree = "<group>"; };
 		8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedProtocol.swift"; sourceTree = "<group>"; };
 		8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedItemProtocol.swift"; sourceTree = "<group>"; };
-		8B8A837729451E6800D93109 /* FeedListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRow.swift; sourceTree = "<group>"; };
+		8B8A837729451E6800D93109 /* FeedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedLabel.swift; sourceTree = "<group>"; };
 		8B8A837C29452A8100D93109 /* FeedItemListRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemListRow.swift; sourceTree = "<group>"; };
 		8B8A83812945464800D93109 /* NewFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeedView.swift; sourceTree = "<group>"; };
+		8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFeed.swift; sourceTree = "<group>"; };
+		8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFolder.swift; sourceTree = "<group>"; };
 		8BA8A4442957564E00C570CA /* NewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -85,8 +92,9 @@
 				8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */,
 				8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */,
 				8B8A83802945306100D93109 /* SwiftSoup in Frameworks */,
-				8B560DC32953590500564909 /* SwiftUIWKWebView in Frameworks */,
+				8B5A48C8295B886900846E71 /* CachedAsyncImage in Frameworks */,
 				8B722007293D080F006B618E /* FeedKit in Frameworks */,
+				8B5A48C3295B735200846E71 /* BetterSafariView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -162,7 +170,10 @@
 				8B72200B293D09D7006B618E /* FeedItemListView.swift */,
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
-				8B8A837729451E6800D93109 /* FeedListRow.swift */,
+				8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */,
+				8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */,
+				8B8A837729451E6800D93109 /* FeedLabel.swift */,
+				8B5A48C4295B843900846E71 /* iOSWebView.swift */,
 				8B560DC629535B0D00564909 /* MacWebView.swift */,
 				8B8A83812945464800D93109 /* NewFeedView.swift */,
 				8BA8A4442957564E00C570CA /* NewFolderView.swift */,
@@ -215,8 +226,9 @@
 				8B722006293D080F006B618E /* FeedKit */,
 				8B8A837A2945294B00D93109 /* FaviconFinder */,
 				8B8A837F2945306100D93109 /* SwiftSoup */,
-				8B560DC22953590500564909 /* SwiftUIWKWebView */,
 				8BA8A4422957532400C570CA /* SFSafeSymbols */,
+				8B5A48C2295B735200846E71 /* BetterSafariView */,
+				8B5A48C7295B886900846E71 /* CachedAsyncImage */,
 			);
 			productName = Paperboy;
 			productReference = 8B721FF3293D07E4006B618E /* Paperboy.app */;
@@ -252,6 +264,8 @@
 				8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */,
 				8BA8A4412957532400C570CA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
+				8B5A48C1295B735200846E71 /* XCRemoteSwiftPackageReference "BetterSafariView" */,
+				8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 8B721FF4293D07E4006B618E /* Products */;
 			projectDirPath = "";
@@ -283,8 +297,9 @@
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
 				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
+				8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
-				8B8A837829451E6800D93109 /* FeedListRow.swift in Sources */,
+				8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
 				8B721FF9293D07E4006B618E /* ContentView.swift in Sources */,
 				8B8A83822945464800D93109 /* NewFeedView.swift in Sources */,
@@ -293,8 +308,10 @@
 				8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */,
 				8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */,
 				8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */,
+				8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */,
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
+				8B8C71AE295B9C6E00EA710E /* FeedListRowFeed.swift in Sources */,
 				8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
@@ -534,6 +551,22 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		8B5A48C1295B735200846E71 /* XCRemoteSwiftPackageReference "BetterSafariView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/stleamist/BetterSafariView";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/nmdias/FeedKit";
@@ -569,10 +602,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8B560DC22953590500564909 /* SwiftUIWKWebView */ = {
+		8B5A48C2295B735200846E71 /* BetterSafariView */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */;
-			productName = SwiftUIWKWebView;
+			package = 8B5A48C1295B735200846E71 /* XCRemoteSwiftPackageReference "BetterSafariView" */;
+			productName = BetterSafariView;
+		};
+		8B5A48C7295B886900846E71 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 		8B722006293D080F006B618E /* FeedKit */ = {
 			isa = XCSwiftPackageProductDependency;
