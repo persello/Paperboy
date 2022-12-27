@@ -8,6 +8,7 @@
 import SwiftUI
 import WebKit
 
+#if os(macOS)
 struct MacWebView: NSViewRepresentable {
     
     typealias NSViewType = WKWebView
@@ -123,3 +124,4 @@ struct MacWebView_Previews: PreviewProvider {
         MacWebView(url: .constant(URL(string: "https://apple.com")!), loadingProgress: .constant(1))
     }
 }
+#endif

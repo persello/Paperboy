@@ -16,11 +16,14 @@ struct PaperboyApp: App {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+#if os(macOS)
                 .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { notification in
                     
                     // Nothing we can do here...
                     try? persistenceController.save()
                 }
+            // TODO: Same for iOS.
+#endif
         }
     }
 }

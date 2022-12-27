@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FeedKit
+import CoreData
 
 struct NewFeedView: View {
     @Environment(\.managedObjectContext) private var context

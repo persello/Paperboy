@@ -52,6 +52,7 @@
 		8B560DC629535B0D00564909 /* MacWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWebView.swift; sourceTree = "<group>"; };
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingModifier.swift; sourceTree = "<group>"; };
+		8B5A48BF295B658200846E71 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
 		8B721FF8293D07E4006B618E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,11 +101,20 @@
 			path = "View Models";
 			sourceTree = "<group>";
 		};
+		8B5A48BE295B658100846E71 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8B5A48BF295B658200846E71 /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8B721FEA293D07E4006B618E = {
 			isa = PBXGroup;
 			children = (
 				8B721FF5293D07E4006B618E /* Paperboy */,
 				8B721FF4293D07E4006B618E /* Products */,
+				8B5A48BE295B658100846E71 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

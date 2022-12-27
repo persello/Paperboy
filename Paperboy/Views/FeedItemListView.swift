@@ -50,6 +50,9 @@ struct FeedItemListView: View {
                                     try? context.save()
                                 } label: {
                                     Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
+#if os(iOS)
+                                        .labelStyle(.iconOnly)
+#endif
                                 }
                                 .tint(item.read ? .blue : .orange)
                             }
@@ -57,7 +60,11 @@ struct FeedItemListView: View {
                     }
                 }
             }
-            .listStyle(BorderedListStyle(alternatesRowBackgrounds: true))
+            #if os(macOS)
+            .listStyle(.bordered(alternatesRowBackgrounds: true))
+            #elseif os(iOS)
+            .listStyle(.plain)
+            #endif
         }
         .refreshable {
             Task {
@@ -107,7 +114,9 @@ struct FeedItemListView: View {
             }
         }
         .navigationTitle(feed.normalisedTitle)
+        #if os(macOS)
         .navigationSubtitle(feed.itemsToRead > 0 ? "\(feed.itemsToRead) to read" : "You're up to date")
+        #endif
     }
 }
 
