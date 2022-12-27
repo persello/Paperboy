@@ -18,9 +18,17 @@ struct ContentView: View {
             FeedListView()
                 .navigationTitle("Paperboy")
         } content: {
-            EmptyView()
+            VStack {
+                Text("No feed selected")
+                    .font(.title)
+                Text("Choose a feed from the sidebar.")
+                    .foregroundColor(.secondary)
+            }
         } detail: {
-            EmptyView()
+            Image(systemSymbol: .newspaper)
+                .resizable()
+                .frame(width: 200, height: 200)
+                .foregroundStyle(.thinMaterial)
         }
         .withErrorHandling()
     }
@@ -32,5 +40,7 @@ struct ContentView_Previews: PreviewProvider {
         
         ContentView()
             .environment(\.managedObjectContext, context)
+            .previewDevice("iPad (10th generation)")
+            .previewInterfaceOrientation(.landscapeLeft)
     }
 }

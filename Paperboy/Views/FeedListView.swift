@@ -46,19 +46,30 @@ struct FeedListView: View {
     }
     
     var body: some View {
+        // TODO: Not an ideal solution. Find alternatives.
         TimelineView(.periodic(from: .now, by: 3)) { _ in
-            List(selection: $selection) {
-                OutlineGroup(structure, children: \.children) { item in
-                    switch item.content {
-                    case .feed(let feed):
-                        FeedListRowFeed(feed: feed, folders: Array(folders))
-                    case .folder(let folder):
-                        FeedListRowFolder(folder: folder)
+            if structure.count > 0 {
+                List(selection: $selection) {
+                    OutlineGroup(structure, children: \.children) { item in
+                        switch item.content {
+                        case .feed(let feed):
+                            FeedListRowFeed(feed: feed, folders: Array(folders))
+                        case .folder(let folder):
+                            FeedListRowFolder(folder: folder)
+                        }
                     }
+                }
+            } else {
+                VStack {
+                    Text("No feeds")
+                        .font(.title)
+                    Text("Tap on \(Image(systemSymbol: .plus)) to add a new feed.")
+                        .foregroundColor(.secondary)
                 }
             }
         }
         .toolbar {
+#if os(macOS)
             Menu {
                 Button {
                     newFolderSheetPresented = true
@@ -66,12 +77,29 @@ struct FeedListView: View {
                     Label("New folder...", systemSymbol: .folderBadgePlus)
                 }
             } label: {
-                Image(systemSymbol: .plus)
+                Label("New feed...", systemSymbol: .plus)
             } primaryAction: {
                 newFeedSheetPresented = true
             }
             .menuStyle(.button)
             .frame(width: 60)
+#else
+            Menu {
+                Button {
+                    newFeedSheetPresented = true
+                } label: {
+                    Label("New feed...", systemSymbol: .linkBadgePlus)
+                }
+                
+                Button {
+                    newFolderSheetPresented = true
+                } label: {
+                    Label("New folder...", systemSymbol: .folderBadgePlus)
+                }
+            } label: {
+                Label("New...", systemSymbol: .plus)
+            }
+#endif
         }
         .sheet(isPresented: $newFeedSheetPresented) {
             NewFeedView(modalShown: $newFeedSheetPresented, link: $newFeedLink)
