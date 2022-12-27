@@ -29,16 +29,6 @@ struct FeedItemListView: View {
         return dateFormatter.string(for: date) ?? "Unknown date"
     }
     
-    init(for feed: FeedModel) {
-        self.feed = feed
-        
-        let request = FeedItemModel.fetchRequest()
-        request.predicate = NSPredicate(format: "feed.url = %@", feed.url! as CVarArg)
-        request.sortDescriptors = [
-            NSSortDescriptor(keyPath: \FeedItemModel.publicationDate, ascending: false)
-        ]
-    }
-    
     var body: some View {
         Group {
             List(selection: $selection) {
@@ -83,6 +73,17 @@ struct FeedItemListView: View {
                 Label("Refresh", systemSymbol: .arrowClockwise)
             }
             #endif
+            
+            Menu {
+                Button {
+                    feed.markAllAsRead()
+                } label: {
+                    Label("Mark all as read", systemSymbol: .eye)
+                }
+                .disabled(feed.itemsToRead == 0)
+            } label: {
+                Label("View options...", systemSymbol: .ellipsisCircle)
+            }
         }
         .task(id: feed) {
             await feed.refresh(onlyAfter: 30)
@@ -101,7 +102,7 @@ struct FeedItemsListView_Previews: PreviewProvider {
         ninetofivemac.title = "9to5Mac"
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
-        return FeedItemListView(for: ninetofivemac)
+        return FeedItemListView(feed: ninetofivemac)
                 .environment(\.managedObjectContext, context)
     }
 }

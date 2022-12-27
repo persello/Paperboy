@@ -42,6 +42,7 @@ struct ReaderView: View {
                     self.url = url
                 }
             }
+            .frame(minWidth: 600, minHeight: 400)
 #endif
     }
 }

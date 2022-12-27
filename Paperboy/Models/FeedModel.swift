@@ -204,9 +204,12 @@ extension FeedModel {
     }
     
     var itemsToRead: Int {
-        let predicate = NSPredicate(format: "read == NO")
+        let request = FeedItemModel.fetchRequest()
+        request.predicate = NSPredicate(format: "feed == %@ AND read == NO", self)
         
-        return items?.filtered(using: predicate).count ?? 0
+        let items = try? self.managedObjectContext?.fetch(request)
+        
+        return items?.count ?? 0
     }
     
     var groupedItems: [(Date?, [FeedItemModel])] {

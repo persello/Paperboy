@@ -11,15 +11,8 @@ import SFSafeSymbols
 struct FeedListView: View {
     @Environment(\.managedObjectContext) private var context
     
-    @FetchRequest(
-        sortDescriptors: [],
-        animation: .default
-    ) private var feeds: FetchedResults<FeedModel>
-    
-    @FetchRequest(
-        sortDescriptors: [],
-        animation: .default
-    ) private var folders: FetchedResults<FeedFolderModel>
+    @FetchRequest(sortDescriptors: []) private var feeds: FetchedResults<FeedModel>
+    @FetchRequest(sortDescriptors: []) private var folders: FetchedResults<FeedFolderModel>
     
     @State private var selection: FeedListViewModel? = nil
     @State private var newFeedSheetPresented: Bool = false
@@ -54,23 +47,21 @@ struct FeedListView: View {
                 switch item.content {
                 case .feed(let feed):
                     NavigationLink {
-                        FeedItemListView(for: feed)
+                        FeedItemListView(feed: feed)
                     } label: {
                         FeedListRow(feed: feed)
                     }
                     .contextMenu {
-                        Button {
-                            feedToBeDeleted = feed
-                        } label: {
-                            Text("Delete...")
-                        }
-                        
-                        if feed.itemsToRead > 0 {
+                        // Sucks but I can't seem to face up to the fact that I can't use Core Data.
+                        TimelineView(.periodic(from: .now, by: 1)) { _ in
                             Button {
                                 feed.markAllAsRead()
                             } label : {
                                 Text("Mark all as read")
                             }
+                            .disabled(feed.itemsToRead == 0)
+                            
+                            Divider()
                         }
                         
                         Menu("Move to folder") {
@@ -84,6 +75,12 @@ struct FeedListView: View {
                             }
                         }
                         .labelStyle(.titleAndIcon)
+                        
+                        Button {
+                            feedToBeDeleted = feed
+                        } label: {
+                            Text("Delete...")
+                        }
                     }
                     .alert(item: $feedToBeDeleted, content: { feed in
                         Alert(
@@ -94,7 +91,7 @@ struct FeedListView: View {
                                 action: {
                                     feedToBeDeleted = nil
                                     context.delete(feed)
-                                    
+
                                     try? context.save()
                                 }
                             ),
@@ -153,13 +150,6 @@ struct FeedListView: View {
         .onOpenURL { url in
             newFeedLink = url.absoluteString
             newFeedSheetPresented = true
-        }
-        .onChange(of: newFeedSheetPresented) { newValue in
-            
-            // Reset new feed link between sessions.
-            if newFeedSheetPresented == false {
-                newFeedLink = ""
-            }
         }
     }
 }

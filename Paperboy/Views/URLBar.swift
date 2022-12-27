@@ -22,26 +22,36 @@ struct URLBar: View {
     }
     
     var body: some View {
-        VStack {
-            Text("\(title)")
-                .truncationMode(.tail)
-                .lineLimit(1)
-                .frame(idealWidth: 300)
-                .padding(.top, 4)
-                .padding(.bottom, -6)
-            ProgressView(value: progress, total: 1.0)
-                .progressViewStyle(.linear)
-                .padding(.vertical, -8)
-                .padding(.horizontal, -4)
-                .opacity(visible ? 1 : 0)
-                .animation(.linear, value: visible)
-                .frame(height: 4)
-                .clipped()
-        }
+        ZStack(alignment: .trailingFirstTextBaseline) {
+            VStack {
+                Text("\(title)")
+                    .truncationMode(.tail)
+                    .lineLimit(1)
+                    .frame(idealWidth: 300)
+                    .padding(.top, 4)
+                    .padding(.bottom, -6)
+                ProgressView(value: progress, total: 1.0)
+                    .progressViewStyle(.linear)
+                    .padding(.vertical, -8)
+                    .padding(.horizontal, -4)
+                    .opacity(visible ? 1 : 0)
+                    .animation(.linear, value: visible)
+                    .frame(height: 4)
+                    .clipped()
+            }
             .background(.foreground.opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 6))
+            
+            Link(destination: url) {
+                Label("Open in Safari", systemSymbol: .safari)
+                    .labelStyle(.iconOnly)
+            }
+            .foregroundColor(.secondary)
+            .padding(.trailing, 8)
+        }
     }
 }
+
 
 struct URLBar_Previews: PreviewProvider {
     static var previews: some View {

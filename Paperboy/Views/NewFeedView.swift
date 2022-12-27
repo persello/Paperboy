@@ -96,6 +96,7 @@ struct NewFeedView: View {
                 Spacer()
                 
                 Button("Cancel", role: .cancel, action: {
+                    link = ""
                     modalShown = false
                 })
                 .keyboardShortcut(.cancelAction)
@@ -111,8 +112,9 @@ struct NewFeedView: View {
                     // TODO: Check for duplicates.
                     
                     let _ = FeedModel(selectedFeed, in: context)
+                    link = ""
                     modalShown = false
-                    
+                                        
                     // TODO: Error management.
                     try? context.save()
                 })

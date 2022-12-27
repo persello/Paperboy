@@ -36,4 +36,8 @@ extension FeedItemModel {
         
         return articleDescription
     }
+    
+    public override func willSave() {
+        self.feed?.objectWillChange.send()
+    }
 }
