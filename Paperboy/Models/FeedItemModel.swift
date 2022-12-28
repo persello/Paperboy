@@ -8,8 +8,11 @@
 import Foundation
 import CoreData
 import SwiftSoup
+import os
 
 extension FeedItemModel {
+
+    static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FeedItemModel")
     
     // MARK: Initialisers.
     convenience init<F: FeedItemProtocol>(from item: F, context: NSManagedObjectContext) {
@@ -27,13 +30,18 @@ extension FeedItemModel {
         }
         
         DispatchQueue.global(qos: .background).async {
+
+            Self.logger.info("Fetching wallpaper for \"\(self.normalisedTitle)\".")
+
             guard let description = self.articleDescription else {
+                Self.logger.info("No description for \"\(self.normalisedTitle)\".")
                 return
             }
             
             let document = try? SwiftSoup.parse(description)
             let image = try? document?.select("img").first()
             guard let src = try? image?.attr("src") else {
+                Self.logger.info("No image found in description of \"\(self.normalisedTitle)\".")
                 return
             }
 
@@ -49,15 +57,17 @@ extension FeedItemModel {
     }
     
     var normalisedContentDescription: String? {
-        guard let description = self.articleDescription else {
-            return nil
+        get async {
+            guard let description = self.articleDescription else {
+                return nil
+            }
+            
+            return await withCheckedContinuation({ continuation in
+                let document = try? SwiftSoup.parse(description)
+                let paragraph = try? document?.select("p").first()
+                continuation.resume(returning: paragraph?.ownText())
+            })
         }
-        
-        let document = try? SwiftSoup.parse(description)
-        let paragraph = try? document?.select("p").first()
-        let articleDescription = paragraph?.ownText()
-        
-        return articleDescription
     }
     
     public override func willSave() {

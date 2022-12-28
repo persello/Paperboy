@@ -16,7 +16,7 @@
 		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
 		8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */; };
 		8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48C4295B843900846E71 /* iOSWebView.swift */; };
-		8B689993295C51080019CB40 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 8B689992295C51080019CB40 /* CachedAsyncImage */; };
+		8B68999A295C821A0019CB40 /* Telescope in Frameworks */ = {isa = PBXBuildFile; productRef = 8B689999295C821A0019CB40 /* Telescope */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
 		8B721FFB293D07E5006B618E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8B721FFA293D07E5006B618E /* Assets.xcassets */; };
@@ -89,8 +89,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */,
-				8B689993295C51080019CB40 /* CachedAsyncImage in Frameworks */,
 				8B8A837B2945294B00D93109 /* FaviconFinder in Frameworks */,
+				8B68999A295C821A0019CB40 /* Telescope in Frameworks */,
 				8B8A83802945306100D93109 /* SwiftSoup in Frameworks */,
 				8B722007293D080F006B618E /* FeedKit in Frameworks */,
 			);
@@ -113,6 +113,14 @@
 				8B5A48BF295B658200846E71 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		8B689994295C61490019CB40 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		8B721FEA293D07E4006B618E = {
@@ -140,8 +148,8 @@
 				8B766E1129424C7D00CFBDA8 /* Models */,
 				8B1559C3295A0DD0008B5F1A /* View Models */,
 				8B722008293D09AF006B618E /* Views */,
+				8B689994295C61490019CB40 /* Utilities */,
 				8B721FF8293D07E4006B618E /* ContentView.swift */,
-				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 				8B721FF6293D07E4006B618E /* PaperboyApp.swift */,
 				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 				8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */,
@@ -225,7 +233,7 @@
 				8B8A837A2945294B00D93109 /* FaviconFinder */,
 				8B8A837F2945306100D93109 /* SwiftSoup */,
 				8BA8A4422957532400C570CA /* SFSafeSymbols */,
-				8B689992295C51080019CB40 /* CachedAsyncImage */,
+				8B689999295C821A0019CB40 /* Telescope */,
 			);
 			productName = Paperboy;
 			productReference = 8B721FF3293D07E4006B618E /* Paperboy.app */;
@@ -261,7 +269,7 @@
 				8B8A837E2945306100D93109 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				8B560DC12953590500564909 /* XCRemoteSwiftPackageReference "SwiftUIWKWebView" */,
 				8BA8A4412957532400C570CA /* XCRemoteSwiftPackageReference "SFSafeSymbols" */,
-				8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
+				8B689998295C821A0019CB40 /* XCRemoteSwiftPackageReference "telescope" */,
 			);
 			productRefGroup = 8B721FF4293D07E4006B618E /* Products */;
 			projectDirPath = "";
@@ -557,12 +565,12 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+		8B689998295C821A0019CB40 /* XCRemoteSwiftPackageReference "telescope" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image";
+			repositoryURL = "https://github.com/persello/telescope";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				branch = main;
+				kind = branch;
 			};
 		};
 		8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */ = {
@@ -600,10 +608,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8B689992295C51080019CB40 /* CachedAsyncImage */ = {
+		8B689999295C821A0019CB40 /* Telescope */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8B5A48C6295B886900846E71 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
-			productName = CachedAsyncImage;
+			package = 8B689998295C821A0019CB40 /* XCRemoteSwiftPackageReference "telescope" */;
+			productName = Telescope;
 		};
 		8B722006293D080F006B618E /* FeedKit */ = {
 			isa = XCSwiftPackageProductDependency;

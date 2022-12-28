@@ -8,13 +8,20 @@
 import SwiftUI
 import SwiftSoup
 import SFSafeSymbols
-import CachedAsyncImage
+import Telescope
 
 struct FeedItemListRow: View {
     @ScaledMetric var imageSize: CGFloat = 100
     @Environment(\.dynamicTypeSize) var dynamicTypeSize
     
     @ObservedObject var feedItem: FeedItemModel
+    
+    // Expensive computations done in a task.
+    @State var description: String? = nil
+    @State var date: String? = nil
+    
+    // Computation finished marker.
+    @State var taskCompleted: Bool = false
     
     static let imageCache = URLCache(memoryCapacity: 128 * 1024 * 1024, diskCapacity: 1 * 1024 * 1024 * 1024)
     
@@ -25,29 +32,35 @@ struct FeedItemListRow: View {
         return formatter
     }()
     
-    var wallpaperURL: URL? {
-        if dynamicTypeSize < .accessibility1 {
-            return feedItem.wallpaperURL
+    var largeLayout: Bool {
+        return dynamicTypeSize >= .accessibility1
+    }
+    
+    var computedPadding: EdgeInsets {
+        if feedItem.wallpaperURL != nil && !largeLayout {
+            // Image shown...
+            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+        } else {
+            return .init(top: 8, leading: 16, bottom: 8, trailing: 0)
         }
-        
-        return nil
     }
         
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            if let wallpaperURL {
-                CachedAsyncImage(url: wallpaperURL, urlCache: Self.imageCache) { image in
-                    image.resizable()
-                } placeholder: {
-                    ProgressView()
-                }
-                .scaledToFill()
-                .frame(width: imageSize, height: imageSize)
-                #if os(macOS)
-                .clipShape(RoundedRectangle(cornerRadius: 2))
-                #else
-                .clipShape(Rectangle())
-                #endif
+            if !largeLayout,
+               let wallpaperURL = feedItem.wallpaperURL {
+                TImage(RemoteImage(imageURL: wallpaperURL))
+                    .resizable()
+                    .placeholder({
+                        ProgressView()
+                    })
+                    .scaledToFill()
+                    .frame(width: imageSize, height: imageSize)
+#if os(macOS)
+                    .clipShape(RoundedRectangle(cornerRadius: 2))
+#else
+                    .clipShape(Rectangle())
+#endif
             }
             
             VStack(alignment: .leading, spacing: 4) {
@@ -61,21 +74,29 @@ struct FeedItemListRow: View {
                     }
                     .lineLimit(3)
                         
-                    if let date = feedItem.publicationDate {
-                        Text("\(Self.dateFormatter.string(for: date)!)")
+                    if let date {
+                        Text(date)
                             .font(.subheadline)
                             .foregroundColor(.secondary)
+                    } else {
+                        Text("21 December 2022, 18:15 PM")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .redacted(reason: .placeholder)
                     }
                 }
                 .imageScale(.small)
                 
-                if let description = feedItem.normalisedContentDescription,
-                   dynamicTypeSize < .accessibility1{
-                    Text(description)
+                if !largeLayout {
+                    if let description {
+                        Text(description)
+                    } else {
+                        Text(String(repeating: "A ", count: Int.random(in: 15...30)))
+                            .redacted(reason: .placeholder)
+                    }
                 }
             }
-            .padding(.leading, wallpaperURL == nil ? 16 : 0)
-            .padding(.vertical, wallpaperURL == nil ? 8 : 0)
+            .padding(computedPadding)
         }
         .frame(maxHeight: imageSize)
 #if os(macOS)
@@ -84,6 +105,11 @@ struct FeedItemListRow: View {
 #endif
         .task {
             feedItem.updateWallpaper()
+            description = await feedItem.normalisedContentDescription
+            if let publicationDate = feedItem.publicationDate {
+                date = Self.dateFormatter.string(from: publicationDate)
+            }
+            taskCompleted = true
         }
     }
 }
