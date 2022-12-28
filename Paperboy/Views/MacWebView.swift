@@ -20,7 +20,7 @@ struct MacWebView: NSViewRepresentable {
     private var webView: WKWebView!
     
     private var request: URLRequest {
-        var request = URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData)
+        var request = URLRequest(url: url)
         request.assumesHTTP3Capable = true
         return request
     }

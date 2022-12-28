@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import BetterSafariView
 
 struct ReaderView: View {
     @Environment(\.managedObjectContext) private var context

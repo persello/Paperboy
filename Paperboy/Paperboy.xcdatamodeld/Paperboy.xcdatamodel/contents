@@ -11,6 +11,7 @@
         <attribute name="read" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="URI"/>
+        <attribute name="wallpaperURL" optional="YES" attributeType="URI"/>
         <relationship name="feed" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FeedModel" inverseName="items" inverseEntity="FeedModel"/>
     </entity>
     <entity name="FeedModel" representedClassName="FeedModel" syncable="YES" codeGenerationType="class">

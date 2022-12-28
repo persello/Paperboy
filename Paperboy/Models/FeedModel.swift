@@ -89,9 +89,9 @@ extension FeedModel {
             }
 
             // Set titles.
+            let dateFormatter: DateFormatter = DateFormatter()
             for index in 0..<groupedItems.count {
                 let item = groupedItems[index]
-                let dateFormatter: DateFormatter = DateFormatter()
 
                 // Choose date format dynamically.
                 switch timeFrame {

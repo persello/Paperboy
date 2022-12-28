@@ -18,40 +18,25 @@ struct FeedItemListRow: View {
     
     static let imageCache = URLCache(memoryCapacity: 128 * 1024 * 1024, diskCapacity: 1 * 1024 * 1024 * 1024)
     
-    var dateFormatter: DateFormatter {
+    static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
         formatter.timeStyle = .short
         return formatter
-    }
+    }()
     
-    var imageURL: URL? {
-        guard let description = feedItem.articleDescription else {
-            return nil
-        }
-        
-        let document = try? SwiftSoup.parse(description)
-        let image = try? document?.select("img").first()
-        guard let src = try? image?.attr("src") else {
-            return nil
-        }
-        
-        return URL(string: src)
-    }
-    
-    var image: URL? {
-        if let imageURL,
-           dynamicTypeSize < .accessibility1 {
-            return imageURL
+    var wallpaperURL: URL? {
+        if dynamicTypeSize < .accessibility1 {
+            return feedItem.wallpaperURL
         }
         
         return nil
     }
-    
+        
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
-            if let image {
-                CachedAsyncImage(url: image, urlCache: Self.imageCache) { image in
+            if let wallpaperURL {
+                CachedAsyncImage(url: wallpaperURL, urlCache: Self.imageCache) { image in
                     image.resizable()
                 } placeholder: {
                     ProgressView()
@@ -77,7 +62,7 @@ struct FeedItemListRow: View {
                     .lineLimit(3)
                         
                     if let date = feedItem.publicationDate {
-                        Text("\(self.dateFormatter.string(for: date)!)")
+                        Text("\(Self.dateFormatter.string(for: date)!)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -89,14 +74,17 @@ struct FeedItemListRow: View {
                     Text(description)
                 }
             }
-            .padding(.leading, image == nil ? 16 : 0)
-            .padding(.vertical, image == nil ? 8 : 0)
+            .padding(.leading, wallpaperURL == nil ? 16 : 0)
+            .padding(.vertical, wallpaperURL == nil ? 8 : 0)
         }
         .frame(maxHeight: imageSize)
 #if os(macOS)
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
 #endif
+        .task {
+            feedItem.updateWallpaper()
+        }
     }
 }
 
