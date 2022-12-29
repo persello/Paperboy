@@ -1,0 +1,59 @@
+{
+  "pins" : [
+    {
+      "identity" : "faviconfinder",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/will-lumley/FaviconFinder",
+      "state" : {
+        "revision" : "b8cde6c03b0cf72829b327c2c537bd39c1a8f60b",
+        "version" : "4.1.0"
+      }
+    },
+    {
+      "identity" : "feedkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nmdias/FeedKit",
+      "state" : {
+        "revision" : "68493a33d862c33c9a9f67ec729b3b7df1b20ade",
+        "version" : "9.1.2"
+      }
+    },
+    {
+      "identity" : "sfsafesymbols",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SFSafeSymbols/SFSafeSymbols",
+      "state" : {
+        "revision" : "50bc33264e6c0972f905b61af656201cf6091de8",
+        "version" : "4.0.0"
+      }
+    },
+    {
+      "identity" : "swiftsoup",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/scinfu/SwiftSoup.git",
+      "state" : {
+        "revision" : "6778575285177365cbad3e5b8a72f2a20583cfec",
+        "version" : "2.4.3"
+      }
+    },
+    {
+      "identity" : "swiftuiwkwebview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/JakubMazur/SwiftUIWKWebView",
+      "state" : {
+        "revision" : "f2ceb5d9350cf6e320db657b7700409d5bae3a8c",
+        "version" : "1.0.6"
+      }
+    },
+    {
+      "identity" : "telescope",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/persello/telescope",
+      "state" : {
+        "revision" : "c2f2852bf31fe390f856ff499d9ab567f1d8b91d",
+        "version" : "1.4.2"
+      }
+    }
+  ],
+  "version" : 2
+}

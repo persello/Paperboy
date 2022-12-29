@@ -573,8 +573,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/persello/telescope";
 			requirement = {
-				branch = main;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 		8B722005293D080F006B618E /* XCRemoteSwiftPackageReference "FeedKit" */ = {
