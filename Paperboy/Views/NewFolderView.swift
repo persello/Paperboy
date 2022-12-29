@@ -13,6 +13,7 @@ struct NewFolderView: View {
     
     @Binding var modalShown: Bool
     
+    @FocusState private var textFieldFocused: Bool
     @State private var icon: SFSymbol = .folder
     @State private var name: String = ""
         
@@ -58,60 +59,59 @@ struct NewFolderView: View {
     ]
     
     var body: some View {
-        VStack {
-            Image(systemSymbol: icon)
-                .font(.largeTitle)
-                .frame(width: 100, height: 100)
-                .background(.quaternary)
-                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-            
-            Text("Create a new folder")
-                .font(.largeTitle.bold())
-            
-            Form {
-                TextField("Name", text: $name, prompt: Text("Folder"))
-                Section("Icon") {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 15))]) {
-                        ForEach(symbols, id: \.rawValue) { symbol in
-                            Button {
-                                icon = symbol
-                            } label: {
-                                Image(systemSymbol: symbol)
-                                    .foregroundColor(icon == symbol ? .accentColor : .secondary)
+        CustomSheet {
+            VStack {
+                Image(systemSymbol: icon)
+                    .font(.largeTitle)
+                    .frame(width: 100, height: 100)
+                    .background(.quaternary)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                
+                Text("Create a new folder")
+                    .font(.largeTitle.bold())
+                
+                Form {
+                    TextField("Name", text: $name, prompt: Text("Folder"))
+                        .focused($textFieldFocused)
+                    Section("Icon") {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 15))]) {
+                            ForEach(symbols, id: \.rawValue) { symbol in
+                                Button {
+                                    icon = symbol
+                                } label: {
+                                    Image(systemSymbol: symbol)
+                                        .foregroundColor(icon == symbol ? .accentColor : .secondary)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
                     }
                 }
+                .formStyle(.grouped)
+                .onAppear {
+                    self.textFieldFocused = true
+                }
             }
-            .formStyle(.grouped)
-            
-            HStack {
-                Spacer()
-                
-                Button("Cancel", role: .cancel, action: {
-                    modalShown = false
-                })
-                .keyboardShortcut(.cancelAction)
-                .controlSize(.large)
-                
-                Button("Add", action: {
-                    let folder = FeedFolderModel(context: context)
-                    folder.name = name
-                    folder.icon = icon.rawValue
-                    modalShown = false
-                    
-                    // TODO: Error management.
-                    try? context.save()
-                })
-                .keyboardShortcut(.defaultAction)
-                .controlSize(.large)
-                .tint(.accentColor)
-                .disabled(self.name.isEmpty)
+        } cancelButton: {
+            Button {
+                modalShown = false
+            } label: {
+                Text("Cancel")
             }
+        } doneButton: {
+            Button {
+                let folder = FeedFolderModel(context: context)
+                folder.name = name
+                folder.icon = icon.rawValue
+                modalShown = false
+                
+                // TODO: Error management.
+                try? context.save()
+            } label: {
+                Text("Add")
+            }
+            .disabled(self.name.isEmpty)
         }
-        .frame(minWidth: 600, maxHeight: 500)
-        .padding()
     }
 }
 

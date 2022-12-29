@@ -124,7 +124,7 @@ class FeedDiscovery {
 
         Self.logger.info("Parsing feed for \(url.absoluteString).")
 
-        guard let (data, response) = try? await URLSession.shared.data(from: url) else {
+        guard let (data, _) = try? await URLSession.shared.data(from: url) else {
             Self.logger.warning("Error while fetching data from \(url.absoluteString).")
             return .failure(ParserError.feedNotFound)
         }

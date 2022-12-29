@@ -102,7 +102,7 @@ struct FeedListView: View {
 #endif
         }
         .sheet(isPresented: $newFeedSheetPresented) {
-            NewFeedView(modalShown: $newFeedSheetPresented, link: $newFeedLink)
+            NewFeedView(modalShown: $newFeedSheetPresented, link: newFeedLink)
         }
         .sheet(isPresented: $newFolderSheetPresented) {
             NewFolderView(modalShown: $newFolderSheetPresented)
@@ -110,6 +110,12 @@ struct FeedListView: View {
         .onOpenURL { url in
             newFeedLink = url.absoluteString
             newFeedSheetPresented = true
+        }
+        .onChange(of: newFeedSheetPresented) { newValue in
+            // Reset the new feed link after the first disappearance of the sheet.
+            if newFeedSheetPresented == false {
+                newFeedLink = ""
+            }
         }
     }
 }

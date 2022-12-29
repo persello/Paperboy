@@ -31,6 +31,7 @@
 		8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1229424C8B00CFBDA8 /* FeedModel.swift */; };
 		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
 		8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */; };
+		8B825C29295DB0C400098225 /* CustomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B825C28295DB0C400098225 /* CustomSheet.swift */; };
 		8B88B65529564DBC004123F7 /* URLBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65429564DBC004123F7 /* URLBar.swift */; };
 		8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */; };
 		8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */; };
@@ -72,6 +73,7 @@
 		8B766E1229424C8B00CFBDA8 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
 		8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDiscovery.swift; sourceTree = "<group>"; };
+		8B825C28295DB0C400098225 /* CustomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheet.swift; sourceTree = "<group>"; };
 		8B88B65429564DBC004123F7 /* URLBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBar.swift; sourceTree = "<group>"; };
 		8B88B65629565E3E004123F7 /* Atom+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedProtocol.swift"; sourceTree = "<group>"; };
 		8B88B65829566038004123F7 /* Atom+FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Atom+FeedItemProtocol.swift"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 				8BA8A4442957564E00C570CA /* NewFolderView.swift */,
 				8B560DC42953591400564909 /* ReaderView.swift */,
 				8B88B65429564DBC004123F7 /* URLBar.swift */,
+				8B825C28295DB0C400098225 /* CustomSheet.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
 				8B8C71AE295B9C6E00EA710E /* FeedListRowFeed.swift in Sources */,
+				8B825C29295DB0C400098225 /* CustomSheet.swift in Sources */,
 				8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */,
 				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
