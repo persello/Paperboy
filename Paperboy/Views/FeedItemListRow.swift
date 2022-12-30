@@ -90,7 +90,7 @@ struct FeedItemListRow: View {
                 if !largeLayout {
                     if let description {
                         Text(description)
-                    } else {
+                    } else if !taskCompleted {
                         Text(String(repeating: "A ", count: Int.random(in: 15...30)))
                             .redacted(reason: .placeholder)
                     }

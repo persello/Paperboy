@@ -85,14 +85,18 @@ extension FeedItemModel {
             return await withCheckedContinuation({ continuation in
                 
                 Self.signposter.emitEvent("Starting HTML parser.", id: signpostID)
-                
-                let document = try? SwiftSoup.parse(description)
-                let paragraph = try? document?.select("p").first()
-                let text = paragraph?.ownText()
-                
-                Self.signposter.emitEvent("Found paragraph.", id: signpostID)
-                
-                continuation.resume(returning: text)
+                do {
+                    let document = try SwiftSoup.parse(description)
+                    let paragraph = try document.select("p").first()
+                    let body = document.body()
+                    let text = paragraph?.ownText() ?? body?.ownText()
+                    
+                    Self.signposter.emitEvent("Found paragraph.", id: signpostID)
+                    
+                    continuation.resume(returning: text)
+                } catch {
+                    continuation.resume(returning: nil)
+                }
             })
         }
     }

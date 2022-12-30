@@ -538,9 +538,9 @@ extension FeedModel {
         request.entity = NSEntityDescription.entity(forEntityName: "FeedItemModel", in: context)
         request.predicate = NSPredicate(format: "feed == %@ AND read == NO", self)
         
-        let toRead = try? context.fetch(request)
+        let toRead = try? context.count(for: request)
         
-        return toRead?.count ?? 0
+        return toRead ?? 0
     }
 
     var groupedItems: [GroupedFeedItems] {
