@@ -333,6 +333,39 @@ extension FeedModel {
             self.addToItems(NSSet(set: itemSet))
         }
         
+        // Deduplicate existing items by using URL, date and normalised title.
+        // This is necessary because CloudKit does not support unique constraints.
+        for item in self.items! {
+            guard let itemModel = item as? FeedItemModel else {
+                continue
+            }
+            
+            let duplicates = self.items!.filter({ existingItem in
+                guard let existingItemModel = existingItem as? FeedItemModel else {
+                    return false
+                }
+                
+                return existingItemModel.url == itemModel.url &&
+                    existingItemModel.publicationDate == itemModel.publicationDate &&
+                    existingItemModel.normalisedTitle == itemModel.normalisedTitle
+            })
+            
+            if duplicates.count > 1 {
+                Self.logger.info("Found \(duplicates.count) duplicates for item \"\(itemModel.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
+                
+                for duplicate in duplicates {
+                    guard let duplicateModel = duplicate as? FeedItemModel else {
+                        continue
+                    }
+                    
+                    if duplicateModel != itemModel {
+                        Self.logger.info("Deleting duplicate item \"\(duplicateModel.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
+                        context.delete(duplicateModel)
+                    }
+                }
+            }
+        }
+        
         // Icon
         try await self.refreshIcon()
         
@@ -395,9 +428,8 @@ extension FeedModel {
         request.entity = NSEntityDescription.entity(forEntityName: "FeedItemModel", in: context)
         request.predicate = NSPredicate(format: "feed == %@ AND read == NO", self)
         
-        let items = try? context.fetch(request)
-        
-        return items?.count ?? 0
+        let toRead = try? context.fetch(request)
+        return toRead?.count ?? 0
     }
 
     var groupedItems: [GroupedFeedItems] {
