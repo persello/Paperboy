@@ -518,26 +518,10 @@ extension FeedModel {
         return self.title ?? "Unnamed feed"
     }
     
-    var itemsToRead: Int {
+    var unreadCount: Int {
         
-        let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("itemsToRead", id: signpostID, "\(self.normalisedTitle)")
-        
-        defer {
-            Self.signposter.endInterval("itemsToRead", state)
-        }
-        
-        let context = PersistenceController.shared.container.viewContext
-        
-        Self.signposter.emitEvent("Starting fetch request.", id: signpostID)
-        
-        let request = FeedItemModel.fetchRequest()
-        request.entity = NSEntityDescription.entity(forEntityName: "FeedItemModel", in: context)
-        request.predicate = NSPredicate(format: "feed == %@ AND read == NO", self)
-        
-        let toRead = try? context.count(for: request)
-        
-        return toRead ?? 0
+        let itemsToRead = self.value(forKey: "itemsToRead") as! [FeedItemModel]
+        return itemsToRead.count
     }
 
     var groupedItems: [GroupedFeedItems] {

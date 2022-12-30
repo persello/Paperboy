@@ -22,5 +22,8 @@
         <attribute name="url" optional="YES" attributeType="URI"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FeedFolderModel" inverseName="feeds" inverseEntity="FeedFolderModel"/>
         <relationship name="items" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FeedItemModel" inverseName="feed" inverseEntity="FeedItemModel"/>
+        <fetchedProperty name="itemsToRead" optional="YES">
+            <fetchRequest name="fetchedPropertyFetchRequest" entity="FeedItemModel" predicateString="feed == $FETCH_SOURCE AND read == NO"/>
+        </fetchedProperty>
     </entity>
 </model>

@@ -30,7 +30,7 @@ struct FeedLabel: View {
                 Image(systemSymbol: .newspaper)
             }
         }
-        .badge(feed.itemsToRead)
+        .badge(feed.unreadCount)
     }
 }
 

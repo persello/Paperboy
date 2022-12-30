@@ -124,7 +124,7 @@ struct FeedItemListView: View {
                 } label: {
                     Label("Mark all as read", systemSymbol: .eye)
                 }
-                .disabled(feed.itemsToRead == 0)
+                .disabled(feed.unreadCount == 0)
             } label: {
                 Label("View options...", systemSymbol: .ellipsisCircle)
             }
