@@ -16,11 +16,7 @@ struct FeedListRowFeed: View {
     @State private var deleting: Bool = false
     
     var body: some View {
-        NavigationLink {
-            FeedItemListView(feed: feed)
-        } label: {
-            FeedLabel(feed: feed)
-        }
+        FeedLabel(feed: feed)
         .contextMenu {
             Button {
                 feed.markAllAsRead()

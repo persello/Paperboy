@@ -19,7 +19,7 @@ struct FeedListView: View {
     @FetchRequest(sortDescriptors: [])
     private var folders: FetchedResults<FeedFolderModel>
     
-    @State private var selection: FeedListViewModel? = nil
+    @Binding var selection: FeedListViewModel?
     @State private var newFeedSheetPresented: Bool = false
     @State private var newFolderSheetPresented: Bool = false
     @State private var newFeedLink: String = ""
@@ -54,7 +54,9 @@ struct FeedListView: View {
                     OutlineGroup(structure, children: \.children) { item in
                         switch item.content {
                         case .feed(let feed):
-                            FeedListRowFeed(feed: feed, folders: Array(folders))
+                            NavigationLink(value: item) {
+                                FeedListRowFeed(feed: feed, folders: Array(folders))
+                            }
                         case .folder(let folder):
                             FeedListRowFolder(folder: folder)
                         }
@@ -139,7 +141,7 @@ struct FeedListView_Previews: PreviewProvider {
         let context = PersistenceController.preview.container.viewContext
         
         return NavigationStack {
-            FeedListView()
+            FeedListView(selection: .constant(nil))
                 .environment(\.managedObjectContext, context)
         }
     }

@@ -12,6 +12,10 @@ import CoreImage
 import FaviconFinder
 import os
 
+#if os(iOS)
+import UIKit
+#endif
+
 extension FeedModel {
 
     static var logger: Logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FeedModel")
@@ -221,6 +225,10 @@ extension FeedModel {
         
         Self.logger.info("Setting feed status for \"\(self.normalisedTitle)\" to \(self.status).")
         
+        #if os(iOS)
+        UIApplication.shared.isNetworkActivityIndicatorVisible = (status == .refreshing)
+        #endif
+        
         DispatchQueue.main.async {
             self.status = status.rawValue
             try? self.managedObjectContext?.save()
@@ -407,13 +415,13 @@ extension FeedModel {
         // Items
         let itemSet: Set<FeedItemModel> = feed.articles
             .filter({ item in
-                !self.items!.contains(where: { existingItem in
+                !(self.items?.contains(where: { existingItem in
                     guard let existingItemModel = existingItem as? FeedItemModel else {
                         return false
                     }
                     
                     return existingItemModel.url == item.url
-                })
+                }) ?? true)
             }).map({
                 FeedItemModel(from: $0, context: context)
             }).reduce(into: Set()) { partialResult, item in

@@ -20,11 +20,38 @@ struct ReaderView: View {
     @State private var loadingProgress: Double = 0
     @State private var error: Error?
     
-    @ObservedObject private var feedItem: FeedItemModel
+    @Binding private var feedItem: FeedItemModel
     
-    init(feedItem: FeedItemModel) {
-        self._url = State(initialValue: feedItem.url ?? URL(string: "https://apple.com")!)
-        self.feedItem = feedItem
+    private var itemList: [FeedItemModel]?
+    
+    private var nextItem: FeedItemModel? {
+        guard let currentIndex = itemList?.firstIndex(of: feedItem) else { return nil }
+        let nextIndex = itemList?.index(after: currentIndex)
+        guard let nextIndex else { return nil }
+        return itemList?[safe: nextIndex]
+    }
+    
+    private var previousItem: FeedItemModel? {
+        guard let currentIndex = itemList?.firstIndex(of: feedItem) else { return nil }
+        let previousIndex = itemList?.index(before: currentIndex)
+        guard let previousIndex else { return nil }
+        return itemList?[safe: previousIndex]
+    }
+    
+    private var nextItemAvailable: Bool {
+        return nextItem != nil
+    }
+    
+    private var previousItemAvailable: Bool {
+        return previousItem != nil
+    }
+    
+    init(feedItem: Binding<FeedItemModel>, feed: FeedModel?) {
+        self._url = State(initialValue: feedItem.wrappedValue.url ?? URL(string: "https://apple.com")!)
+        self._feedItem = feedItem
+        self.itemList = (feed?.items?.allObjects as? [FeedItemModel])?.sorted(by: { a, b in
+            a.publicationDate! > b.publicationDate!
+        })
     }
     
     var body: some View {
@@ -56,23 +83,34 @@ struct ReaderView: View {
                             iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
                                 .navigationBarTitle(url.host() ?? "")
                                 .navigationBarTitleDisplayMode(.inline)
-                        }
-                    }
-                    .toolbar {
-                        ToolbarItemGroup(placement: .bottomBar) {
-                            Spacer()
-                            
-                            Button {
-                                
-                            } label: {
-                                Label("Previous article", systemSymbol: .chevronUp)
-                            }
-                            
-                            Button {
-                                
-                            } label: {
-                                Label("Next article", systemSymbol: .chevronDown)
-                            }
+                                .toolbar {
+                                    ToolbarItemGroup {
+                                        if loadingProgress != 1.0 {
+                                            ProgressView()
+                                        }
+                                    }
+                                    ToolbarItemGroup(placement: .bottomBar) {
+                                        Spacer()
+                                        
+                                        Button {
+                                            if let previousItem {
+                                                feedItem = previousItem
+                                            }
+                                        } label: {
+                                            Label("Previous article", systemSymbol: .chevronUp)
+                                        }
+                                        .disabled(!previousItemAvailable)
+                                        
+                                        Button {
+                                            if let nextItem {
+                                                feedItem = nextItem
+                                            }
+                                        } label: {
+                                            Label("Next article", systemSymbol: .chevronDown)
+                                        }
+                                        .disabled(!nextItemAvailable)
+                                    }
+                                }
                         }
                     }
 #endif
@@ -97,9 +135,6 @@ struct ReaderView: View {
                 self.url = url
             }
         }
-        #if os(macOS)
-        .frame(minWidth: 600, minHeight: 400)
-        #endif
     }
 }
 
@@ -110,7 +145,7 @@ struct ReaderView_Previews: PreviewProvider {
         let item = FeedItemModel(from: feed!.items!.first!, context: context)
         
         return NavigationStack {
-            ReaderView(feedItem: item)
+            ReaderView(feedItem: .constant(item), feed: nil)
         }
     }
 }

@@ -38,6 +38,7 @@ struct iOSRegularWebView: UIViewRepresentable {
         webView.allowsLinkPreview = true
         webView.configuration.mediaTypesRequiringUserActionForPlayback = .all
         webView.configuration.allowsInlineMediaPlayback = false
+        
 
         WKContentRuleListStore.default().compileContentRuleList(
             forIdentifier: "ContentBlockingRules",
@@ -85,6 +86,13 @@ struct iOSRegularWebView: UIViewRepresentable {
             super.init()
             
             progressObserver = self.parent.webView.observe(\.estimatedProgress, options: [.new]) { [weak self] webView, _ in
+                
+                if webView.estimatedProgress != 1.0 {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                } else {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
+                
                 DispatchQueue.main.async {
                     self?.parent.loadingProgress = webView.estimatedProgress
                 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8B13A5DC295FAA1B005D8C94 /* Collection+safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */; };
 		8B1559C22959F5E6008B5F1A /* ContentBlacklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */; };
 		8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
 		8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+safe.swift"; sourceTree = "<group>"; };
 		8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ContentBlacklist.json; sourceTree = "<group>"; };
 		8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListViewModel.swift; sourceTree = "<group>"; };
 		8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFolderModel.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			children = (
 				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
+				8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */,
 				8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */,
 				8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */,
+				8B13A5DC295FAA1B005D8C94 /* Collection+safe.swift in Sources */,
 				8B72200C293D09D7006B618E /* FeedItemListView.swift in Sources */,
 				8B8C71AE295B9C6E00EA710E /* FeedListRowFeed.swift in Sources */,
 				8B825C29295DB0C400098225 /* CustomSheet.swift in Sources */,

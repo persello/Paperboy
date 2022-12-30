@@ -30,8 +30,8 @@
             filePath = "Paperboy/Views/FeedItemListView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
             landmarkName = "previews"
             landmarkType = "24">
          </BreakpointContent>
@@ -46,9 +46,9 @@
             filePath = "Paperboy/Views/ReaderView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "27"
-            endingLineNumber = "27"
-            landmarkName = "init(feedItem:)"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "init(feedItem:feed:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

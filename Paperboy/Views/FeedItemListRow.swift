@@ -102,7 +102,6 @@ struct FeedItemListRow: View {
 #if os(macOS)
         .padding(.vertical, 4)
         .padding(.horizontal, 8)
-        .frame(minWidth: 300)
 #endif
         .task {
             feedItem.updateWallpaper()

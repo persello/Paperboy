@@ -12,8 +12,8 @@ struct FeedItemListView: View {
     @Environment(\.errorHandler) private var errorHandler
     
     @ObservedObject var feed: FeedModel
+    @Binding var selection: FeedItemModel?
     
-    @State private var selection: FeedItemModel? = nil
     @State private var groupedItems: [FeedModel.GroupedFeedItems]? = nil
     @State private var taskCompleted: Bool = false
     
@@ -43,9 +43,7 @@ struct FeedItemListView: View {
                     ForEach(groupedItems) { (group: FeedModel.GroupedFeedItems) in
                         Section(group.title ?? "Unknown date") {
                             ForEach(group.items) { (item: FeedItemModel) in
-                                NavigationLink {
-                                    ReaderView(feedItem: item)
-                                } label: {
+                                NavigationLink(value: item) {
                                     FeedItemListRow(feedItem: item)
 #if os(macOS)
                                         .padding(4)
@@ -56,7 +54,7 @@ struct FeedItemListView: View {
                                     // TODO: Context menu.
                                     Text("AAA")
                                 } preview: {
-                                    ReaderView(feedItem: item)
+                                    ReaderView(feedItem: .constant(item), feed: nil)
                                 }
                                 .swipeActions {
                                     Button {
@@ -165,7 +163,7 @@ struct FeedItemsListView_Previews: PreviewProvider {
         ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
         
         return NavigationStack {
-            FeedItemListView(feed: ninetofivemac)
+            FeedItemListView(feed: ninetofivemac, selection: .constant(nil))
                 .environment(\.managedObjectContext, context)
         }
     }
