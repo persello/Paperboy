@@ -11,7 +11,7 @@ import SFSafeSymbols
 struct FeedListView: View {
     
     @Environment(\.managedObjectContext) private var context
-    @EnvironmentObject var errorHandler: ErrorHandler
+    @Environment(\.errorHandler) private var errorHandler
     
     @FetchRequest(sortDescriptors: [])
     private var feeds: FetchedResults<FeedModel>

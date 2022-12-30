@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FeedItemListView: View {
     @Environment(\.managedObjectContext) private var context
-    @EnvironmentObject var errorHandler: ErrorHandler
+    @Environment(\.errorHandler) private var errorHandler
     
     @ObservedObject var feed: FeedModel
     
@@ -166,7 +166,6 @@ struct FeedItemsListView_Previews: PreviewProvider {
         
         return NavigationStack {
             FeedItemListView(feed: ninetofivemac)
-                .environmentObject(ErrorHandler())
                 .environment(\.managedObjectContext, context)
         }
     }

@@ -58,12 +58,21 @@ class ErrorHandler: ObservableObject {
     }
 }
 
+private struct ErrorHandlerEnvironmentKey: EnvironmentKey {
+    static let defaultValue = ErrorHandler()
+}
+
+extension EnvironmentValues {
+    var errorHandler: ErrorHandler {
+        get { self[ErrorHandlerEnvironmentKey.self] }
+    }
+}
+
 struct HandleErrorsByShowingAlertViewModifier: ViewModifier {
-    @StateObject var errorHandler = ErrorHandler()
+    @Environment(\.errorHandler) private var errorHandler
 
     func body(content: Content) -> some View {
         content
-            .environmentObject(errorHandler)
             .background(
                 EmptyView()
                     .alert(
