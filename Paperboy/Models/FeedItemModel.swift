@@ -13,6 +13,7 @@ import os
 extension FeedItemModel {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FeedItemModel")
+    static let signposter = OSSignposter(logger: logger)
     
     // MARK: Initialisers.
     convenience init<F: FeedItemProtocol>(from item: F, context: NSManagedObjectContext) {
@@ -25,18 +26,29 @@ extension FeedItemModel {
     
     // MARK: Public functions.
     public func updateWallpaper() {
+        
+        let signpostID = Self.signposter.makeSignpostID()
+        let state = Self.signposter.beginInterval("updateWallpaper", id: signpostID, "\(self.normalisedTitle)")
+        
+        defer {
+            Self.signposter.endInterval("updateWallpaper", state)
+        }
+        
         guard wallpaperURL == nil else {
             return
         }
         
         DispatchQueue.global(qos: .background).async {
-
-            Self.logger.info("Fetching wallpaper for \"\(self.normalisedTitle)\".")
+            
+            Self.signposter.emitEvent("Getting article description.", id: signpostID)
+            Self.logger.info("Fetching wallpaper for \"\(self.normalisedTitle)\" from article description.")
 
             guard let description = self.articleDescription else {
                 Self.logger.info("No description for \"\(self.normalisedTitle)\".")
                 return
             }
+            
+            Self.signposter.emitEvent("Starting HTML parser.", id: signpostID)
             
             let document = try? SwiftSoup.parse(description)
             let image = try? document?.select("img").first()
@@ -58,14 +70,29 @@ extension FeedItemModel {
     
     var normalisedContentDescription: String? {
         get async {
+            
+            let signpostID = Self.signposter.makeSignpostID()
+            let state = Self.signposter.beginInterval("normalisedContentDescription", id: signpostID, "\(self.normalisedTitle)")
+            
+            defer {
+                Self.signposter.endInterval("normalisedContentDescription", state)
+            }
+            
             guard let description = self.articleDescription else {
                 return nil
             }
             
             return await withCheckedContinuation({ continuation in
+                
+                Self.signposter.emitEvent("Starting HTML parser.", id: signpostID)
+                
                 let document = try? SwiftSoup.parse(description)
                 let paragraph = try? document?.select("p").first()
-                continuation.resume(returning: paragraph?.ownText())
+                let text = paragraph?.ownText()
+                
+                Self.signposter.emitEvent("Found paragraph.", id: signpostID)
+                
+                continuation.resume(returning: text)
             })
         }
     }

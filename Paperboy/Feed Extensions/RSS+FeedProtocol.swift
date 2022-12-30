@@ -9,8 +9,8 @@ import Foundation
 import FeedKit
 
 extension RSSFeed: FeedProtocol {
-    public func fetchItems() -> [any FeedItemProtocol] {
-        self.items ?? []
+    public var articles: [RSSFeedItem] {
+        return self.items ?? []
     }
 
     public var iconURL: URL? {

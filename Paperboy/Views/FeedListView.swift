@@ -11,6 +11,7 @@ import SFSafeSymbols
 struct FeedListView: View {
     
     @Environment(\.managedObjectContext) private var context
+    @EnvironmentObject var errorHandler: ErrorHandler
     
     @FetchRequest(sortDescriptors: [])
     private var feeds: FetchedResults<FeedModel>
@@ -115,6 +116,18 @@ struct FeedListView: View {
             // Reset the new feed link after the first disappearance of the sheet.
             if newFeedSheetPresented == false {
                 newFeedLink = ""
+            }
+        }
+        .task() {
+            await errorHandler.tryPerformAsync {
+                for feed in feeds {
+                    do {
+                        try await feed.refresh(onlyAfter: 60)
+                    } catch URLError.networkConnectionLost {
+                        // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
+                        feed.setStatus(.error)
+                    }
+                }
             }
         }
     }

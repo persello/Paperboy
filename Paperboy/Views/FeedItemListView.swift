@@ -128,7 +128,7 @@ struct FeedItemListView: View {
         .task(id: feed) {
             await errorHandler.tryPerformAsync {
                 do {
-                    try await feed.refresh(onlyAfter: 30)
+                    try await feed.refresh(onlyAfter: 60)
                 } catch URLError.networkConnectionLost {
                     // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
                     self.feed.setStatus(.error)

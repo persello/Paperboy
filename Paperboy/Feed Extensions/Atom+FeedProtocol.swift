@@ -34,7 +34,7 @@ extension AtomFeed: FeedProtocol {
         return nil
     }
     
-    public func fetchItems() -> [FeedItemProtocol] {
+    public var articles: [AtomFeedEntry] {
         return self.entries ?? []
     }
 }

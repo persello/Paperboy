@@ -8,10 +8,11 @@
 import Foundation
 
 public protocol FeedProtocol {
+    associatedtype ArticleType: FeedItemProtocol
+    
     var title: String? { get }
     var description: String? { get }
     var iconURL: URL? { get }
     var websiteURL: URL? { get }
-    
-    func fetchItems() -> [any FeedItemProtocol]
+    var articles: [ArticleType] { get }
 }
