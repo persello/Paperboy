@@ -67,6 +67,7 @@ struct FeedListView: View {
                     Text("Tap on \(Image(systemSymbol: .plus)) to add a new feed.")
                         .foregroundColor(.secondary)
                 }
+                .padding()
             }
         }
         .toolbar {

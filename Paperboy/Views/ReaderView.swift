@@ -52,9 +52,9 @@ struct ReaderView: View {
             }
         }
         .toolbar {
-            Spacer()
+            #if os(macOS)
             URLBar(url: url, progress: $loadingProgress)
-            Spacer()
+            #endif
         }
         .onChange(of: feedItem) { newValue in
             if let url = newValue.url {

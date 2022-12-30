@@ -17,6 +17,8 @@ struct FeedItemListView: View {
     @State private var groupedItems: [FeedModel.GroupedFeedItems]? = nil
     @State private var taskCompleted: Bool = false
     
+    // @State private var searchText: String = ""
+    
     var dateFormatter: DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
@@ -74,6 +76,7 @@ struct FeedItemListView: View {
                         }
                     }
                 }
+//                .searchable(text: $searchText)
 #if os(macOS)
                 .listStyle(.bordered(alternatesRowBackgrounds: true))
 #elseif os(iOS)
@@ -88,6 +91,7 @@ struct FeedItemListView: View {
                     Text("This feed does not contain any article.")
                         .foregroundColor(.secondary)
                 }
+                .padding()
             }
         }
         .refreshable {

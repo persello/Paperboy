@@ -22,6 +22,7 @@ struct PaperboyApp: App {
                     // Nothing we can do here...
                     try? persistenceController.save()
                 }
+                .frame(minWidth: 600, minHeight: 500)
 #elseif os(iOS)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { notification in
                     

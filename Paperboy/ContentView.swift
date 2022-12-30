@@ -17,6 +17,7 @@ struct ContentView: View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
             FeedListView()
                 .navigationTitle("Paperboy")
+                .navigationSplitViewColumnWidth(min: 150, ideal: 300)
         } content: {
             VStack {
                 Text("No feed selected")
@@ -24,11 +25,18 @@ struct ContentView: View {
                 Text("Choose a feed from the sidebar.")
                     .foregroundColor(.secondary)
             }
+            .padding()
+            .navigationSplitViewColumnWidth(min: 300, ideal: 300)
         } detail: {
             Image(systemSymbol: .newspaper)
                 .resizable()
                 .frame(width: 200, height: 200)
-                .foregroundStyle(.thinMaterial)
+                .foregroundStyle(.quaternary)
+                .padding()
+                .toolbar {
+                    // A small hack for preventing the items of the second column to be displayed over the third when the app is first initialised.
+                    Text("")
+                }
         }
         .withErrorHandling()
     }
