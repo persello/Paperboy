@@ -60,7 +60,7 @@ struct NewFeedView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 
                 
-                Text("Add a new feed")
+                Text("New feed")
                     .font(.largeTitle.bold())
                 
                 Group {

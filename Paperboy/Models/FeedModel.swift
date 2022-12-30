@@ -527,10 +527,7 @@ extension FeedModel {
             Self.signposter.endInterval("itemsToRead", state)
         }
         
-        guard let context = self.managedObjectContext else {
-            Self.logger.warning("Cannot get number of unread items for feed \"\(self.normalisedTitle)\", because the feed model does not have a managed object context.")
-            return 0
-        }
+        let context = PersistenceController.shared.container.viewContext
         
         Self.signposter.emitEvent("Starting fetch request.", id: signpostID)
         

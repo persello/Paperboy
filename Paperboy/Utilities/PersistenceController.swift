@@ -49,8 +49,10 @@ struct PersistenceController {
         } else {
             let cloudKitContainer = NSPersistentCloudKitContainer(name: "Paperboy")
             try? cloudKitContainer.initializeCloudKitSchema()
+            try? cloudKitContainer.viewContext.setQueryGenerationFrom(.current)
+            cloudKitContainer.viewContext.automaticallyMergesChangesFromParent = true
+
             container = cloudKitContainer
-            container.viewContext.automaticallyMergesChangesFromParent = true
         }
         
         container.loadPersistentStores { description, error in

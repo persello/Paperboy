@@ -48,7 +48,5 @@ struct ContentView_Previews: PreviewProvider {
         
         ContentView()
             .environment(\.managedObjectContext, context)
-            .previewDevice("iPad (10th generation)")
-            .previewInterfaceOrientation(.landscapeLeft)
     }
 }

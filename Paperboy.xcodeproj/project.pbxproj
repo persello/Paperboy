@@ -15,7 +15,7 @@
 		8B560DC52953591400564909 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC42953591400564909 /* ReaderView.swift */; };
 		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
 		8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */; };
-		8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48C4295B843900846E71 /* iOSWebView.swift */; };
+		8B5A48C5295B843900846E71 /* iOSRegularWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48C4295B843900846E71 /* iOSRegularWebView.swift */; };
 		8B68999A295C821A0019CB40 /* Telescope in Frameworks */ = {isa = PBXBuildFile; productRef = 8B689999295C821A0019CB40 /* Telescope */; };
 		8B721FF7293D07E4006B618E /* PaperboyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF6293D07E4006B618E /* PaperboyApp.swift */; };
 		8B721FF9293D07E4006B618E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B721FF8293D07E4006B618E /* ContentView.swift */; };
@@ -57,7 +57,7 @@
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlingModifier.swift; sourceTree = "<group>"; };
 		8B5A48BF295B658200846E71 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS16.1.sdk/System/Library/Frameworks/CloudKit.framework; sourceTree = DEVELOPER_DIR; };
-		8B5A48C4295B843900846E71 /* iOSWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSWebView.swift; sourceTree = "<group>"; };
+		8B5A48C4295B843900846E71 /* iOSRegularWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOSRegularWebView.swift; sourceTree = "<group>"; };
 		8B721FF3293D07E4006B618E /* Paperboy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Paperboy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B721FF6293D07E4006B618E /* PaperboyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaperboyApp.swift; sourceTree = "<group>"; };
 		8B721FF8293D07E4006B618E /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
+				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -153,7 +154,6 @@
 				8B689994295C61490019CB40 /* Utilities */,
 				8B721FF8293D07E4006B618E /* ContentView.swift */,
 				8B721FF6293D07E4006B618E /* PaperboyApp.swift */,
-				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 				8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */,
 				8B721FFA293D07E5006B618E /* Assets.xcassets */,
 				8B721FFC293D07E5006B618E /* Paperboy.entitlements */,
@@ -181,7 +181,7 @@
 				8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */,
 				8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */,
 				8B8A837729451E6800D93109 /* FeedLabel.swift */,
-				8B5A48C4295B843900846E71 /* iOSWebView.swift */,
+				8B5A48C4295B843900846E71 /* iOSRegularWebView.swift */,
 				8B560DC629535B0D00564909 /* MacWebView.swift */,
 				8B8A83812945464800D93109 /* NewFeedView.swift */,
 				8BA8A4442957564E00C570CA /* NewFolderView.swift */,
@@ -304,7 +304,7 @@
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
 				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
-				8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */,
+				8B5A48C5295B843900846E71 /* iOSRegularWebView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,

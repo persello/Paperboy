@@ -67,7 +67,7 @@ struct NewFolderView: View {
                     .background(.quaternary)
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 
-                Text("Create a new folder")
+                Text("New folder")
                     .font(.largeTitle.bold())
                 
                 Form {

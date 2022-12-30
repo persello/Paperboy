@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import SFSafeSymbols
+import FeedKit
 
 struct ReaderView: View {
     @Environment(\.managedObjectContext) private var context
+    
+    #if os(iOS)
+    @Environment(\.horizontalSizeClass) private var sizeClass
+    #endif
     
     @State private var url: URL
     @State private var loadingProgress: Double = 0
@@ -25,20 +31,50 @@ struct ReaderView: View {
         Group {
             if let error {
                 VStack {
-                    Text(error.localizedDescription)
+                    Text("Error")
                         .font(.title)
+                    Text(error.localizedDescription)
+                        .multilineTextAlignment(.center)
                     Button {
                         self.error = nil
                     } label: {
                         Text("Reload")
                     }
                 }
+                .padding()
             } else {
                 Group {
 #if os(macOS)
                     MacWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
 #elseif os(iOS)
-                    iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                    Group {
+                        if sizeClass == .regular {
+                            // iPad
+                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                        } else {
+                            // iPhone
+                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                                .navigationBarTitle(url.host() ?? "")
+                                .navigationBarTitleDisplayMode(.inline)
+                        }
+                    }
+                    .toolbar {
+                        ToolbarItemGroup(placement: .bottomBar) {
+                            Spacer()
+                            
+                            Button {
+                                
+                            } label: {
+                                Label("Previous article", systemSymbol: .chevronUp)
+                            }
+                            
+                            Button {
+                                
+                            } label: {
+                                Label("Next article", systemSymbol: .chevronDown)
+                            }
+                        }
+                    }
 #endif
                 }
                 .onChange(of: loadingProgress) { newValue in
@@ -70,8 +106,8 @@ struct ReaderView: View {
 struct ReaderView_Previews: PreviewProvider {
     static var previews: some View {
         let context = PersistenceController.preview.container.viewContext
-        
-        let item = FeedItemModel(context: context)
+        let feed = try! FeedKit.FeedParser(URL: URL(string: "https://9to5mac.com/feed")!).parse().get().rssFeed
+        let item = FeedItemModel(from: feed!.items!.first!, context: context)
         
         return NavigationStack {
             ReaderView(feedItem: item)
