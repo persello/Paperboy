@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedLabel: View {
     @ObservedObject var feed: FeedModel
+    var showsBadge: Bool = true
     
     var body: some View {
         Label {
@@ -30,7 +31,7 @@ struct FeedLabel: View {
                 Image(systemSymbol: .newspaper)
             }
         }
-        .badge(feed.unreadCount)
+        .badge(showsBadge ? feed.unreadCount : 0)
     }
 }
 

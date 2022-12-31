@@ -148,7 +148,7 @@ struct FeedItemListView: View {
         })
         .navigationTitle(feed.normalisedTitle)
         #if os(macOS)
-        .navigationSubtitle(feed.itemsToRead > 0 ? "\(feed.itemsToRead) to read" : "You're up to date")
+        .navigationSubtitle(feed.unreadCount > 0 ? "\(feed.unreadCount) to read" : "You're up to date")
         #endif
     }
 }

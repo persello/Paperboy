@@ -92,7 +92,7 @@ struct NewFeedView: View {
                                     Button {
                                         selectedFeed = result.feed
                                     } label: {
-                                        FeedLabel(feed: result.feed)
+                                        FeedLabel(feed: result.feed, showsBadge: false)
                                     }
                                     .buttonStyle(.plain)
                                 }

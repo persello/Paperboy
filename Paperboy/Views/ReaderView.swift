@@ -20,11 +20,12 @@ struct ReaderView: View {
     @State private var loadingProgress: Double = 0
     @State private var error: Error?
     
-    @Binding private var feedItem: FeedItemModel
+    @Binding private var feedItem: FeedItemModel?
     
     private var itemList: [FeedItemModel]?
     
     private var nextItem: FeedItemModel? {
+        guard let feedItem else { return nil }
         guard let currentIndex = itemList?.firstIndex(of: feedItem) else { return nil }
         let nextIndex = itemList?.index(after: currentIndex)
         guard let nextIndex else { return nil }
@@ -32,6 +33,7 @@ struct ReaderView: View {
     }
     
     private var previousItem: FeedItemModel? {
+        guard let feedItem else { return nil }
         guard let currentIndex = itemList?.firstIndex(of: feedItem) else { return nil }
         let previousIndex = itemList?.index(before: currentIndex)
         guard let previousIndex else { return nil }
@@ -46,8 +48,8 @@ struct ReaderView: View {
         return previousItem != nil
     }
     
-    init(feedItem: Binding<FeedItemModel>, feed: FeedModel?) {
-        self._url = State(initialValue: feedItem.wrappedValue.url ?? URL(string: "https://apple.com")!)
+    init(feedItem: Binding<FeedItemModel?>, feed: FeedModel?) {
+        self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "https://localhost")!)
         self._feedItem = feedItem
         self.itemList = (feed?.items?.allObjects as? [FeedItemModel])?.sorted(by: { a, b in
             a.publicationDate! > b.publicationDate!
@@ -117,7 +119,7 @@ struct ReaderView: View {
                 }
                 .onChange(of: loadingProgress) { newValue in
                     if newValue == 1.0 {
-                        self.feedItem.read = true
+                        self.feedItem?.read = true
                         
                         // TODO: Error management.
                         try? context.save()
@@ -131,7 +133,7 @@ struct ReaderView: View {
             #endif
         }
         .onChange(of: feedItem) { newValue in
-            if let url = newValue.url {
+            if let url = newValue?.url {
                 self.url = url
             }
         }

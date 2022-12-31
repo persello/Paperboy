@@ -26,6 +26,14 @@ struct FeedListView: View {
     @State private var feedToBeDeleted: FeedModel? = nil
     @State private var folderToBeDeleted: FeedFolderModel? = nil
     
+    private func isSelectedViewModel(_ viewModel: FeedListViewModel) -> Binding<Bool> {
+        return Binding {
+            viewModel == selection
+        } set: { _, _ in
+            
+        }
+    }
+    
     private var structure: [FeedListViewModel] {
         var root = folders.sorted(by: { a, b in
             a.normalisedName < b.normalisedName

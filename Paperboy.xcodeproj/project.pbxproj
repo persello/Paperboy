@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8B13A5DC295FAA1B005D8C94 /* Collection+safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */; };
 		8B1559C22959F5E6008B5F1A /* ContentBlacklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */; };
-		8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
 		8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */; };
 		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
 		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
@@ -45,6 +44,7 @@
 		8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */; };
 		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
 		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
+		8BBB45FA296053B800305DDC /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -308,6 +308,7 @@
 				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B5A48C5295B843900846E71 /* iOSRegularWebView.swift in Sources */,
+				8BBB45FA296053B800305DDC /* FeedListViewModel.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
@@ -333,7 +334,6 @@
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
 				8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */,
 				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
-				8B1559C5295A0DEA008B5F1A /* FeedListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

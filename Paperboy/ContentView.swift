@@ -50,7 +50,7 @@ struct ContentView: View {
             Group {
                 if selectedFeedItem != nil {
                     // Not great...
-                    ReaderView(feedItem: Binding($selectedFeedItem)!, feed: selectedFeed)
+                    ReaderView(feedItem: $selectedFeedItem, feed: selectedFeed)
                 } else {
                     Image(systemSymbol: .newspaper)
                         .resizable()
