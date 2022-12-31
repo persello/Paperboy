@@ -19,54 +19,66 @@ struct FeedListView: View {
     @FetchRequest(sortDescriptors: [])
     private var folders: FetchedResults<FeedFolderModel>
     
-    @Binding var selection: FeedListViewModel?
+    @Binding var selection: FeedModel?
+    
     @State private var newFeedSheetPresented: Bool = false
     @State private var newFolderSheetPresented: Bool = false
+    
     @State private var newFeedLink: String = ""
+    
     @State private var feedToBeDeleted: FeedModel? = nil
     @State private var folderToBeDeleted: FeedFolderModel? = nil
     
-    private func isSelectedViewModel(_ viewModel: FeedListViewModel) -> Binding<Bool> {
-        return Binding {
-            viewModel == selection
-        } set: { _, _ in
-            
+    private func refreshAllFeeds(immediate: Bool = false) async {
+        await errorHandler.tryPerformAsync {
+            for feed in feeds {
+                Task {
+                    do {
+                        try await feed.refresh(onlyAfter: immediate ? 0 : 60)
+                    } catch URLError.networkConnectionLost {
+                        // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
+                        feed.setStatus(.error)
+                    }
+                }
+            }
         }
     }
     
-    private var structure: [FeedListViewModel] {
-        var root = folders.sorted(by: { a, b in
-            a.normalisedName < b.normalisedName
-        }).map({ folder in
-            FeedListViewModel(folder: folder)
+    var uncategorisedFeeds: [FeedModel]? {
+        let uncategorised = feeds.filter({
+            $0.folder == nil
         })
         
-        let rootFeeds = feeds.sorted(by: { a, b in
-            a.normalisedTitle < b.normalisedTitle
-        }).filter { feed in
-            feed.folder == nil
+        if uncategorised.count == 0 {
+            return nil
+        } else {
+            return uncategorised
         }
-        
-        root.append(contentsOf: rootFeeds.map({ feed in
-            FeedListViewModel(feed: feed)
-        }))
-        
-        return root
     }
     
     var body: some View {
-        // TODO: Not an ideal solution. Find alternatives.
         TimelineView(.periodic(from: .now, by: 3)) { _ in
-            if structure.count > 0 {
+            if feeds.count > 0 || folders.count > 0 {
                 List(selection: $selection) {
-                    OutlineGroup(structure, children: \.children) { item in
-                        switch item.content {
-                        case .feed(let feed):
-                            NavigationLink(value: item) {
-                                FeedListRowFeed(feed: feed, folders: Array(folders))
+                    ForEach(folders) { folder in
+                        Section {
+                            ForEach(folder.feeds?.allObjects as! [FeedModel]) { feed in
+                                NavigationLink(value: feed) {
+                                    FeedListRowFeed(feed: feed, folders: Array(folders))
+                                }
                             }
-                        case .folder(let folder):
+                        } header: {
                             FeedListRowFolder(folder: folder)
+                        }
+                    }
+                    
+                    if let uncategorisedFeeds {
+                        Section("Uncategorised") {
+                            ForEach(uncategorisedFeeds) { feed in
+                                NavigationLink(value: feed) {
+                                    FeedListRowFeed(feed: feed, folders: Array(folders))
+                                }
+                            }
                         }
                     }
                 }
@@ -129,17 +141,11 @@ struct FeedListView: View {
                 newFeedLink = ""
             }
         }
+        .refreshable {
+            await refreshAllFeeds(immediate: true)
+        }
         .task() {
-            await errorHandler.tryPerformAsync {
-                for feed in feeds {
-                    do {
-                        try await feed.refresh(onlyAfter: 60)
-                    } catch URLError.networkConnectionLost {
-                        // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
-                        feed.setStatus(.error)
-                    }
-                }
-            }
+            await refreshAllFeeds()
         }
     }
 }

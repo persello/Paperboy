@@ -100,13 +100,16 @@ struct NewFolderView: View {
             }
         } doneButton: {
             Button {
-                let folder = FeedFolderModel(context: context)
-                folder.name = name
-                folder.icon = icon.rawValue
                 modalShown = false
                 
                 // TODO: Error management.
-                try? context.save()
+                context.perform {
+                    let folder = FeedFolderModel(context: context)
+                    folder.name = name
+                    folder.icon = icon.rawValue
+                    
+                    try? context.save()
+                }
             } label: {
                 Text("Add")
             }

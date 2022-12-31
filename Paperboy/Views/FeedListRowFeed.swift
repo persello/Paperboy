@@ -31,7 +31,9 @@ struct FeedListRowFeed: View {
                 ForEach(folders) { folder in
                     Button {
                         folder.addToFeeds(feed)
-                        try? context.save()
+                        context.perform {
+                            try? context.save()
+                        }
                     } label: {
                         Label(folder.normalisedName, systemSymbol: folder.symbol)
                     }
@@ -53,9 +55,11 @@ struct FeedListRowFeed: View {
                     Text("Delete"),
                     action: {
                         deleting = false
-                        context.delete(feed)
                         
-                        try? context.save()
+                        context.perform {
+                            context.delete(feed)
+                            try? context.save()
+                        }
                     }
                 ),
                 secondaryButton: .cancel()

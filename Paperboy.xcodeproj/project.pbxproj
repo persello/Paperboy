@@ -44,7 +44,6 @@
 		8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */; };
 		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
 		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
-		8BBB45FA296053B800305DDC /* FeedListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -180,10 +179,10 @@
 				8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */,
 				8B72200B293D09D7006B618E /* FeedItemListView.swift */,
 				8B8A837C29452A8100D93109 /* FeedItemListRow.swift */,
+				8B8A837729451E6800D93109 /* FeedLabel.swift */,
 				8B722009293D09C8006B618E /* FeedListView.swift */,
 				8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */,
 				8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */,
-				8B8A837729451E6800D93109 /* FeedLabel.swift */,
 				8B5A48C4295B843900846E71 /* iOSRegularWebView.swift */,
 				8B560DC629535B0D00564909 /* MacWebView.swift */,
 				8B8A83812945464800D93109 /* NewFeedView.swift */,
@@ -308,7 +307,6 @@
 				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B5A48C5295B843900846E71 /* iOSRegularWebView.swift in Sources */,
-				8BBB45FA296053B800305DDC /* FeedListViewModel.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */,
 				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,

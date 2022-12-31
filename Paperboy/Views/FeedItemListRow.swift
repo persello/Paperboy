@@ -111,6 +111,12 @@ struct FeedItemListRow: View {
             }
             taskCompleted = true
         }
+        .contextMenu {
+            // TODO: Context menu.
+            Text("AAA")
+        } preview: {
+            ReaderView(feedItem: .constant(feedItem), feed: nil)
+        }
     }
 }
 

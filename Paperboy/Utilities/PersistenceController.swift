@@ -62,11 +62,13 @@ struct PersistenceController {
         }
     }
     
-    func save() throws {
+    func save() {
         let context = container.viewContext
 
         if context.hasChanges {
-            try context.save()
+            context.perform {
+                try? context.save()
+            }
         }
     }
 }

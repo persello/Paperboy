@@ -50,23 +50,19 @@ struct FeedItemListView: View {
 #endif
                                 }
                                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
-                                .contextMenu {
-                                    // TODO: Context menu.
-                                    Text("AAA")
-                                } preview: {
-                                    ReaderView(feedItem: .constant(item), feed: nil)
-                                }
                                 .swipeActions {
                                     Button {
                                         item.read.toggle()
 
                                         // TODO: Error management.
-                                        try? context.save()
+                                        context.perform {
+                                            try? context.save()
+                                        }
                                     } label: {
                                         Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
-#if os(iOS)
+                        #if os(iOS)
                                             .labelStyle(.iconOnly)
-#endif
+                        #endif
                                     }
                                     .tint(item.read ? .blue : .orange)
                                 }

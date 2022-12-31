@@ -175,32 +175,11 @@ extension FeedModel {
         }
     }
     
-    // MARK: Initialisers.
-    convenience init(_ copy: FeedModel, in context: NSManagedObjectContext) {
+    // MARK: Initialisers.    
+    convenience init(url: URL, in context: NSManagedObjectContext) async throws {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("initFromCopy", id: signpostID, "\(copy.normalisedTitle)")
-        
-        defer {
-            Self.signposter.endInterval("initFromCopy", state)
-        }
-        
-        self.init(context: context)
-        
-        self.title = copy.title
-        self.url = copy.url
-        
-        Self.logger.info("Initialised \"\(self.normalisedTitle)\" [\(self.url?.absoluteString ?? "no URL")] from copy.")
-        
-        Task {
-            try await self.refresh()
-        }
-    }
-    
-    convenience init(from feed: any FeedProtocol, url: URL, in context: NSManagedObjectContext) {
-        
-        let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("initFromFeedProtocol", id: signpostID, "\(feed.title ?? "Unnamed FeedProtocol")")
+        let state = Self.signposter.beginInterval("initFromFeedProtocol", id: signpostID)
         
         defer {
             Self.signposter.endInterval("initFromFeedProtocol", state)
@@ -208,14 +187,15 @@ extension FeedModel {
         
         self.init(context: context)
         
-        self.title = feed.title?.trimmingCharacters(in: .whitespacesAndNewlines)
         self.url = url
+        let feed = try await self.getInternalFeed(cached: false)
+        self.title = feed.title?.trimmingCharacters(in: .whitespacesAndNewlines)
         
         Self.logger.info("Initialised \"\(self.normalisedTitle)\" [\(self.url?.absoluteString ?? "no URL")] from FeedProtocol.")
         
-        Task {
-            try await self.refresh()
-        }
+//        Task {
+//            try await self.refresh()
+//        }
     }
     
     // MARK: Private functions.
@@ -231,7 +211,6 @@ extension FeedModel {
         
         DispatchQueue.main.async {
             self.status = status.rawValue
-            try? self.managedObjectContext?.save()
         }
     }
     
@@ -306,6 +285,10 @@ extension FeedModel {
         
         let signpostID = Self.signposter.makeSignpostID()
         let state = Self.signposter.beginInterval("refreshIcon", id: signpostID, "\(self.normalisedTitle)")
+        
+        if self.icon != nil {
+            return
+        }
         
         defer {
             Self.signposter.endInterval("refreshIcon", state)
@@ -429,9 +412,8 @@ extension FeedModel {
             }
         
         Self.signposter.emitEvent("New item models set created.", id: signpostID)
-
         Self.logger.info("Found \(itemSet.count) new items for \"\(self.normalisedTitle)\".")
-        
+                
         DispatchQueue.main.async {
             self.addToItems(NSSet(set: itemSet))
         }
@@ -465,7 +447,9 @@ extension FeedModel {
                     
                     if duplicateModel != itemModel {
                         Self.logger.info("Deleting duplicate item \"\(duplicateModel.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
-                        context.delete(duplicateModel)
+                        context.performAndWait {
+                            context.delete(duplicateModel)
+                        }
                     }
                 }
             }
@@ -481,7 +465,11 @@ extension FeedModel {
             self.lastRefresh = Date.now
             
             // TODO: Error management.
-            try? context.save()
+            if self.hasChanges {
+                context.perform {
+                    try? context.save()
+                }
+            }
         }
     }
     
@@ -498,7 +486,9 @@ extension FeedModel {
             item.read = true
         }
         
-        try? self.managedObjectContext?.save()
+        self.managedObjectContext?.perform {
+            try? self.managedObjectContext?.save()
+        }
     }
     
     // MARK: Computed variables.
@@ -527,9 +517,8 @@ extension FeedModel {
     }
     
     var unreadCount: Int {
-        
-        let itemsToRead = self.value(forKey: "itemsToRead") as! [FeedItemModel]
-        return itemsToRead.count
+        let itemsToRead = self.value(forKey: "itemsToRead") as? [FeedItemModel]
+        return itemsToRead?.count ?? 0
     }
 
     var groupedItems: [GroupedFeedItems] {

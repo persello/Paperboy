@@ -20,8 +20,10 @@ struct FeedLabel: View {
                     .foregroundColor(.secondary)
             } else if feed.status == FeedModel.Status.refreshing.rawValue {
                 ProgressView()
+                #if os(macOS)
                     .scaleEffect(0.5)
                     .frame(width: 16, height: 16)
+                #endif
             } else if let image = feed.iconImage {
                 Image(image, scale: 1, label: Text(feed.normalisedTitle))
                     .resizable()

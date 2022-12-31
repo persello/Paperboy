@@ -12,23 +12,12 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) private var context
     
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
-    @State private var selectedFeedViewModel: FeedListViewModel?
+    @State private var selectedFeed: FeedModel?
     @State private var selectedFeedItem: FeedItemModel?
-    
-    private var selectedFeed: FeedModel? {
-        if let selectedFeedViewModel {
-            switch selectedFeedViewModel.content {
-            case .folder(_): return nil
-            case .feed(let feed): return feed
-            }
-        }
-        
-        return nil
-    }
     
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            FeedListView(selection: $selectedFeedViewModel)
+            FeedListView(selection: $selectedFeed)
                 .navigationTitle("Paperboy")
                 .navigationSplitViewColumnWidth(min: 150, ideal: 300)
         } content: {

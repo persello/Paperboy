@@ -119,10 +119,11 @@ struct ReaderView: View {
                 }
                 .onChange(of: loadingProgress) { newValue in
                     if newValue == 1.0 {
-                        self.feedItem?.read = true
-                        
                         // TODO: Error management.
-                        try? context.save()
+                        context.perform {
+                            self.feedItem?.read = true
+                            try? context.save()
+                        }
                     }
                 }
             }

@@ -11,6 +11,7 @@ import CoreData
 
 struct NewFeedView: View {
     @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
     
     @Binding var modalShown: Bool
     
@@ -27,7 +28,9 @@ struct NewFeedView: View {
     func updateFeedList() async {
         self.searching = true
         if let url = URL(string: link) {
-            foundFeeds = await FeedDiscovery.start(for: url, in: localSearchContext)
+            for await feed in FeedDiscovery.start(for: url, in: localSearchContext) {
+                foundFeeds.append(feed)
+            }
         } else {
             foundFeeds = []
             self.selectedFeed = nil
@@ -68,21 +71,14 @@ struct NewFeedView: View {
                         Section {
                             TextField("Link", text: $link, prompt: Text("Feed or website link"))
                                 .focused($textFieldFocused)
+                                .autocorrectionDisabled()
 #if os(iOS)
+                                .textInputAutocapitalization(.never)
                                 .keyboardType(.URL)
 #endif
                             
                             if let selectedFeed {
                                 TextField("Title", text: $title, prompt: Text(selectedFeed.normalisedTitle))
-                            }
-                        }
-                        
-                        if searching {
-                            Section {
-                                HStack(spacing: 16) {
-                                    ProgressView()
-                                    Text("Searching for feeds...")
-                                }
                             }
                         }
                         
@@ -119,24 +115,41 @@ struct NewFeedView: View {
             }
 
         } doneButton: {
-            Button {
-                // Push the feed to the "real" context.
-                guard let selectedFeed else {
-                    // TODO: Error.
-                    return
+            if searching && selectedFeed == nil {
+                ProgressView()
+            } else {
+                Button {
+                    // Push the feed to the "real" context.
+                    guard let selectedFeed else {
+                        // TODO: Error.
+                        return
+                    }
+                    
+                    // TODO: Check for duplicates.
+                                        
+                    // TODO: Error management.
+                    context.perform {
+                        
+                        Task {
+                            
+                            let new = try await FeedModel(url: selectedFeed.url!, in: context)
+                            try? await new.refresh()
+                            
+                            await context.perform {
+                                context.insert(new)
+                                try? context.save()
+                            }
+                            
+                            DispatchQueue.main.async {
+                                modalShown = false
+                            }
+                        }
+                    }
+                } label: {
+                    Text("Add")
                 }
-                
-                // TODO: Check for duplicates.
-                
-                let _ = FeedModel(selectedFeed, in: context)
-                modalShown = false
-                                    
-                // TODO: Error management.
-                try? context.save()
-            } label: {
-                Text("Add")
+                .disabled(self.selectedFeed == nil)
             }
-            .disabled(self.selectedFeed == nil)
         }
         .onChange(of: title, perform: { newValue in
             self.selectedFeed?.title = newValue

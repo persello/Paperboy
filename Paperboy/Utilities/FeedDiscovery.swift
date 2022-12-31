@@ -13,7 +13,7 @@ import RegexBuilder
 import os
 
 class FeedDiscovery {
-
+    
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FeedDiscovery")
     
     enum FeedDiscoveryKind {
@@ -21,7 +21,7 @@ class FeedDiscovery {
         case byHTMLLink
     }
     
-    class DiscoveredFeed: Hashable, Identifiable, ObservableObject {
+    class DiscoveredFeed: Hashable, Identifiable, ObservableObject, Equatable {
         @Published var feed: FeedModel
         var kind: FeedDiscoveryKind
         
@@ -34,96 +34,131 @@ class FeedDiscovery {
             hasher.combine(feed)
         }
         
-        var id: FeedModel {
-            return feed
+        var id: String {
+            return feed.url?.absoluteString ?? ""
         }
         
         static func == (lhs: FeedDiscovery.DiscoveredFeed, rhs: FeedDiscovery.DiscoveredFeed) -> Bool {
-            lhs.feed == rhs.feed
+            lhs.feed.url == rhs.feed.url
         }
     }
     
-    static func start(for url: URL, in context: NSManagedObjectContext) async -> [DiscoveredFeed] {
-
-        Self.logger.info("Starting discovery for \(url.absoluteString).")
+    static private func normaliseURL(url: URL, host: String) -> URL? {
         
-        var result: [DiscoveredFeed] = []
+        let pathRegex = /(http[s]?:\/\/)?([^\/\s]+\/)?(.*)/
+        let match = url.absoluteString.appending("/").matches(of: pathRegex).first
         
-        // Try the first URL.
-        Self.logger.info("Trying direct feed for \(url.absoluteString).")
-        if let feed = try? await Self.parsedFeed(for: url).get() {
-            let feed = Self.unwrapFeed(feed: feed)
-            let model = FeedModel(from: feed, url: url, in: context)
-
-            Self.logger.info("Direct feed found for \(url.absoluteString): \(model.normalisedTitle).")
-
-            result.append(.init(feed: model, kind: .direct))
+        if let path = match?.output.3 {
+            var components = URLComponents()
+            components.scheme = "https"
+            components.host = host
+            components.path = String("/\(path.trimmingCharacters(in: .init(arrayLiteral: "/")))")
+            
+            return components.url
         }
         
-        // Try to scan for a feed reference in HTML head.
-        Self.logger.info("Scanning for feed references in HTML head for \(url.absoluteString).")
-        do {
-            let html = try String(contentsOf: url)
-            let document = try SwiftSoup.parse(html)
-            let feedURLs = try document.getElementsByTag("link").filter { element in
-                let type = try? element.attr("type")
+        return nil
+    }
+    
+    static func start(for inputURL: URL, in context: NSManagedObjectContext, recursionDepth: Int = 0) -> AsyncStream<DiscoveredFeed> {
+        AsyncStream { continuation in
+            Task {
+                if recursionDepth > 2 {
+                    continuation.finish()
+                    return
+                }
                 
-                // TODO: JSON.
-                return type == "application/rss+xml" || type == "application/atom+xml"
-            }.compactMap({ element in
-                try? element.attr("href")
-            }).compactMap({ link in
-                // The link might be relative or absolute.
-                if link.hasPrefix("http") {
-                    return URL(string: link)
-                } else {
-                    return URL(string: link, relativeTo: url)
+                Self.logger.info("Starting discovery for \(inputURL.absoluteString).")
+                
+                var URLsFromLinks: [URL] = []
+                let host = inputURL.absoluteString.trimmingPrefix("https://").components(separatedBy: "/").first ?? inputURL.absoluteString
+                
+                guard let url = normaliseURL(url: inputURL, host: host) else {
+                    Self.logger.info("Cannot normalise url \(inputURL.absoluteString).")
+                    continuation.finish()
+                    return
                 }
-            })
+                
+                // Try the first URL.
+                Self.logger.info("Trying direct feed for \(url.absoluteString).")
 
-            Self.logger.info("Found \(feedURLs.count) feed references in HTML head for \(url.absoluteString).")
-            
-            var count = 0
-
-            for url in feedURLs {
-                if let feed = try? await Self.parsedFeed(for: url).get() {
-                    let feed = Self.unwrapFeed(feed: feed)
-                    let model = FeedModel(from: feed, url: url, in: context)
-                    result.append(.init(feed: model, kind: .direct))
-                    count += 1
+                if let model = try? await FeedModel(url: url, in: context) {
+                    Self.logger.info("Direct feed found for \(url.absoluteString): \(model.normalisedTitle).")
+                    continuation.yield(.init(feed: model, kind: .direct))
                 }
+                
+                // Try to scan for a feed reference in HTML head.
+                Self.logger.info("Scanning for feed references in HTML head for \(url.absoluteString).")
+                do {
+                    let (data, response) = try await URLSession.shared.data(from: url, delegate: FeedDiscoveryTaskDelegate())
+                    let html = String(decoding: data, as: UTF8.self)
+                    let document = try SwiftSoup.parse(html)
+                    var feedURLs = try document.getElementsByTag("link").filter { element in
+                        let type = try? element.attr("type")
+                        
+                        // TODO: JSON.
+                        return type == "application/rss+xml" || type == "application/atom+xml"
+                    }.compactMap({ element in
+                        try? element.attr("href")
+                    }).compactMap({ link in
+                        // The link might be relative or absolute.
+                        if link.hasPrefix("http") {
+                            return URL(string: link)
+                        } else {
+                            return URL(string: link, relativeTo: url)
+                        }
+                    })
+                    
+                    // URLs from links.
+                    URLsFromLinks = try document.getElementsByTag("a").compactMap({ element in
+                        try? element.attr("href")
+                    }).filter({ link in
+                        return link.contains("rss") || link.contains("feed") || link.contains("atom")
+                    }).compactMap({ link in
+                        return URL(string: link)
+                    })
+                    
+                    feedURLs.append(contentsOf: URLsFromLinks)
+                    
+                    Self.logger.info("Found \(feedURLs.count) feed references in HTML head for \(url.absoluteString).")
+                    
+                    var count = 0
+                    
+                    for url in feedURLs {
+                        if let feed = try? await Self.parsedFeed(for: url).get() {
+                            let feed = Self.unwrapFeed(feed: feed)
+                            let model = try await FeedModel(url: url, in: context)
+                            continuation.yield(.init(feed: model, kind: .direct))
+                            count += 1
+                        }
+                    }
+                    
+                    Self.logger.info("Found \(count) valid feed references in HTML head for \(url.absoluteString).")
+                } catch {
+                    Self.logger.warning("Exception while scanning for feed references in HTML head for \(url.absoluteString): \(error.localizedDescription)")
+                }
+                
+                // Repeat search recursively for all the found additional URLs.
+                for url in URLsFromLinks {
+                    Self.logger.info("Trying to search again inside \(URLsFromLinks.count) found URLs.")
+                    
+                    if let normalisedURL = normaliseURL(url: url, host: host) {
+                        
+                        for await item in Self.start(for: normalisedURL, in: context, recursionDepth: recursionDepth + 1) {
+                            continuation.yield(item)
+                        }
+                    }
+                }
+                
+                continuation.finish()
             }
-
-            Self.logger.info("Found \(count) valid feed references in HTML head for \(url.absoluteString).")
-        } catch {
-            Self.logger.warning("Exception while scanning for feed references in HTML head for \(url.absoluteString): \(error.localizedDescription)")
         }
-        
-        // Try to add https in front of URL if necessary.
-        if !(url.scheme?.starts(with: "http") ?? false) {
-
-            Self.logger.info("Feed URL doesn't use HTTP/HTTPS, trying to add https in front of it for \(url.absoluteString).")
-
-            var components = URLComponents(string: String(url.absoluteString.split(separator: "//").last!))
-            components?.scheme = "https"
-            
-            if let url = components?.url {
-                print(url)
-                let results = await start(for: url, in: context)
-
-                Self.logger.info("Found \(results.count) feeds in https version of \(url.absoluteString).")
-
-                result.append(contentsOf: results)
-            }
-        }
-        
-        return result
     }
     
     static private func parsedFeed(for url: URL) async -> Result<Feed, ParserError> {
-
+        
         Self.logger.info("Parsing feed for \(url.absoluteString).")
-
+        
         guard let (data, _) = try? await URLSession.shared.data(from: url) else {
             Self.logger.warning("Error while fetching data from \(url.absoluteString).")
             return .failure(ParserError.feedNotFound)
@@ -146,6 +181,16 @@ class FeedDiscovery {
             return RSSFeed()
         case .rss(let rss):
             return rss
+        }
+    }
+}
+
+class FeedDiscoveryTaskDelegate: NSObject, URLSessionTaskDelegate {
+    func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest) async -> URLRequest? {
+        if request.url?.scheme?.starts(with: "https") ?? false {
+            return request
+        } else {
+            return nil
         }
     }
 }

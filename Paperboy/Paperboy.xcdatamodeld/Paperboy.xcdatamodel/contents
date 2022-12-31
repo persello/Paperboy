@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22D5027d" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FeedFolderModel" representedClassName="FeedFolderModel" syncable="YES" codeGenerationType="class">
-        <attribute name="icon" attributeType="String" defaultValueString="&quot;folder&quot;"/>
+        <attribute name="icon" optional="YES" attributeType="String" defaultValueString="&quot;folder&quot;"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="feeds" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="FeedModel" inverseName="folder" inverseEntity="FeedModel"/>
     </entity>
     <entity name="FeedItemModel" representedClassName="FeedItemModel" syncable="YES" codeGenerationType="class">
         <attribute name="articleDescription" optional="YES" attributeType="String"/>
         <attribute name="publicationDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="read" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="read" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="URI"/>
         <attribute name="wallpaperURL" optional="YES" attributeType="URI"/>
@@ -17,7 +17,7 @@
     <entity name="FeedModel" representedClassName="FeedModel" syncable="YES" codeGenerationType="class">
         <attribute name="icon" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="lastRefresh" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="status" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="status" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="URI"/>
         <relationship name="folder" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FeedFolderModel" inverseName="feeds" inverseEntity="FeedFolderModel"/>

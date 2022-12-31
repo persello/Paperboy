@@ -31,9 +31,11 @@ struct FeedListRowFolder: View {
                         Text("Delete"),
                         action: {
                             deleting = false
-                            context.delete(folder)
 
-                            try? context.save()
+                            context.perform {
+                                context.delete(folder)
+                                try? context.save()
+                            }
                         }
                     ),
                     secondaryButton: .cancel()

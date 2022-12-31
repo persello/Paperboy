@@ -7,129 +7,187 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "1077B129-B300-410C-AC38-F3C8D57F1F3A"
+            uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Paperboy/Feed Extensions/Atom+FeedProtocol.swift"
+            filePath = "Paperboy/Utilities/FeedDiscovery.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "38"
-            endingLineNumber = "38"
-            landmarkName = "articles"
-            landmarkType = "24">
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "start(for:in:recursionDepth:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - 66973c436a39c1bc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "592">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - dfec303558b215ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - 54c14b9f574629a0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "2312">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - cc265f0145da7dae"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(7) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "536">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - 457b52eab46eb194"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(9) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "504">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - 67c5c412fbd503da"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(11) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "1096">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - 2257e5215eb4a5cc"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "340">
+               </Location>
+               <Location
+                  uuid = "06315FFD-83CA-4155-8107-F5B33F6B3D58 - bc90f5ae002496c9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(14) suspend resume partial function for closure #1 @Sendable () async throws -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "71"
+                  endingLineNumber = "71"
+                  offsetFromSymbolStart = "936">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "EC74A36B-1A6B-487C-A451-F474DCD855D2"
+            uuid = "A5CA8BB1-7EC5-477D-A72E-41ACF81655F8"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Paperboy/Views/FeedItemListView.swift"
+            filePath = "Paperboy/Utilities/FeedDiscovery.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
-            landmarkName = "previews"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "78112186-140C-446E-9443-462ACA5A86CD"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Paperboy/Views/ReaderView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "53"
-            endingLineNumber = "53"
-            landmarkName = "init(feedItem:feed:)"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "normaliseURL(url:host:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "649DAEC4-995D-43B7-B610-557E1CD4054B"
+            uuid = "71277F14-9E71-4C16-A63B-9FF62BCDB7CE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Paperboy/Views/MacWebView.swift"
+            filePath = "Paperboy/Utilities/FeedDiscovery.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "65"
-            endingLineNumber = "65"
-            landmarkName = "updateNSView(_:context:)"
+            startingLineNumber = "57"
+            endingLineNumber = "57"
+            landmarkName = "normaliseURL(url:host:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5A10C78E-8798-40AF-81B1-EA540EA5FC8D"
-            shouldBeEnabled = "No"
+            uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Paperboy/Views/MacWebView.swift"
+            filePath = "Paperboy/Utilities/FeedDiscovery.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
-            landmarkName = "updateNSView(_:context:)"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "start(for:in:recursionDepth:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E629A1FC-138A-46C6-9DC8-25E9A5C51E36"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Paperboy/Views/ErrorHandlingModifier.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
-            landmarkName = "handle(error:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "2D4561A6-32C4-47BF-9F61-DA42E1B91201"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Paperboy/Models/FeedItemModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "normalisedContentDescription"
-            landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "D264DCAD-8108-4202-B95D-CA0B14C11B32"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Paperboy/Models/FeedItemModel.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "normalisedContentDescription"
-            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
