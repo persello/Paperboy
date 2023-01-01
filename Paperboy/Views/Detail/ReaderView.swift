@@ -79,10 +79,10 @@ struct ReaderView: View {
                     Group {
                         if sizeClass == .regular {
                             // iPad
-                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                            iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
                         } else {
                             // iPhone
-                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                            iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
                                 .navigationBarTitle(url.host() ?? "")
                                 .navigationBarTitleDisplayMode(.inline)
                                 .toolbar {

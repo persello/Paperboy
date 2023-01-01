@@ -1,5 +1,5 @@
 //
-//  iOSRegularWebView.swift
+//  iOSWebView.swift
 //  Paperboy
 //
 //  Created by Riccardo Persello on 27/12/22.
@@ -9,7 +9,7 @@ import SwiftUI
 import WebKit
 
 #if os(iOS)
-struct iOSRegularWebView: UIViewRepresentable {
+struct iOSWebView: UIViewRepresentable {
     
     typealias UIViewType = WKWebView
 
@@ -78,10 +78,10 @@ struct iOSRegularWebView: UIViewRepresentable {
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
-        private var parent: iOSRegularWebView
+        private var parent: iOSWebView
         private var progressObserver: NSKeyValueObservation?
         
-        init(_ parent: iOSRegularWebView) {
+        init(_ parent: iOSWebView) {
             self.parent = parent
             super.init()
             
@@ -129,7 +129,7 @@ struct iOSRegularWebView: UIViewRepresentable {
 
 struct iOSWebView_Previews: PreviewProvider {
     static var previews: some View {
-        iOSRegularWebView(url: .constant(URL(string: "https://apple.com")!), loadingProgress: .constant(1))
+        iOSWebView(url: .constant(URL(string: "https://apple.com")!), loadingProgress: .constant(1))
     }
 }
 #endif
