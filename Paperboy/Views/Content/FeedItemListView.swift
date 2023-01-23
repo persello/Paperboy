@@ -49,7 +49,7 @@ struct FeedItemListView: View {
                                         .padding(4)
 #endif
                                 }
-                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
                                 .swipeActions {
                                     Button {
                                         context.perform {

@@ -20,6 +20,7 @@ struct FeedItemListRow: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.managedObjectContext) private var context
     @Environment(\.errorHandler) private var errorHandler
+    @Environment(\.colorScheme) private var colorScheme
     
     @ObservedObject var feedItem: FeedItemModel
     
@@ -45,7 +46,7 @@ struct FeedItemListRow: View {
         if feedItem.wallpaperURL != nil && !largeLayout {
             // Image shown...
             #if os(iOS)
-            return .init(top: 8, leading: 16, bottom: 8, trailing: imageSize / 2)
+            return .init(top: 8, leading: 16, bottom: 8, trailing: 16)
             #elseif os(macOS)
             return .init(top: 0, leading: imageSize + 16, bottom: 0, trailing: 0)
             #endif
@@ -59,26 +60,24 @@ struct FeedItemListRow: View {
             if !largeLayout,
                let wallpaperURL = feedItem.wallpaperURL {
                 #if os(iOS)
-                HStack {
-                    Spacer()
-                    TImage(RemoteImage(imageURL: wallpaperURL))
-                        .resizable()
-//                        .placeholder({
-//                            ProgressView()
-//                        })
-                        .scaledToFill()
-                        .clipShape(Rectangle())
-                        .overlay {
-                            Rectangle()
-                                .foregroundColor(.clear)
-                                .background {
-                                    LinearGradient(colors: [Color(UIColor.systemBackground).opacity(0.5), Color(UIColor.systemBackground)], startPoint: UnitPoint(x: 1, y: 0), endPoint: UnitPoint(x: 0.2, y: 0))
-                                }
-                                .frame(height: imageSize)
-                        }
-                        .frame(height: imageSize)
-                        .clipped()
-                }
+                TImage(RemoteImage(imageURL: wallpaperURL))
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Rectangle())
+                    .mask {
+                        Rectangle()
+                            .fill(
+                                .linearGradient(colors: [
+                                    .black.opacity(colorScheme == .dark ? 0.5 : 0.3),
+                                    .clear
+                                ],
+                                startPoint: UnitPoint(x: 0, y: 0),
+                                endPoint: UnitPoint(x: 0.8, y: 0))
+                            )
+                            .frame(height: imageSize)
+                    }
+                    .frame(height: imageSize)
+                    .clipped()
 #elseif os(macOS)
                 TImage(RemoteImage(imageURL: wallpaperURL))
                     .resizable()
@@ -128,6 +127,7 @@ struct FeedItemListRow: View {
             .padding(computedPadding)
         }
         .frame(maxHeight: imageSize)
+        .clipped()
 #if os(macOS)
         .padding(.vertical, 4)
 //        .padding(.horizontal, 8)
