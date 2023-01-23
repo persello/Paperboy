@@ -89,7 +89,7 @@ extension FeedItemModel {
                     let document = try SwiftSoup.parse(description)
                     let paragraph = try document.select("p").first()
                     let body = document.body()
-                    let text = paragraph?.ownText() ?? body?.ownText()
+                    let text = try? paragraph?.text(trimAndNormaliseWhitespace: true) ?? body?.text(trimAndNormaliseWhitespace: true)
                     
                     Self.signposter.emitEvent("Found paragraph.", id: signpostID)
                     

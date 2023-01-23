@@ -396,6 +396,7 @@ extension FeedModel {
         
         // Items
         let itemSet: Set<FeedItemModel> = feed.articles
+            // First filter...
             .filter({ item in
                 !(self.items?.contains(where: { existingItem in
                     guard let existingItemModel = existingItem as? FeedItemModel else {
@@ -425,36 +426,41 @@ extension FeedModel {
             return
         }
         
-        for item in items {
-            guard let itemModel = item as? FeedItemModel else {
+        for newItem in items {
+            guard let newItem = newItem as? FeedItemModel else {
                 continue
             }
             
-            let duplicates = self.items!.filter({ existingItem in
-                guard let existingItemModel = existingItem as? FeedItemModel else {
-                    return false
-                }
-                
-                return existingItemModel.url == itemModel.url &&
-                    existingItemModel.publicationDate == itemModel.publicationDate &&
-                    existingItemModel.normalisedTitle == itemModel.normalisedTitle
-            })
+            let duplicates = self.items!
+                .compactMap({ existingItem in
+                    existingItem as? FeedItemModel
+                }).filter({ existingItem in
+                    
+                    return existingItem.url == newItem.url &&
+                    existingItem.publicationDate == newItem.publicationDate &&
+                    existingItem.normalisedTitle == newItem.normalisedTitle
+                })
+            
+            // Check if at least one of the duplicates is read.
+            let read = duplicates.contains { item in
+                item.read
+            }
             
             if duplicates.count > 1 {
-                Self.logger.info("Found \(duplicates.count) duplicates for item \"\(itemModel.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
+                Self.logger.info("Found \(duplicates.count) duplicates for item \"\(newItem.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
                 
                 for duplicate in duplicates {
-                    guard let duplicateModel = duplicate as? FeedItemModel else {
-                        continue
-                    }
                     
-                    if duplicateModel != itemModel {
-                        Self.logger.info("Deleting duplicate item \"\(duplicateModel.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
+                    if duplicate != newItem {
+                        Self.logger.info("Deleting duplicate item \"\(duplicate.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
                         context.performAndWait {
-                            context.delete(duplicateModel)
+                            context.delete(duplicate)
                         }
                     }
                 }
+                
+                // Restore read status.
+                newItem.read = read
             }
         }
         
