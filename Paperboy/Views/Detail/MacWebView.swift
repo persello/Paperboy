@@ -48,7 +48,7 @@ struct MacWebView: NSViewRepresentable {
                 )!
             )
         ) { contentRuleList, error in
-            if error != nil,
+            if error == nil,
                let contentRuleList = contentRuleList {
                 webView.configuration.userContentController.add(contentRuleList)
             }

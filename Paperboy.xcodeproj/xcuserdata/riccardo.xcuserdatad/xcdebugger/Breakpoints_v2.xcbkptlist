@@ -188,6 +188,133 @@
             endingLineNumber = "138"
             landmarkName = "start(for:in:recursionDepth:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 41154440a3089804"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "12964">
+               </Location>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 622779bcd2f83e51"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "520">
+               </Location>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 99053b9d1329d50"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(14) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "1076">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9894503F-E621-44B5-B09C-4A767182AC4E"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Paperboy/Views/Detail/iOSWebView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "makeUIView(context:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9894503F-E621-44B5-B09C-4A767182AC4E - d08d1da26b806762"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.WKContentRuleList&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Paperboy.iOSWebView.makeUIView(context: SwiftUI.UIViewRepresentableContext&lt;Paperboy.iOSWebView&gt;) -&gt; __C.WKWebView"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Views/Detail/iOSWebView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "160">
+               </Location>
+               <Location
+                  uuid = "9894503F-E621-44B5-B09C-4A767182AC4E - d08d1da26b806762"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;__C.WKContentRuleList&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Paperboy.iOSWebView.makeUIView(context: SwiftUI.UIViewRepresentableContext&lt;Paperboy.iOSWebView&gt;) -&gt; __C.WKWebView"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Views/Detail/iOSWebView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "188">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BA9873FF-D911-4CE3-BE6E-395FDA52BBCA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Paperboy/Views/Detail/iOSWebView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "makeUIView(context:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6E2B3766-D19D-4075-A334-EEEE2620B2B4"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Paperboy/Views/Detail/iOSWebView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "makeUIView(context:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
