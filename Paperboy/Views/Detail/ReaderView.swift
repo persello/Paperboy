@@ -11,6 +11,7 @@ import FeedKit
 
 struct ReaderView: View {
     @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
     
     #if os(iOS)
     @Environment(\.horizontalSizeClass) private var sizeClass
@@ -79,10 +80,10 @@ struct ReaderView: View {
                     Group {
                         if sizeClass == .regular {
                             // iPad
-                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                            iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
                         } else {
                             // iPhone
-                            iOSRegularWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
+                            iOSWebView(url: $url, loadingProgress: $loadingProgress, error: $error)
                                 .navigationBarTitle(url.host() ?? "")
                                 .navigationBarTitleDisplayMode(.inline)
                                 .toolbar {
@@ -119,10 +120,11 @@ struct ReaderView: View {
                 }
                 .onChange(of: loadingProgress) { newValue in
                     if newValue == 1.0 {
-                        // TODO: Error management.
                         context.perform {
                             self.feedItem?.read = true
-                            try? context.save()
+                            errorHandler.tryPerform {
+                                try context.save()
+                            }
                         }
                     }
                 }

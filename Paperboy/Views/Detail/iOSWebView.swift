@@ -1,17 +1,17 @@
 //
-//  MacWebView.swift
+//  iOSWebView.swift
 //  Paperboy
 //
-//  Created by Riccardo Persello on 21/12/22.
+//  Created by Riccardo Persello on 27/12/22.
 //
 
 import SwiftUI
 import WebKit
 
-#if os(macOS)
-struct MacWebView: NSViewRepresentable {
+#if os(iOS)
+struct iOSWebView: UIViewRepresentable {
     
-    typealias NSViewType = WKWebView
+    typealias UIViewType = WKWebView
 
     @Binding var url: URL
     @Binding var loadingProgress: Double
@@ -32,12 +32,13 @@ struct MacWebView: NSViewRepresentable {
         self._error = error
     }
     
-    func makeNSView(context: Context) -> WKWebView {
+    func makeUIView(context: Context) -> UIViewType {
         webView.navigationDelegate = context.coordinator
-        webView.allowsMagnification = true
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = true
         webView.configuration.mediaTypesRequiringUserActionForPlayback = .all
+        webView.configuration.allowsInlineMediaPlayback = false
+        
 
         WKContentRuleListStore.default().compileContentRuleList(
             forIdentifier: "ContentBlockingRules",
@@ -48,12 +49,9 @@ struct MacWebView: NSViewRepresentable {
                 )!
             )
         ) { contentRuleList, error in
-            if error != nil {
-                // TODO: Handle error
-            } else if let contentRuleList = contentRuleList {
+            if error == nil,
+               let contentRuleList = contentRuleList {
                 webView.configuration.userContentController.add(contentRuleList)
-            } else {
-                // TODO: Handle error
             }
         }
         
@@ -61,12 +59,12 @@ struct MacWebView: NSViewRepresentable {
         return webView
     }
     
-    func updateNSView(_ nsView: NSViewType, context: Context) {
-        if nsView.url == self.url {
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        if uiView.url == self.url {
             return
         }
         
-        nsView.load(request)
+        uiView.load(request)
         DispatchQueue.main.async {
             self.error = nil
         }
@@ -77,14 +75,21 @@ struct MacWebView: NSViewRepresentable {
     }
     
     class Coordinator: NSObject, WKNavigationDelegate {
-        private var parent: MacWebView
+        private var parent: iOSWebView
         private var progressObserver: NSKeyValueObservation?
         
-        init(_ parent: MacWebView) {
+        init(_ parent: iOSWebView) {
             self.parent = parent
             super.init()
             
             progressObserver = self.parent.webView.observe(\.estimatedProgress, options: [.new]) { [weak self] webView, _ in
+                
+                if webView.estimatedProgress != 1.0 {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                } else {
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                }
+                
                 DispatchQueue.main.async {
                     self?.parent.loadingProgress = webView.estimatedProgress
                 }
@@ -119,9 +124,9 @@ struct MacWebView: NSViewRepresentable {
 }
 
 
-struct MacWebView_Previews: PreviewProvider {
+struct iOSWebView_Previews: PreviewProvider {
     static var previews: some View {
-        MacWebView(url: .constant(URL(string: "https://apple.com")!), loadingProgress: .constant(1))
+        iOSWebView(url: .constant(URL(string: "https://apple.com")!), loadingProgress: .constant(1))
     }
 }
 #endif

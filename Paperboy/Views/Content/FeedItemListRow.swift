@@ -11,8 +11,16 @@ import SFSafeSymbols
 import Telescope
 
 struct FeedItemListRow: View {
+    #if os(iOS)
+    @ScaledMetric var imageSize: CGFloat = 128
+    #elseif os(macOS)
     @ScaledMetric var imageSize: CGFloat = 100
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
+    #endif
+    
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
+    @Environment(\.colorScheme) private var colorScheme
     
     @ObservedObject var feedItem: FeedItemModel
     
@@ -22,9 +30,7 @@ struct FeedItemListRow: View {
     
     // Computation finished marker.
     @State var taskCompleted: Bool = false
-    
-    static let imageCache = URLCache(memoryCapacity: 128 * 1024 * 1024, diskCapacity: 1 * 1024 * 1024 * 1024)
-    
+        
     static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -39,16 +45,40 @@ struct FeedItemListRow: View {
     var computedPadding: EdgeInsets {
         if feedItem.wallpaperURL != nil && !largeLayout {
             // Image shown...
-            return .init(top: 0, leading: 0, bottom: 0, trailing: 0)
+            #if os(iOS)
+            return .init(top: 8, leading: 16, bottom: 8, trailing: 16)
+            #elseif os(macOS)
+            return .init(top: 0, leading: imageSize + 16, bottom: 0, trailing: 0)
+            #endif
         } else {
             return .init(top: 8, leading: 16, bottom: 8, trailing: 0)
         }
     }
         
     var body: some View {
-        HStack(alignment: .center, spacing: 16) {
+        ZStack(alignment: .leading) {
             if !largeLayout,
                let wallpaperURL = feedItem.wallpaperURL {
+                #if os(iOS)
+                TImage(RemoteImage(imageURL: wallpaperURL))
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Rectangle())
+                    .mask {
+                        Rectangle()
+                            .fill(
+                                .linearGradient(colors: [
+                                    .black.opacity(colorScheme == .dark ? 0.5 : 0.3),
+                                    .clear
+                                ],
+                                startPoint: UnitPoint(x: 0, y: 0),
+                                endPoint: UnitPoint(x: 0.8, y: 0))
+                            )
+                            .frame(height: imageSize)
+                    }
+                    .frame(height: imageSize)
+                    .clipped()
+#elseif os(macOS)
                 TImage(RemoteImage(imageURL: wallpaperURL))
                     .resizable()
                     .placeholder({
@@ -56,10 +86,7 @@ struct FeedItemListRow: View {
                     })
                     .scaledToFill()
                     .frame(width: imageSize, height: imageSize)
-#if os(macOS)
                     .clipShape(RoundedRectangle(cornerRadius: 2))
-#else
-                    .clipShape(Rectangle())
 #endif
             }
             
@@ -90,6 +117,7 @@ struct FeedItemListRow: View {
                 if !largeLayout {
                     if let description {
                         Text(description)
+                            .lineLimit(2)
                     } else if !taskCompleted {
                         Text(String(repeating: "A ", count: Int.random(in: 15...30)))
                             .redacted(reason: .placeholder)
@@ -99,9 +127,10 @@ struct FeedItemListRow: View {
             .padding(computedPadding)
         }
         .frame(maxHeight: imageSize)
+        .clipped()
 #if os(macOS)
         .padding(.vertical, 4)
-        .padding(.horizontal, 8)
+//        .padding(.horizontal, 8)
 #endif
         .task {
             feedItem.updateWallpaper()
@@ -112,8 +141,21 @@ struct FeedItemListRow: View {
             taskCompleted = true
         }
         .contextMenu {
-            // TODO: Context menu.
-            Text("AAA")
+            NavigationLink(value: feedItem) {
+                Label("Open", systemSymbol: .book)
+            }
+            
+            Button {
+                context.perform {
+                    feedItem.read.toggle()
+                    errorHandler.tryPerform {
+                        try context.save()
+                    }
+                }
+            } label: {
+                Label(feedItem.read ? "Mark as unread" : "Mark as read", systemSymbol: feedItem.read ? .trayFull : .eyeglasses)
+            }
+
         } preview: {
             ReaderView(feedItem: .constant(feedItem), feed: nil)
         }

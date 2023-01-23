@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedListRowFolder: View {
     @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
     
     @ObservedObject var folder: FeedFolderModel
     
@@ -34,7 +35,9 @@ struct FeedListRowFolder: View {
 
                             context.perform {
                                 context.delete(folder)
-                                try? context.save()
+                                errorHandler.tryPerform {
+                                    try context.save()
+                                }
                             }
                         }
                     ),

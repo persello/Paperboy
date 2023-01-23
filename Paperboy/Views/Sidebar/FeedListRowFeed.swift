@@ -9,6 +9,7 @@ import SwiftUI
 
 struct FeedListRowFeed: View {
     @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
     
     @ObservedObject var feed: FeedModel
     
@@ -30,9 +31,12 @@ struct FeedListRowFeed: View {
             Menu("Move to folder") {
                 ForEach(folders) { folder in
                     Button {
-                        folder.addToFeeds(feed)
                         context.perform {
-                            try? context.save()
+                            folder.addToFeeds(feed)
+                            
+                            errorHandler.tryPerform {
+                                try context.save()
+                            }
                         }
                     } label: {
                         Label(folder.normalisedName, systemSymbol: folder.symbol)
@@ -58,7 +62,9 @@ struct FeedListRowFeed: View {
                         
                         context.perform {
                             context.delete(feed)
-                            try? context.save()
+                            errorHandler.tryPerform {
+                                try context.save()
+                            }
                         }
                     }
                 ),

@@ -90,7 +90,7 @@ class FeedDiscovery {
                 // Try to scan for a feed reference in HTML head.
                 Self.logger.info("Scanning for feed references in HTML head for \(url.absoluteString).")
                 do {
-                    let (data, response) = try await URLSession.shared.data(from: url, delegate: FeedDiscoveryTaskDelegate())
+                    let (data, _) = try await URLSession.shared.data(from: url, delegate: FeedDiscoveryTaskDelegate())
                     let html = String(decoding: data, as: UTF8.self)
                     let document = try SwiftSoup.parse(html)
                     var feedURLs = try document.getElementsByTag("link").filter { element in

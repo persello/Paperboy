@@ -52,11 +52,11 @@ struct FeedItemListView: View {
                                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
                                 .swipeActions {
                                     Button {
-                                        item.read.toggle()
-
-                                        // TODO: Error management.
                                         context.perform {
-                                            try? context.save()
+                                            item.read.toggle()
+                                            errorHandler.tryPerform {
+                                                try context.save()
+                                            }
                                         }
                                     } label: {
                                         Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)

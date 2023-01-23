@@ -120,24 +120,23 @@ struct NewFeedView: View {
             } else {
                 Button {
                     // Push the feed to the "real" context.
-                    guard let selectedFeed else {
-                        // TODO: Error.
-                        return
-                    }
                     
                     // TODO: Check for duplicates.
                                         
-                    // TODO: Error management.
                     context.perform {
                         
                         Task {
                             
-                            let new = try await FeedModel(url: selectedFeed.url!, in: context)
-                            try? await new.refresh()
+                            let new = try await FeedModel(url: selectedFeed!.url!, in: context)
+                            await errorHandler.tryPerformAsync {
+                                try await new.refresh()
+                            }
                             
                             await context.perform {
                                 context.insert(new)
-                                try? context.save()
+                                errorHandler.tryPerform {
+                                    try context.save()
+                                }
                             }
                             
                             DispatchQueue.main.async {

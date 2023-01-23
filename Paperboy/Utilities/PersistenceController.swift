@@ -51,6 +51,7 @@ struct PersistenceController {
             try? cloudKitContainer.initializeCloudKitSchema()
             try? cloudKitContainer.viewContext.setQueryGenerationFrom(.current)
             cloudKitContainer.viewContext.automaticallyMergesChangesFromParent = true
+            cloudKitContainer.viewContext.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
 
             container = cloudKitContainer
         }
