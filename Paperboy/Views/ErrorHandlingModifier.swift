@@ -97,7 +97,7 @@ struct HandleErrorsByShowingAlertViewModifier: ViewModifier {
                             Button(role: .cancel) {
                                 errorHandler.error = nil
                             } label: {
-                                Text("Continue")
+                                Text("Dismiss")
                             }
                             .keyboardShortcut(.defaultAction)
                         },

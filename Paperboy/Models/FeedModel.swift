@@ -200,9 +200,6 @@ extension FeedModel {
     
     // MARK: Private functions.
     func setStatus(_ status: Status) {
-        
-        // TODO: Error handling.
-        
         Self.logger.info("Setting feed status for \"\(self.normalisedTitle)\" to \(self.status).")
         
         #if os(iOS)
@@ -210,7 +207,9 @@ extension FeedModel {
         #endif
         
         DispatchQueue.main.async {
-            self.status = status.rawValue
+            self.managedObjectContext?.perform {
+                self.status = status.rawValue
+            }
         }
     }
     
@@ -422,7 +421,11 @@ extension FeedModel {
         
         // Deduplicate existing items by using URL, date and normalised title.
         // This is necessary because CloudKit does not support unique constraints.
-        for item in self.items! {
+        guard let items = self.items else {
+            return
+        }
+        
+        for item in items {
             guard let itemModel = item as? FeedItemModel else {
                 continue
             }
@@ -464,7 +467,6 @@ extension FeedModel {
             
             self.lastRefresh = Date.now
             
-            // TODO: Error management.
             if self.hasChanges {
                 context.perform {
                     try? context.save()

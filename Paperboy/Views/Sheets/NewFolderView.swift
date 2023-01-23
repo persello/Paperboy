@@ -10,6 +10,7 @@ import SFSafeSymbols
 
 struct NewFolderView: View {
     @Environment(\.managedObjectContext) private var context
+    @Environment(\.errorHandler) private var errorHandler
     
     @Binding var modalShown: Bool
     
@@ -102,13 +103,14 @@ struct NewFolderView: View {
             Button {
                 modalShown = false
                 
-                // TODO: Error management.
                 context.perform {
                     let folder = FeedFolderModel(context: context)
                     folder.name = name
                     folder.icon = icon.rawValue
                     
-                    try? context.save()
+                    errorHandler.tryPerform {
+                        try context.save()
+                    }
                 }
             } label: {
                 Text("Add")

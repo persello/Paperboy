@@ -49,14 +49,14 @@ struct FeedItemListView: View {
                                         .padding(4)
 #endif
                                 }
-                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
+                                .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                                 .swipeActions {
                                     Button {
-                                        item.read.toggle()
-
-                                        // TODO: Error management.
                                         context.perform {
-                                            try? context.save()
+                                            item.read.toggle()
+                                            errorHandler.tryPerform {
+                                                try context.save()
+                                            }
                                         }
                                     } label: {
                                         Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)

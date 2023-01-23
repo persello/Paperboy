@@ -49,12 +49,9 @@ struct iOSWebView: UIViewRepresentable {
                 )!
             )
         ) { contentRuleList, error in
-            if error != nil {
-                // TODO: Handle error
-            } else if let contentRuleList = contentRuleList {
+            if error != nil,
+               let contentRuleList = contentRuleList {
                 webView.configuration.userContentController.add(contentRuleList)
-            } else {
-                // TODO: Handle error
             }
         }
         
