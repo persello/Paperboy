@@ -38,6 +38,7 @@ struct MacWebView: NSViewRepresentable {
         webView.allowsBackForwardNavigationGestures = true
         webView.allowsLinkPreview = true
         webView.configuration.mediaTypesRequiringUserActionForPlayback = .all
+        webView.underPageBackgroundColor = .clear
 
         WKContentRuleListStore.default().compileContentRuleList(
             forIdentifier: "ContentBlockingRules",
@@ -63,6 +64,7 @@ struct MacWebView: NSViewRepresentable {
             return
         }
         
+        nsView.evaluateJavaScript("document.body.remove()")
         nsView.load(request)
         DispatchQueue.main.async {
             self.error = nil

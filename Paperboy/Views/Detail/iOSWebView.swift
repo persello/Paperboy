@@ -38,6 +38,8 @@ struct iOSWebView: UIViewRepresentable {
         webView.allowsLinkPreview = true
         webView.configuration.mediaTypesRequiringUserActionForPlayback = .all
         webView.configuration.allowsInlineMediaPlayback = false
+        webView.isOpaque = false
+        webView.backgroundColor = .clear
         
 
         WKContentRuleListStore.default().compileContentRuleList(
@@ -64,6 +66,7 @@ struct iOSWebView: UIViewRepresentable {
             return
         }
         
+        uiView.evaluateJavaScript("document.body.remove()")
         uiView.load(request)
         DispatchQueue.main.async {
             self.error = nil

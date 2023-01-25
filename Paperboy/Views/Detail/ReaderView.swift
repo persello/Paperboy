@@ -50,11 +50,18 @@ struct ReaderView: View {
     }
     
     init(feedItem: Binding<FeedItemModel?>, feed: FeedModel?) {
-        self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "https://localhost")!)
+        self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "about:blank")!)
         self._feedItem = feedItem
         self.itemList = (feed?.items?.allObjects as? [FeedItemModel])?.sorted(by: { a, b in
             a.publicationDate! > b.publicationDate!
         })
+    }
+    
+    // Internal initialiser for testing animations.
+    fileprivate init(feedItem: Binding<FeedItemModel?>, repeatingItem: Int) {
+        self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "about:blank")!)
+        self._feedItem = feedItem
+        self.itemList = Array.init(repeating: feedItem.wrappedValue!, count: repeatingItem)
     }
     
     var body: some View {
@@ -93,23 +100,24 @@ struct ReaderView: View {
                                         }
                                     }
                                     ToolbarItemGroup(placement: .bottomBar) {
-                                        Spacer()
                                         
                                         Button {
                                             if let previousItem {
                                                 feedItem = previousItem
                                             }
                                         } label: {
-                                            Label("Previous article", systemSymbol: .chevronUp)
+                                            Label("Previous article", systemSymbol: .chevronLeft)
                                         }
                                         .disabled(!previousItemAvailable)
+                                        
+                                        Slider(value: .constant(0))
                                         
                                         Button {
                                             if let nextItem {
                                                 feedItem = nextItem
                                             }
                                         } label: {
-                                            Label("Next article", systemSymbol: .chevronDown)
+                                            Label("Next article", systemSymbol: .chevronRight)
                                         }
                                         .disabled(!nextItemAvailable)
                                     }
@@ -150,7 +158,7 @@ struct ReaderView_Previews: PreviewProvider {
         let item = FeedItemModel(from: feed!.items!.first!, context: context)
         
         return NavigationStack {
-            ReaderView(feedItem: .constant(item), feed: nil)
+            ReaderView(feedItem: .constant(item), repeatingItem: 5)
         }
     }
 }

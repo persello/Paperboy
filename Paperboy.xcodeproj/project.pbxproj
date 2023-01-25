@@ -44,6 +44,7 @@
 		8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */; };
 		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
 		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
+		8BB5AB72297F075100ED0F4C /* View+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,7 @@
 		8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFeed.swift; sourceTree = "<group>"; };
 		8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFolder.swift; sourceTree = "<group>"; };
 		8BA8A4442957564E00C570CA /* NewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderView.swift; sourceTree = "<group>"; };
+		8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Snapshot.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,7 @@
 				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
 				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 				8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */,
+				8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 			files = (
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
 				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
+				8BB5AB72297F075100ED0F4C /* View+Snapshot.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
