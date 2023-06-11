@@ -70,8 +70,10 @@ class FeedDiscovery {
                 
                 Self.logger.info("Starting discovery for \(inputURL.absoluteString).")
                 
+                let absoluteString = String(inputURL.absoluteString.trimmingPrefix("feed:"))
+                
                 var URLsFromLinks: [URL] = []
-                let host = inputURL.absoluteString.trimmingPrefix("https://").components(separatedBy: "/").first ?? inputURL.absoluteString
+                let host = absoluteString.trimmingPrefix("https://").components(separatedBy: "/").first ?? absoluteString
                 
                 guard let url = normaliseURL(url: inputURL, host: host) else {
                     Self.logger.info("Cannot normalise url \(inputURL.absoluteString).")

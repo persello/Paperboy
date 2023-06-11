@@ -38,18 +38,14 @@ struct CustomSheet<Content: View, DoneButton: View, CancelButton: View>: View {
             HStack {
                 Spacer()
                 
-                if let cancelButton {
-                    cancelButton()
-                        .keyboardShortcut(.cancelAction)
-                        .controlSize(.large)
-                }
+                cancelButton()
+                    .keyboardShortcut(.cancelAction)
+                    .controlSize(.large)
                 
-                if let doneButton {
-                    doneButton()
-                        .keyboardShortcut(.defaultAction)
-                        .controlSize(.large)
-                        .tint(.accentColor)
-                }
+                doneButton()
+                    .keyboardShortcut(.defaultAction)
+                    .controlSize(.large)
+                    .tint(.accentColor)
             }
         }
         .frame(minWidth: 400, minHeight: 500)

@@ -184,8 +184,8 @@
             filePath = "Paperboy/Utilities/FeedDiscovery.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "start(for:in:recursionDepth:)"
             landmarkType = "7">
             <Locations>
@@ -233,6 +233,51 @@
                   startingLineNumber = "138"
                   endingLineNumber = "138"
                   offsetFromSymbolStart = "1076">
+               </Location>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 41154440a3089846"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "10844">
+               </Location>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 622779bcd2f83e13"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(13) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "456">
+               </Location>
+               <Location
+                  uuid = "615830CF-F4A4-40B8-92F9-14305BDB1897 - 99053b9d1329d12"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(14) suspend resume partial function for closure #1 @Sendable () async -&gt; () in closure #1 (Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;.Continuation) -&gt; () in static Paperboy.FeedDiscovery.start(for: Foundation.URL, in: __C.NSManagedObjectContext, recursionDepth: Swift.Int) -&gt; Swift.AsyncStream&lt;Paperboy.FeedDiscovery.DiscoveredFeed&gt;"
+                  moduleName = "Paperboy"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/riccardo/Developer/Paperboy/Paperboy/Utilities/FeedDiscovery.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "140"
+                  endingLineNumber = "140"
+                  offsetFromSymbolStart = "956">
                </Location>
             </Locations>
          </BreakpointContent>
