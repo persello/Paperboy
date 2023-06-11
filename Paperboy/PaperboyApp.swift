@@ -10,21 +10,12 @@ import CoreData
 
 @main
 struct PaperboyApp: App {
-    let persistenceController = PersistenceController.shared
-    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .modelContainer(for: [FeedFolderModel.self, FeedModel.self, FeedItemModel.self], isAutosaveEnabled: true)
 #if os(macOS)
-                .onReceive(NotificationCenter.default.publisher(for: NSApplication.willTerminateNotification)) { notification in
-                    persistenceController.save()
-                }
                 .frame(minWidth: 600, minHeight: 500)
-#elseif os(iOS)
-                .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { notification in
-                    persistenceController.save()
-                }
 #endif
         }
     }

@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FeedListRowFeed: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
-    @ObservedObject var feed: FeedModel
+    var feed: FeedModel
     
     var folders: [FeedFolderModel]
     @State private var deleting: Bool = false
@@ -19,52 +20,50 @@ struct FeedListRowFeed: View {
     var body: some View {
         FeedLabel(feed: feed)
         .contextMenu {
-            Button {
-                feed.markAllAsRead()
-            } label : {
-                Label("Mark all as read", systemSymbol: .eye)
-            }
-            .disabled(feed.unreadCount == 0)
+//            Button {
+//                feed.markAllAsRead()
+//            } label : {
+//                Label("Mark all as read", systemSymbol: .eye)
+//            }
+//            .disabled(feed.unreadCount == 0)
             
-            Divider()
-            
-            Menu("Move to folder") {
-                ForEach(folders) { folder in
-                    Button {
-                        context.perform {
-                            folder.addToFeeds(feed)
-                            
-                            errorHandler.tryPerform {
-                                try context.save()
-                            }
-                        }
-                    } label: {
-                        Label(folder.normalisedName, systemSymbol: folder.symbol)
-                    }
-                }
-            }
-            .labelStyle(.titleAndIcon)
-            
-            Button(role: .destructive) {
-                deleting = true
-            } label: {
-                Label("Delete...", systemSymbol: .trash)
-            }
+//            Divider()
+//            
+//            Menu("Move to folder") {
+//                ForEach(folders) { folder in
+//                    Button {
+//                        context.perform {
+//                            folder.feeds.append(feed)
+//                            
+//                            errorHandler.tryPerform {
+//                                try context.save()
+//                            }
+//                        }
+//                    } label: {
+//                        Label(folder.normalisedName, systemSymbol: folder.symbol)
+//                    }
+//                }
+//            }
+//            .labelStyle(.titleAndIcon)
+//            
+//            Button(role: .destructive) {
+//                deleting = true
+//            } label: {
+//                Label("Delete...", systemSymbol: .trash)
+//            }
         }
         .alert(isPresented: $deleting, content: {
             Alert(
-                title: Text("Are you sure you want to delete \"\(feed.normalisedTitle)\"?"),
+                title: Text("Are you sure you want to delete \"\(feed.title)\"?"),
                 message: Text("Once you delete this feed, you'll need to add it again if you want it back."),
                 primaryButton: .destructive(
                     Text("Delete"),
                     action: {
                         deleting = false
                         
-                        context.perform {
-                            context.delete(feed)
-                            errorHandler.tryPerform {
-                                try context.save()
-                            }
+                        context.delete(feed)
+                        errorHandler.tryPerform {
+                            try context.save()
                         }
                     }
                 ),
@@ -76,13 +75,8 @@ struct FeedListRowFeed: View {
 
 struct FeedListRowFeed_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
-        
-        let feed = FeedModel(context: context)
-        feed.title = "9to5Mac"
-        feed.url = URL(string: "https://9to5mac.com/feed")!
+        let feed = FeedModel(title: "9to5Mac", url: .init(string: "https://9to5mac.com/feed")!)
         
         return FeedListRowFeed(feed: feed, folders: [])
-            .environment(\.managedObjectContext, context)
     }
 }

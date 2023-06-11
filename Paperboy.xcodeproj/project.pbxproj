@@ -9,9 +9,6 @@
 /* Begin PBXBuildFile section */
 		8B13A5DC295FAA1B005D8C94 /* Collection+safe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */; };
 		8B1559C22959F5E6008B5F1A /* ContentBlacklist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */; };
-		8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */; };
-		8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */; };
-		8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B3A76042942620300E3AB7C /* FeedItemModel.swift */; };
 		8B560DC52953591400564909 /* ReaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC42953591400564909 /* ReaderView.swift */; };
 		8B560DC729535B0D00564909 /* MacWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B560DC629535B0D00564909 /* MacWebView.swift */; };
 		8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5A48BC295B38AC00846E71 /* ErrorHandlingModifier.swift */; };
@@ -28,8 +25,6 @@
 		8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722014293D0F6F006B618E /* RSS+FeedItemProtocol.swift */; };
 		8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722016293D0FB4006B618E /* FeedProtocol.swift */; };
 		8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */; };
-		8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1229424C8B00CFBDA8 /* FeedModel.swift */; };
-		8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */; };
 		8B7FB56C294E2E49002C11A4 /* FeedDiscovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */; };
 		8B825C29295DB0C400098225 /* CustomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B825C28295DB0C400098225 /* CustomSheet.swift */; };
 		8B88B65529564DBC004123F7 /* URLBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B88B65429564DBC004123F7 /* URLBar.swift */; };
@@ -44,6 +39,9 @@
 		8B8C71B0295B9D2300EA710E /* FeedListRowFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */; };
 		8BA8A4432957532400C570CA /* SFSafeSymbols in Frameworks */ = {isa = PBXBuildFile; productRef = 8BA8A4422957532400C570CA /* SFSafeSymbols */; };
 		8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BA8A4442957564E00C570CA /* NewFolderView.swift */; };
+		8BB4C0C92A3603AB00932B40 /* FeedFolderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4C0C62A3603AB00932B40 /* FeedFolderModel.swift */; };
+		8BB4C0CA2A3603AB00932B40 /* FeedItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4C0C72A3603AB00932B40 /* FeedItemModel.swift */; };
+		8BB4C0CB2A3603AB00932B40 /* FeedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB4C0C82A3603AB00932B40 /* FeedModel.swift */; };
 		8BB5AB72297F075100ED0F4C /* View+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */; };
 /* End PBXBuildFile section */
 
@@ -51,9 +49,6 @@
 		8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+safe.swift"; sourceTree = "<group>"; };
 		8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ContentBlacklist.json; sourceTree = "<group>"; };
 		8B1559C4295A0DEA008B5F1A /* FeedListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListViewModel.swift; sourceTree = "<group>"; };
-		8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFolderModel.swift; sourceTree = "<group>"; };
-		8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		8B3A76042942620300E3AB7C /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
 		8B560DC42953591400564909 /* ReaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderView.swift; sourceTree = "<group>"; };
 		8B560DC629535B0D00564909 /* MacWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacWebView.swift; sourceTree = "<group>"; };
 		8B57ED222951117300870B40 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -72,8 +67,6 @@
 		8B722014293D0F6F006B618E /* RSS+FeedItemProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSS+FeedItemProtocol.swift"; sourceTree = "<group>"; };
 		8B722016293D0FB4006B618E /* FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedProtocol.swift; sourceTree = "<group>"; };
 		8B722018293D0FF1006B618E /* RSS+FeedProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RSS+FeedProtocol.swift"; sourceTree = "<group>"; };
-		8B766E1229424C8B00CFBDA8 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
-		8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Paperboy.xcdatamodel; sourceTree = "<group>"; };
 		8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedDiscovery.swift; sourceTree = "<group>"; };
 		8B825C28295DB0C400098225 /* CustomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSheet.swift; sourceTree = "<group>"; };
 		8B88B65429564DBC004123F7 /* URLBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLBar.swift; sourceTree = "<group>"; };
@@ -85,6 +78,9 @@
 		8B8C71AD295B9C6E00EA710E /* FeedListRowFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFeed.swift; sourceTree = "<group>"; };
 		8B8C71AF295B9D2300EA710E /* FeedListRowFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedListRowFolder.swift; sourceTree = "<group>"; };
 		8BA8A4442957564E00C570CA /* NewFolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderView.swift; sourceTree = "<group>"; };
+		8BB4C0C62A3603AB00932B40 /* FeedFolderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFolderModel.swift; sourceTree = "<group>"; };
+		8BB4C0C72A3603AB00932B40 /* FeedItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemModel.swift; sourceTree = "<group>"; };
+		8BB4C0C82A3603AB00932B40 /* FeedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedModel.swift; sourceTree = "<group>"; };
 		8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Snapshot.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,7 +120,6 @@
 			isa = PBXGroup;
 			children = (
 				8B7FB56B294E2E49002C11A4 /* FeedDiscovery.swift */,
-				8B3A75FF2942531A00E3AB7C /* PersistenceController.swift */,
 				8B13A5DB295FAA1B005D8C94 /* Collection+safe.swift */,
 				8BB5AB71297F075100ED0F4C /* View+Snapshot.swift */,
 			);
@@ -161,7 +156,6 @@
 				8B1559C12959F5E6008B5F1A /* ContentBlacklist.json */,
 				8B721FFA293D07E5006B618E /* Assets.xcassets */,
 				8B721FFC293D07E5006B618E /* Paperboy.entitlements */,
-				8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */,
 				8B721FFD293D07E5006B618E /* Preview Content */,
 			);
 			path = Paperboy;
@@ -204,9 +198,9 @@
 		8B766E1129424C7D00CFBDA8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				8B1559C6295A1559008B5F1A /* FeedFolderModel.swift */,
-				8B766E1229424C8B00CFBDA8 /* FeedModel.swift */,
-				8B3A76042942620300E3AB7C /* FeedItemModel.swift */,
+				8BB4C0C62A3603AB00932B40 /* FeedFolderModel.swift */,
+				8BB4C0C72A3603AB00932B40 /* FeedItemModel.swift */,
+				8BB4C0C82A3603AB00932B40 /* FeedModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -339,16 +333,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8B722015293D0F6F006B618E /* RSS+FeedItemProtocol.swift in Sources */,
-				8B1559C7295A1559008B5F1A /* FeedFolderModel.swift in Sources */,
+				8BB4C0CA2A3603AB00932B40 /* FeedItemModel.swift in Sources */,
 				8BB5AB72297F075100ED0F4C /* View+Snapshot.swift in Sources */,
 				8B560DC52953591400564909 /* ReaderView.swift in Sources */,
 				8B5A48C5295B843900846E71 /* iOSWebView.swift in Sources */,
 				8B72200A293D09C8006B618E /* FeedListView.swift in Sources */,
 				8B8A837829451E6800D93109 /* FeedLabel.swift in Sources */,
-				8B3A76052942620300E3AB7C /* FeedItemModel.swift in Sources */,
 				8B721FF9293D07E4006B618E /* ContentView.swift in Sources */,
+				8BB4C0CB2A3603AB00932B40 /* FeedModel.swift in Sources */,
 				8B8A83822945464800D93109 /* NewFeedView.swift in Sources */,
-				8B3A76002942531A00E3AB7C /* PersistenceController.swift in Sources */,
 				8B8A837D29452A8100D93109 /* FeedItemListRow.swift in Sources */,
 				8BA8A4452957564E00C570CA /* NewFolderView.swift in Sources */,
 				8B722017293D0FB4006B618E /* FeedProtocol.swift in Sources */,
@@ -360,11 +353,10 @@
 				8B8C71AE295B9C6E00EA710E /* FeedListRowFeed.swift in Sources */,
 				8B825C29295DB0C400098225 /* CustomSheet.swift in Sources */,
 				8B5A48BD295B38AC00846E71 /* ErrorHandlingModifier.swift in Sources */,
-				8B766E1729424F6000CFBDA8 /* Paperboy.xcdatamodeld in Sources */,
 				8B560DC729535B0D00564909 /* MacWebView.swift in Sources */,
 				8B88B65929566038004123F7 /* Atom+FeedItemProtocol.swift in Sources */,
+				8BB4C0C92A3603AB00932B40 /* FeedFolderModel.swift in Sources */,
 				8B722013293D0F58006B618E /* FeedItemProtocol.swift in Sources */,
-				8B766E1329424C8B00CFBDA8 /* FeedModel.swift in Sources */,
 				8B722019293D0FF1006B618E /* RSS+FeedProtocol.swift in Sources */,
 				8B88B65729565E3E004123F7 /* Atom+FeedProtocol.swift in Sources */,
 				8B88B65529564DBC004123F7 /* URLBar.swift in Sources */,
@@ -515,10 +507,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.persello.Paperboy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -560,10 +552,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.persello.Paperboy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -676,19 +668,6 @@
 			productName = SFSafeSymbols;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		8B766E1429424E4C00CFBDA8 /* Paperboy.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */,
-			);
-			currentVersion = 8B766E1529424E4C00CFBDA8 /* Paperboy.xcdatamodel */;
-			path = Paperboy.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 8B721FEB293D07E4006B618E /* Project object */;
 }

@@ -10,7 +10,7 @@ import SFSafeSymbols
 import FeedKit
 
 struct ReaderView: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
     #if os(iOS)
@@ -52,7 +52,7 @@ struct ReaderView: View {
     init(feedItem: Binding<FeedItemModel?>, feed: FeedModel?) {
         self._url = State(initialValue: feedItem.wrappedValue?.url ?? URL(string: "about:blank")!)
         self._feedItem = feedItem
-        self.itemList = (feed?.items?.allObjects as? [FeedItemModel])?.sorted(by: { a, b in
+        self.itemList = feed?.items.sorted(by: { a, b in
             a.publicationDate! > b.publicationDate!
         })
     }
@@ -128,11 +128,9 @@ struct ReaderView: View {
                 }
                 .onChange(of: loadingProgress) { newValue in
                     if newValue == 1.0 {
-                        context.perform {
-                            self.feedItem?.read = true
-                            errorHandler.tryPerform {
-                                try context.save()
-                            }
+                        self.feedItem?.read = true
+                        errorHandler.tryPerform {
+                            try context.save()
                         }
                     }
                 }
@@ -153,9 +151,8 @@ struct ReaderView: View {
 
 struct ReaderView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
         let feed = try! FeedKit.FeedParser(URL: URL(string: "https://9to5mac.com/feed")!).parse().get().rssFeed
-        let item = FeedItemModel(from: feed!.items!.first!, context: context)
+        let item = try! FeedItemModel(from: feed!.items!.first!)
         
         return NavigationStack {
             ReaderView(feedItem: .constant(item), repeatingItem: 5)

@@ -10,7 +10,7 @@ import FeedKit
 import CoreData
 
 struct NewFeedView: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
     @Binding var modalShown: Bool
@@ -50,7 +50,7 @@ struct NewFeedView: View {
                             ProgressView()
                         } else if let feed = selectedFeed,
                                   let icon = feed.iconImage {
-                            Image(icon, scale: 1, label: Text(feed.normalisedTitle))
+                            Image(icon, scale: 1, label: Text(feed.title))
                                 .resizable()
                         } else {
                             Image(systemSymbol: .newspaperFill)
@@ -78,7 +78,7 @@ struct NewFeedView: View {
 #endif
                             
                             if let selectedFeed {
-                                TextField("Title", text: $title, prompt: Text(selectedFeed.normalisedTitle))
+                                TextField("Title", text: $title, prompt: Text(selectedFeed.title))
                             }
                         }
                         
@@ -104,7 +104,7 @@ struct NewFeedView: View {
                         .multilineTextAlignment(.center)
                         .foregroundColor(.secondary)
                         .padding()
-                        
+                    
                 }
             }
         } cancelButton: {
@@ -113,7 +113,7 @@ struct NewFeedView: View {
             } label: {
                 Text("Cancel")
             }
-
+            
         } doneButton: {
             if searching && selectedFeed == nil {
                 ProgressView()
@@ -122,26 +122,22 @@ struct NewFeedView: View {
                     // Push the feed to the "real" context.
                     
                     // TODO: Check for duplicates.
-                                        
-                    context.perform {
+                    
+                    
+                    Task {
                         
-                        Task {
-                            
-                            let new = try await FeedModel(url: selectedFeed!.url!, in: context)
-                            await errorHandler.tryPerformAsync {
-                                try await new.refresh()
-                            }
-                            
-                            await context.perform {
-                                context.insert(new)
-                                errorHandler.tryPerform {
-                                    try context.save()
-                                }
-                            }
-                            
-                            DispatchQueue.main.async {
-                                modalShown = false
-                            }
+                        let new = try await FeedModel(url: selectedFeed!.url)
+                        await errorHandler.tryPerformAsync {
+                            try await new.refresh()
+                        }
+                        
+                        context.insert(new)
+                        errorHandler.tryPerform {
+                            try context.save()
+                        }
+                        
+                        DispatchQueue.main.async {
+                            modalShown = false
                         }
                     }
                 } label: {

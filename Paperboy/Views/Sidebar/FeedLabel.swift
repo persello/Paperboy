@@ -8,24 +8,24 @@
 import SwiftUI
 
 struct FeedLabel: View {
-    @ObservedObject var feed: FeedModel
+    var feed: FeedModel
     var showsBadge: Bool = true
     
     var body: some View {
         Label {
-            Text(feed.normalisedTitle)
+            Text(feed.title)
         } icon: {
-            if feed.status == FeedModel.Status.error.rawValue {
+            if feed.status == FeedModel.Status.error {
                 Image(systemSymbol: .boltHorizontalCircle)
                     .foregroundColor(.secondary)
-            } else if feed.status == FeedModel.Status.refreshing.rawValue {
+            } else if feed.status == FeedModel.Status.refreshing {
                 ProgressView()
                 #if os(macOS)
                     .scaleEffect(0.5)
                     .frame(width: 16, height: 16)
                 #endif
             } else if let image = feed.iconImage {
-                Image(image, scale: 1, label: Text(feed.normalisedTitle))
+                Image(image, scale: 1, label: Text(feed.title))
                     .resizable()
                     .frame(width: 16, height: 16)
                     .cornerRadius(4)
@@ -39,10 +39,8 @@ struct FeedLabel: View {
 
 struct FeedListRow_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
         
-        let feed = FeedModel(context: context)
-        feed.title = "Antani's feed"
+        let feed = FeedModel(title: "9to5Mac", url: URL(string: "https://9to5mac.com/feed")!)
         
         return FeedLabel(feed: feed)
     }

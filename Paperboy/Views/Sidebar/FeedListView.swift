@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 import SFSafeSymbols
 
 struct FeedListView: View {
     
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
-    @FetchRequest(sortDescriptors: [])
-    private var feeds: FetchedResults<FeedModel>
+    @Query
+    private var feeds: [FeedModel]
     
-    @FetchRequest(sortDescriptors: [])
-    private var folders: FetchedResults<FeedFolderModel>
+    @Query
+    private var folders: [FeedFolderModel]
     
     @Binding var selection: FeedModel?
     
@@ -37,7 +38,7 @@ struct FeedListView: View {
                         try await feed.refresh(onlyAfter: immediate ? 0 : 60)
                     } catch URLError.networkConnectionLost {
                         // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
-                        feed.setStatus(.error)
+                        feed.status = .error
                     }
                 }
             }
@@ -62,7 +63,7 @@ struct FeedListView: View {
                 List(selection: $selection) {
                     ForEach(folders) { folder in
                         Section {
-                            ForEach(folder.feeds?.allObjects as! [FeedModel]) { feed in
+                            ForEach(folder.feeds) { feed in
                                 NavigationLink(value: feed) {
                                     FeedListRowFeed(feed: feed, folders: Array(folders))
                                 }
@@ -152,11 +153,8 @@ struct FeedListView: View {
 
 struct FeedListView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
-        
         return NavigationStack {
             FeedListView(selection: .constant(nil))
-                .environment(\.managedObjectContext, context)
         }
     }
 }

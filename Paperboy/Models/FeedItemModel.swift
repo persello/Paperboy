@@ -2,33 +2,61 @@
 //  FeedItemModel.swift
 //  Paperboy
 //
-//  Created by Riccardo Persello on 08/12/22.
+//  Created by Riccardo Persello on 11/06/23.
+//
 //
 
 import Foundation
-import CoreData
+import SwiftData
 import SwiftSoup
 import os
+
+enum FeedItemModelError: Error {
+    case noURL
+}
+
+@Model final public class FeedItemModel {
+    var articleDescription: String?
+    var publicationDate: Date?
+    var read: Bool = false
+    var title: String
+    var url: URL
+    var wallpaperURL: URL?
+    var feed: FeedModel
+    
+    // MARK: Initialisers.
+    init(title: String, url: URL, feed: FeedModel, articleDescription: String? = nil, publicationDate: Date? = nil, read: Bool = false, wallpaperURL: URL? = nil) {
+        self.articleDescription = articleDescription
+        self.publicationDate = publicationDate
+        self.read = read
+        self.title = title
+        self.url = url
+        self.wallpaperURL = wallpaperURL
+        self.feed = feed
+    }
+    
+    init<F: FeedItemProtocol>(from item: F) throws {
+        guard let url = item.url else {
+            throw FeedItemModelError.noURL
+        }
+        
+        self.articleDescription = item.description
+        self.url = url
+        self.publicationDate = item.publicationDate
+        self.title = item.title ?? "Untitled article"
+    }
+}
 
 extension FeedItemModel {
 
     static let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "FeedItemModel")
     static let signposter = OSSignposter(logger: logger)
     
-    // MARK: Initialisers.
-    convenience init<F: FeedItemProtocol>(from item: F, context: NSManagedObjectContext) {
-        self.init(context: context)
-        self.articleDescription = item.description
-        self.url = item.url
-        self.publicationDate = item.publicationDate
-        self.title = item.title
-    }
-    
     // MARK: Public functions.
     public func updateWallpaper() {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("updateWallpaper", id: signpostID, "\(self.normalisedTitle)")
+        let state = Self.signposter.beginInterval("updateWallpaper", id: signpostID, "\(self.title)")
         
         defer {
             Self.signposter.endInterval("updateWallpaper", state)
@@ -41,10 +69,10 @@ extension FeedItemModel {
         DispatchQueue.global(qos: .background).async {
             
             Self.signposter.emitEvent("Getting article description.", id: signpostID)
-            Self.logger.info("Fetching wallpaper for \"\(self.normalisedTitle)\" from article description.")
+            Self.logger.info("Fetching wallpaper for \"\(self.title)\" from article description.")
 
             guard let description = self.articleDescription else {
-                Self.logger.info("No description for \"\(self.normalisedTitle)\".")
+                Self.logger.info("No description for \"\(self.title)\".")
                 return
             }
             
@@ -53,7 +81,7 @@ extension FeedItemModel {
             let document = try? SwiftSoup.parse(description)
             let image = try? document?.select("img").first()
             guard let src = try? image?.attr("src") else {
-                Self.logger.info("No image found in description of \"\(self.normalisedTitle)\".")
+                Self.logger.info("No image found in description of \"\(self.title)\".")
                 return
             }
 
@@ -64,15 +92,11 @@ extension FeedItemModel {
     }
     
     // MARK: Computed properties.
-    var normalisedTitle: String {
-        return title ?? "Unnamed article"
-    }
-    
     var normalisedContentDescription: String? {
         get async {
             
             let signpostID = Self.signposter.makeSignpostID()
-            let state = Self.signposter.beginInterval("normalisedContentDescription", id: signpostID, "\(self.normalisedTitle)")
+            let state = Self.signposter.beginInterval("normalisedContentDescription", id: signpostID, "\(self.title)")
             
             defer {
                 Self.signposter.endInterval("normalisedContentDescription", state)
@@ -99,9 +123,5 @@ extension FeedItemModel {
                 }
             })
         }
-    }
-    
-    public override func willSave() {
-        self.feed?.objectWillChange.send()
     }
 }

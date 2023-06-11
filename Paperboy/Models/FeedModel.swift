@@ -2,19 +2,65 @@
 //  FeedModel.swift
 //  Paperboy
 //
-//  Created by Riccardo Persello on 08/12/22.
+//  Created by Riccardo Persello on 11/06/23.
+//
 //
 
 import Foundation
+import SwiftData
 import FeedKit
-import CoreData
+import CoreGraphics
 import CoreImage
 import FaviconFinder
 import os
 
-#if os(iOS)
-import UIKit
-#endif
+@Model final public class FeedModel {
+    @Attribute(.externalStorage) var icon: Data?
+    var lastRefresh: Date?
+    @Attribute(.transformable)
+    private var rawStatus: Status.RawValue = Status.idle.rawValue
+    var title: String
+    var url: URL
+    var folder: FeedFolderModel?
+    @Relationship(.cascade, inverse: \FeedItemModel.feed) var items: [FeedItemModel]
+    
+    @Transientma
+    var status: Status {
+        get {
+            return Status(rawValue: self.rawStatus) ?? .error
+        }
+        
+        set {
+            self.rawStatus = newValue.rawValue
+        }
+    }
+    
+    init(title: String, url: URL, folder: FeedFolderModel? = nil, items: [FeedItemModel] = []) {
+        self.title = title
+        self.url = url
+        self.folder = folder
+        self.items = items
+    }
+    
+    init(url: URL) async throws {
+        let signpostID = Self.signposter.makeSignpostID()
+        let state = Self.signposter.beginInterval("initFromFeedProtocol", id: signpostID)
+        
+        defer {
+            Self.signposter.endInterval("initFromFeedProtocol", state)
+        }
+        
+        self.url = url
+        let feed = try await self.getInternalFeed(cached: false)
+        self.title = feed.title?.trimmingCharacters(in: .whitespacesAndNewlines) ?? "Untitled feed"
+        
+        Self.logger.info("Initialised \"\(self.title)\" [\(self.url.absoluteString)] from FeedProtocol.")
+        
+//        Task {
+//            try await self.refresh()
+//        }
+    }
+c}
 
 extension FeedModel {
 
@@ -175,48 +221,11 @@ extension FeedModel {
         }
     }
     
-    // MARK: Initialisers.    
-    convenience init(url: URL, in context: NSManagedObjectContext) async throws {
-        
-        let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("initFromFeedProtocol", id: signpostID)
-        
-        defer {
-            Self.signposter.endInterval("initFromFeedProtocol", state)
-        }
-        
-        self.init(context: context)
-        
-        self.url = url
-        let feed = try await self.getInternalFeed(cached: false)
-        self.title = feed.title?.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        Self.logger.info("Initialised \"\(self.normalisedTitle)\" [\(self.url?.absoluteString ?? "no URL")] from FeedProtocol.")
-        
-//        Task {
-//            try await self.refresh()
-//        }
-    }
-    
     // MARK: Private functions.
-    func setStatus(_ status: Status) {
-        Self.logger.info("Setting feed status for \"\(self.normalisedTitle)\" to \(self.status).")
-        
-        #if os(iOS)
-        UIApplication.shared.isNetworkActivityIndicatorVisible = (status == .refreshing)
-        #endif
-        
-        DispatchQueue.main.async {
-            self.managedObjectContext?.perform {
-                self.status = status.rawValue
-            }
-        }
-    }
-    
     private func getInternalFeed(cached: Bool) async throws -> (any FeedProtocol) {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("getInternalFeed", id: signpostID, "\(self.normalisedTitle)")
+        let state = Self.signposter.beginInterval("getInternalFeed", id: signpostID, "\(self.title)")
         
         defer {
             Self.signposter.endInterval("getInternalFeed", state)
@@ -232,18 +241,13 @@ extension FeedModel {
                 case .rss(let rss):
                     return rss
                 case .json(_):
-                    Self.logger.warning("Unsupported JSON feed found in cache for \"\(self.normalisedTitle)\".")
+                    Self.logger.warning("Unsupported JSON feed found in cache for \"\(self.title)\".")
                     throw Error.unsupportedFeedFormat("JSON")
                 }
             }
         }
         
-        Self.logger.info("Getting internal feed for \"\(self.normalisedTitle)\".")
-        
-        guard let url = self.url else {
-            Self.logger.error("Cannot get internal feed, because the feed model  for \"\(self.normalisedTitle)\" does not have an URL.")
-            throw Error.modelDoesNotContainURL
-        }
+        Self.logger.info("Getting internal feed for \"\(self.title)\".")
         
         let (data, _) = try await URLSession.shared.data(from: url)
         
@@ -252,7 +256,7 @@ extension FeedModel {
         return try await withCheckedThrowingContinuation({ continuation in
             let parser = FeedParser(data: data)
             
-            Self.logger.info("Parsing feed for \"\(self.normalisedTitle)\".")
+            Self.logger.info("Parsing feed for \"\(self.title)\".")
             Self.signposter.emitEvent("Starting feed parser.", id: signpostID)
             
             parser.parseAsync(queue: DispatchQueue.global(qos: .userInitiated), result: { groups in
@@ -269,11 +273,11 @@ extension FeedModel {
                     case .rss(let rss):
                         continuation.resume(returning: rss)
                     case .json(_):
-                        Self.logger.warning("Parser found an unsupported JSON feed for \"\(self.normalisedTitle)\".")
+                        Self.logger.warning("Parser found an unsupported JSON feed for \"\(self.title)\".")
                         continuation.resume(throwing: Error.unsupportedFeedFormat("JSON"))
                     }
                 case .failure(let failure):
-                    Self.logger.error("An error occurred during feed parsing for \"\(self.normalisedTitle)\": \(failure.localizedDescription).")
+                    Self.logger.error("An error occurred during feed parsing for \"\(self.title)\": \(failure.localizedDescription).")
                     continuation.resume(throwing: failure)
                 }
             })
@@ -283,7 +287,7 @@ extension FeedModel {
     private func refreshIcon() async throws {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("refreshIcon", id: signpostID, "\(self.normalisedTitle)")
+        let state = Self.signposter.beginInterval("refreshIcon", id: signpostID, "\(self.title)")
         
         if self.icon != nil {
             return
@@ -293,14 +297,14 @@ extension FeedModel {
             Self.signposter.endInterval("refreshIcon", state)
         }
         
-        Self.logger.info("Refreshing icon for \"\(self.normalisedTitle)\".")
+        Self.logger.info("Refreshing icon for \"\(self.title)\".")
         
         let feed = try await self.getInternalFeed(cached: true)
         
         if let iconURL = feed.iconURL,
            let source = CGImageSourceCreateWithURL(iconURL as CFURL, [kCGImageSourceShouldCache: false] as CFDictionary) {
             
-            Self.logger.info("Getting icon from URL \(iconURL.absoluteString) for \"\(self.normalisedTitle)\".")
+            Self.logger.info("Getting icon from URL \(iconURL.absoluteString) for \"\(self.title)\".")
             Self.signposter.emitEvent("Got icon from icon URL.", id: signpostID)
 
             // Get the feed's icon from the specified URL.
@@ -321,19 +325,19 @@ extension FeedModel {
                 
                 Self.signposter.emitEvent("JPEG created.", id: signpostID)
                 
-                Self.logger.info("Created icon thumbnail from URL for \"\(self.normalisedTitle)\".")
+                Self.logger.info("Created icon thumbnail from URL for \"\(self.title)\".")
 
                 DispatchQueue.main.async {
                     self.icon = data
                 }
             } else {
-                Self.logger.warning("Could not create icon thumbnail from URL for \"\(self.normalisedTitle)\".")
+                Self.logger.warning("Could not create icon thumbnail from URL for \"\(self.title)\".")
             }
         } else if let url = feed.websiteURL {
 
             // Try to get the icon from the linked website's favicon.
             Self.signposter.emitEvent("Getting icon from Website URL.", id: signpostID)
-            Self.logger.info("Getting favicon from website URL \(url.absoluteString) for \"\(self.normalisedTitle)\".")
+            Self.logger.info("Getting favicon from website URL \(url.absoluteString) for \"\(self.title)\".")
             
             Task {
                 let finder = FaviconFinder(url: url)
@@ -352,11 +356,11 @@ extension FeedModel {
     // MARK: Public functions.
     func refresh(onlyAfter interval: TimeInterval) async throws {
 
-        Self.logger.info("Refreshing feed \"\(self.normalisedTitle)\" with minimum interval of \(interval) seconds.")
+        Self.logger.info("Refreshing feed \"\(self.title)\" with minimum interval of \(interval) seconds.")
 
         guard let lastRefresh else {
 
-            Self.logger.info("Feed \"\(self.normalisedTitle)\" has never been refreshed before, so refreshing now.")
+            Self.logger.info("Feed \"\(self.title)\" has never been refreshed before, so refreshing now.")
 
             try await refresh()
             return
@@ -365,31 +369,26 @@ extension FeedModel {
         if lastRefresh + interval < Date.now {
             try await refresh()
         } else {
-            Self.logger.info("Feed \"\(self.normalisedTitle)\" has been refreshed recently, so not refreshing now.")
+            Self.logger.info("Feed \"\(self.title)\" has been refreshed recently, so not refreshing now.")
         }
     }
     
     func refresh() async throws {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("refresh", id: signpostID, "\(self.normalisedTitle)")
+        let state = Self.signposter.beginInterval("refresh", id: signpostID, "\(self.title)")
         
         defer {
             Self.signposter.endInterval("refresh", state)
             DispatchQueue.main.async {
-                self.setStatus(.idle)
+                self.status = .idle
             }
         }
 
-        Self.logger.info("Refreshing feed \"\(self.normalisedTitle)\".")
+        Self.logger.info("Refreshing feed \"\(self.title)\".")
 
         DispatchQueue.main.async {
-            self.setStatus(.refreshing)
-        }
-        
-        guard let context = self.managedObjectContext else {
-            Self.logger.error("Cannot refresh feed, because the feed model for \"\(self.normalisedTitle)\" does not have a managed object context.")
-            throw Error.modelDoesNotContainMOC
+            self.status = .refreshing
         }
         
         let feed = try await self.getInternalFeed(cached: false)
@@ -398,47 +397,31 @@ extension FeedModel {
         let itemSet: Set<FeedItemModel> = feed.articles
             // First filter...
             .filter({ item in
-                !(self.items?.contains(where: { existingItem in
-                    guard let existingItemModel = existingItem as? FeedItemModel else {
-                        return false
-                    }
-                    
-                    return existingItemModel.url == item.url
-                }) ?? true)
-            }).map({
-                FeedItemModel(from: $0, context: context)
+                !(self.items.contains(where: { existingItem in
+                    return existingItem.url == item.url
+                }) )
+            }).compactMap({
+                try? FeedItemModel(from: $0)
             }).reduce(into: Set()) { partialResult, item in
                 partialResult.insert(item)
             }
         
         Self.signposter.emitEvent("New item models set created.", id: signpostID)
-        Self.logger.info("Found \(itemSet.count) new items for \"\(self.normalisedTitle)\".")
+        Self.logger.info("Found \(itemSet.count) new items for \"\(self.title)\".")
                 
         DispatchQueue.main.async {
-            self.addToItems(NSSet(set: itemSet))
+            self.items.append(contentsOf: itemSet)
         }
         
         Self.signposter.emitEvent("Starting deduplication.", id: signpostID)
         
         // Deduplicate existing items by using URL, date and normalised title.
         // This is necessary because CloudKit does not support unique constraints.
-        guard let items = self.items else {
-            return
-        }
-        
         for newItem in items {
-            guard let newItem = newItem as? FeedItemModel else {
-                continue
-            }
-            
-            let duplicates = self.items!
-                .compactMap({ existingItem in
-                    existingItem as? FeedItemModel
-                }).filter({ existingItem in
-                    
+            let duplicates = self.items.filter({ existingItem in
                     return existingItem.url == newItem.url &&
                     existingItem.publicationDate == newItem.publicationDate &&
-                    existingItem.normalisedTitle == newItem.normalisedTitle
+                    existingItem.title == newItem.title
                 })
             
             // Check if at least one of the duplicates is read.
@@ -447,15 +430,13 @@ extension FeedModel {
             }
             
             if duplicates.count > 1 {
-                Self.logger.info("Found \(duplicates.count) duplicates for item \"\(newItem.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
+                Self.logger.info("Found \(duplicates.count) duplicates for item \"\(newItem.title)\" in feed \"\(self.title)\".")
                 
                 for duplicate in duplicates {
                     
                     if duplicate != newItem {
-                        Self.logger.info("Deleting duplicate item \"\(duplicate.normalisedTitle)\" in feed \"\(self.normalisedTitle)\".")
-                        context.performAndWait {
-                            context.delete(duplicate)
-                        }
+                        Self.logger.info("Deleting duplicate item \"\(duplicate.title)\" in feed \"\(self.title)\".")
+                        context!.delete(duplicate)
                     }
                 }
                 
@@ -470,32 +451,16 @@ extension FeedModel {
         try await self.refreshIcon()
         
         DispatchQueue.main.async {
-            
             self.lastRefresh = Date.now
-            
-            if self.hasChanges {
-                context.perform {
-                    try? context.save()
-                }
-            }
         }
     }
     
     func markAllAsRead() {
 
-        Self.logger.info("Marking all items in feed \"\(self.normalisedTitle)\" as read.")
-
-        guard let set = self.items,
-              let items = Array(set) as? Array<FeedItemModel> else {
-            return
-        }
+        Self.logger.info("Marking all items in feed \"\(self.title)\" as read.")
         
-        for item in items {
+        for item in self.items {
             item.read = true
-        }
-        
-        self.managedObjectContext?.perform {
-            try? self.managedObjectContext?.save()
         }
     }
     
@@ -504,13 +469,13 @@ extension FeedModel {
         if let data = self.icon,
            let source = CGImageSourceCreateWithData(data as CFData, [:] as CFDictionary) {
 
-            Self.logger.info("Getting icon from data for \"\(self.normalisedTitle)\".")
+            Self.logger.info("Getting icon from data for \"\(self.title)\".")
 
             let image = CGImageSourceCreateImageAtIndex(source, 0, [:] as CFDictionary)
             return image
         } else {
 
-            Self.logger.info("No icon data for \"\(self.normalisedTitle)\". Refreshing icon.")
+            Self.logger.info("No icon data for \"\(self.title)\". Refreshing icon.")
 
             Task {
                 try? await self.refreshIcon()
@@ -520,36 +485,31 @@ extension FeedModel {
         }
     }
     
-    var normalisedTitle: String {
-        return self.title ?? "Unnamed feed"
-    }
-    
     var unreadCount: Int {
-        let itemsToRead = self.value(forKey: "itemsToRead") as? [FeedItemModel]
-        return itemsToRead?.count ?? 0
+        return self.items.filter({$0.read == false}).count
     }
 
     var groupedItems: [GroupedFeedItems] {
         
         let signpostID = Self.signposter.makeSignpostID()
-        let state = Self.signposter.beginInterval("groupedItems", id: signpostID, "\(self.normalisedTitle)")
+        let state = Self.signposter.beginInterval("groupedItems", id: signpostID, "\(self.title)")
         
         defer {
             Self.signposter.endInterval("groupedItems", state)
         }
         
-        Self.logger.info("Grouping items for \"\(self.normalisedTitle)\".")
+        Self.logger.info("Grouping items for \"\(self.title)\".")
 
         // Calculate the average time between items.
         // If you publish feed items without a date, spiaze.
-        guard let items = (self.items as? Set<FeedItemModel>)?
-            .filter({ item in
-                item.publicationDate != nil
-            }),
-              let firstItem = items.sorted(by: { $0.publicationDate! < $1.publicationDate! }).first,
+        let items = self.items.filter({ item in
+            item.publicationDate != nil
+        })
+        
+        guard let firstItem = items.sorted(by: { $0.publicationDate! < $1.publicationDate! }).first,
               let lastItem = items.sorted(by: { $0.publicationDate! > $1.publicationDate! }).first else {
 
-            Self.logger.info("No dated items for \"\(self.normalisedTitle)\".")
+            Self.logger.info("No dated items for \"\(self.title)\".")
             return []
         }
         
@@ -557,7 +517,7 @@ extension FeedModel {
 
         let timeBetweenItems = lastItem.publicationDate!.timeIntervalSince(firstItem.publicationDate!) / Double(items.count)
 
-        Self.logger.info("Average time between items for \"\(self.normalisedTitle)\" is \(timeBetweenItems) seconds.")
+        Self.logger.info("Average time between items for \"\(self.title)\" is \(timeBetweenItems) seconds.")
 
         // Choose time frame for grouping.
         let timeFrame: GroupedFeedItems.TimeFrame
@@ -577,7 +537,7 @@ extension FeedModel {
             timeFrame = .all
         }
 
-        Self.logger.info("Time frame for grouping items for \"\(self.normalisedTitle)\" is \(timeFrame.rawValue).")
+        Self.logger.info("Time frame for grouping items for \"\(self.title)\" is \(timeFrame.rawValue).")
 
         // Group items.
         let groupedItems = GroupedFeedItems.build(timeFrame: timeFrame, items: Array(items))

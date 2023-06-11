@@ -18,11 +18,11 @@ struct FeedItemListRow: View {
     #endif
     
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     @Environment(\.colorScheme) private var colorScheme
     
-    @ObservedObject var feedItem: FeedItemModel
+    var feedItem: FeedItemModel
     
     // Expensive computations done in a task.
     @State var description: String? = nil
@@ -96,7 +96,7 @@ struct FeedItemListRow: View {
                         Text(feedItem.read ? "" : "\(Image(systemSymbol: .circleFill)) ")
                             .foregroundColor(.accentColor) +
                         
-                        Text(feedItem.normalisedTitle)
+                        Text(feedItem.title)
                             .font(.headline)
                     }
                     .lineLimit(3)
@@ -146,11 +146,9 @@ struct FeedItemListRow: View {
             }
             
             Button {
-                context.perform {
-                    feedItem.read.toggle()
-                    errorHandler.tryPerform {
-                        try context.save()
-                    }
+                feedItem.read.toggle()
+                errorHandler.tryPerform {
+                    try context.save()
                 }
             } label: {
                 Label(feedItem.read ? "Mark as unread" : "Mark as read", systemSymbol: feedItem.read ? .trayFull : .eyeglasses)
@@ -164,17 +162,16 @@ struct FeedItemListRow: View {
 
 struct FeedItemListRow_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
+        let title = "Antani had dinner today. This is a very, very long title that should wrap over multiple lines."
         
-        let item = FeedItemModel(context: context)
-        item.title = "Antani had dinner today. This is a very, very long title that should wrap over multiple lines."
-        item.publicationDate = .now
-        item.articleDescription = """
+        let articleDescription = """
         <div class="feat-image"><img src="https://9to5mac.com/wp-content/uploads/sites/6/2022/12/DSC04916-9to5-mac.jpg.jpeg?quality=82&#038;strip=all&#038;w=1280" /></div>
         <p>As work from home continues to be an option for many employees everywhere, it’s never a bad time to upgrade your setup with new accessories and gadgets. Head below as we roundup some of the best additions to your WFH setup, whether you’re buying for someone else this holiday season or crafting your own wish list. </p>
         <p> <a href="https://9to5mac.com/2022/12/10/9to5mac-gift-guide-upgrade-your-work-from-home-setup-with-these-products/#more-852697" class="more-link">more…</a></p>
         <p>The post <a rel="nofollow" href="https://9to5mac.com/2022/12/10/9to5mac-gift-guide-upgrade-your-work-from-home-setup-with-these-products/">9to5Mac Gift Guide: Upgrade your work-from-home setup with these products</a> appeared first on <a rel="nofollow" href="https://9to5mac.com">9to5Mac</a>.</p>
 """
+        
+        let item = FeedItemModel(title: title, url: URL(string: "https://test.com/article")!, feed: .init(title: "Test Feed", url: URL(string: "https://test.com/feed")!), articleDescription: articleDescription)
         
         return FeedItemListRow(feedItem: item)
             .previewLayout(.sizeThatFits)

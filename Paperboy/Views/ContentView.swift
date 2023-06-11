@@ -9,7 +9,7 @@ import SwiftUI
 import FeedKit
 
 struct ContentView: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var selectedFeed: FeedModel?
@@ -59,9 +59,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
-        
         ContentView()
-            .environment(\.managedObjectContext, context)
     }
 }

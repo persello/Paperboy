@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct FeedItemListView: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
-    @ObservedObject var feed: FeedModel
+    var feed: FeedModel
     @Binding var selection: FeedItemModel?
     
     @State private var groupedItems: [FeedModel.GroupedFeedItems]? = nil
@@ -52,17 +52,15 @@ struct FeedItemListView: View {
                                 .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 16))
                                 .swipeActions {
                                     Button {
-                                        context.perform {
-                                            item.read.toggle()
-                                            errorHandler.tryPerform {
-                                                try context.save()
-                                            }
+                                        item.read.toggle()
+                                        errorHandler.tryPerform {
+                                            try context.save()
                                         }
                                     } label: {
                                         Label(item.read ? "Mark as unread" : "Mark as read", systemSymbol: item.read ? .trayFull : .eyeglasses)
-                        #if os(iOS)
+#if os(iOS)
                                             .labelStyle(.iconOnly)
-                        #endif
+#endif
                                     }
                                     .tint(item.read ? .blue : .orange)
                                 }
@@ -70,7 +68,7 @@ struct FeedItemListView: View {
                         }
                     }
                 }
-//                .searchable(text: $searchText)
+                //                .searchable(text: $searchText)
 #if os(macOS)
                 .listStyle(.bordered(alternatesRowBackgrounds: true))
 #elseif os(iOS)
@@ -93,7 +91,7 @@ struct FeedItemListView: View {
                 await errorHandler.tryPerformAsync {
                     try await feed.refresh()
                 } errorCallback: { _ in
-                    feed.setStatus(.error)
+                    feed.status = .error
                 }
             }
         }
@@ -104,14 +102,14 @@ struct FeedItemListView: View {
                     await errorHandler.tryPerformAsync {
                         try await feed.refresh()
                     } errorCallback: { _ in
-                        await feed.setStatus(.error)
+                        await feed.status = .error
                     }
                 }
             } label: {
                 Label("Refresh", systemSymbol: .arrowClockwise)
             }
 #endif
-
+            
             Menu {
                 Button {
                     feed.markAllAsRead()
@@ -129,38 +127,33 @@ struct FeedItemListView: View {
                     try await feed.refresh(onlyAfter: 60)
                 } catch URLError.networkConnectionLost {
                     // Do not show error dialogs in case of connection errors, since this action is not user initiated. Instead, set the appropriate status.
-                    self.feed.setStatus(.error)
+                    self.feed.status = .error
                 }
                 
                 groupedItems = feed.groupedItems
                 taskCompleted = true
             } errorCallback: { _ in
-                self.feed.setStatus(.error)
+                self.feed.status = .error
                 taskCompleted = true
             }
         }
         .onChange(of: feed, perform: { newValue in
             taskCompleted = false
         })
-        .navigationTitle(feed.normalisedTitle)
-        #if os(macOS)
+        .navigationTitle(feed.title)
+#if os(macOS)
         .navigationSubtitle(feed.unreadCount > 0 ? "\(feed.unreadCount) to read" : "You're up to date")
-        #endif
+#endif
     }
 }
 
 struct FeedItemsListView_Previews: PreviewProvider {
     
     static var previews: some View {
-        let context = PersistenceController.preview.container.viewContext
-        
-        let ninetofivemac = FeedModel(context: context)
-        ninetofivemac.title = "9to5Mac"
-        ninetofivemac.url = URL(string: "https://9to5mac.com/feed")
+        let ninetofivemac = FeedModel(title: "9to5Mac", url: URL(string: "https://9to5mac.com/feed")!)
         
         return NavigationStack {
             FeedItemListView(feed: ninetofivemac, selection: .constant(nil))
-                .environment(\.managedObjectContext, context)
         }
     }
 }

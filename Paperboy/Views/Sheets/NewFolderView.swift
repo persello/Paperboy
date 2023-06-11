@@ -9,7 +9,7 @@ import SwiftUI
 import SFSafeSymbols
 
 struct NewFolderView: View {
-    @Environment(\.managedObjectContext) private var context
+    @Environment(\.modelContext) private var context
     @Environment(\.errorHandler) private var errorHandler
     
     @Binding var modalShown: Bool
@@ -17,7 +17,7 @@ struct NewFolderView: View {
     @FocusState private var textFieldFocused: Bool
     @State private var icon: SFSymbol = .folder
     @State private var name: String = ""
-        
+    
     private let symbols: [SFSymbol] = [
         // Communication
         .mic, .bubbleLeft, .quoteBubble, .phone, .envelope, .envelopeOpen, .waveform, .recordingtape,
@@ -103,14 +103,10 @@ struct NewFolderView: View {
             Button {
                 modalShown = false
                 
-                context.perform {
-                    let folder = FeedFolderModel(context: context)
-                    folder.name = name
-                    folder.icon = icon.rawValue
-                    
-                    errorHandler.tryPerform {
-                        try context.save()
-                    }
+                let folder = FeedFolderModel(name: name, feeds: [], icon: icon)
+                
+                errorHandler.tryPerform {
+                    try context.save()
                 }
             } label: {
                 Text("Add")

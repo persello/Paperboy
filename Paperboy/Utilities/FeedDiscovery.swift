@@ -35,7 +35,7 @@ class FeedDiscovery {
         }
         
         var id: String {
-            return feed.url?.absoluteString ?? ""
+            return feed.url.absoluteString
         }
         
         static func == (lhs: FeedDiscovery.DiscoveredFeed, rhs: FeedDiscovery.DiscoveredFeed) -> Bool {
@@ -84,8 +84,8 @@ class FeedDiscovery {
                 // Try the first URL.
                 Self.logger.info("Trying direct feed for \(url.absoluteString).")
 
-                if let model = try? await FeedModel(url: url, in: context) {
-                    Self.logger.info("Direct feed found for \(url.absoluteString): \(model.normalisedTitle).")
+                if let model = try? await FeedModel(url: url) {
+                    Self.logger.info("Direct feed found for \(url.absoluteString): \(model.title).")
                     continuation.yield(.init(feed: model, kind: .direct))
                 }
                 
@@ -129,7 +129,7 @@ class FeedDiscovery {
                     for url in feedURLs {
                         if let feed = try? await Self.parsedFeed(for: url).get() {
                             let feed = Self.unwrapFeed(feed: feed)
-                            let model = try await FeedModel(url: url, in: context)
+                            let model = try await FeedModel(url: url)
                             continuation.yield(.init(feed: model, kind: .direct))
                             count += 1
                         }
